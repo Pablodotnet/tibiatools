@@ -1,0 +1,16 @@
+{
+  "name": "@org/tibia-items-api-e2e",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "implicitDependencies": ["@org/tibia-items-api"],
+  "targets": {
+    "e2e": {
+      "executor": "@nx/jest:jest",
+      "outputs": ["{projectRoot}/test-output/jest/coverage"],
+      "options": {
+        "jestConfig": "apps/tibia-items-api-e2e/jest.config.ts",
+        "passWithNoTests": true
+      },
+      "dependsOn": ["@org/tibia-items-api:build", "@org/tibia-items-api:serve"]
+    }
+  }
+}

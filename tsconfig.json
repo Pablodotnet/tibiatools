@@ -8,6 +8,12 @@
     },
     {
       "path": "./apps/tibiatools"
-    }
+    },
+    {
+      "path": "./apps/tibia-items-api-e2e"
+    },
+    {
+      "path": "./apps/tibia-items-api"
+    },
   ]
 }
