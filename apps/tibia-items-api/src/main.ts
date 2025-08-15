@@ -20,7 +20,7 @@ async function bootstrap() {
     .addTag('tibia-items')
     .build();
   const documentFactory = () => SwaggerModule.createDocument(app, config);
-  SwaggerModule.setup('api', app, documentFactory);
+  SwaggerModule.setup('docs', app, documentFactory);
 
   await app.listen(port);
   Logger.log(
