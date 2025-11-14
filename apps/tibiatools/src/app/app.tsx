@@ -1,8 +1,12 @@
+import NavBar from './components/NavBar';
 import AppRouting from './routes';
 
 export function App() {
   return (
-    <AppRouting />
+    <>
+      <NavBar />
+      <AppRouting />
+    </>
   );
 }
 
