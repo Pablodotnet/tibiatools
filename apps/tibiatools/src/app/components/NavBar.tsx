@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import { PandaIcon } from './PandaIcon';
+import ToggleThemeButton from './ToggleThemeButton';
 
 export function NavBar() {
   return (
@@ -19,6 +20,10 @@ export function NavBar() {
             </Link>
           </nav>
           <div className="flex items-center gap-4">
+            <ToggleThemeButton />
+            {/*
+            <RepositoryButton />
+            <AuthButton /> */}
           </div>
         </div>
       </div>

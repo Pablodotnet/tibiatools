@@ -1,18 +1,31 @@
-'use client';
-
-import { Sun, Moon } from 'lucide-react';
-import { useTheme } from './ThemeProvider';
+import { Moon, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Theme, useTheme } from './ThemeProvider';
+import { Button } from './ui/button';
 
 export function ToggleThemeButton() {
-  const { theme, setTheme } = useTheme();
+  const { setTheme } = useTheme();
+  const [currentTheme, setCurrentTheme] = useState<string>('light');
+
+  useEffect(() => {
+    const savedTheme = (localStorage.getItem('theme') as Theme) || 'light';
+    setCurrentTheme(savedTheme);
+    setTheme(savedTheme); // Apply the saved theme
+  }, [setTheme]);
+
+  const handleToggle = () => {
+    const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    localStorage.setItem('theme', newTheme);
+    setTheme(newTheme);
+    setCurrentTheme(newTheme);
+  };
 
   return (
-    <button
-      onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="p-2 rounded-lg hover:bg-neutral-200 dark:hover:bg-neutral-700 transition"
-    >
-      {theme === 'dark' ? <Sun size={18} /> : <Moon size={18} />}
-    </button>
+    <Button variant="outline" size="icon" onClick={handleToggle}>
+      <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+      <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+      <span className="sr-only">Toggle theme</span>
+    </Button>
   );
 }
 export default ToggleThemeButton;
