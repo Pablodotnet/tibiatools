@@ -1,0 +1,46 @@
+import { ImbuableItem } from "./imbuableItems";
+
+export const rods: ImbuableItem[] = [
+  { name: "Amber Rod", icon: "", imbuingSlots: 2 },
+  { name: "Cobra Rod", icon: "", imbuingSlots: 2 },
+  {
+    name: "Deepling Ceremonial Dagger",
+    icon: "",
+    imbuingSlots: 2,
+  },
+  { name: "Deepling Fork", icon: "", imbuingSlots: 2 },
+  {
+    name: "Draining Inferniarch Rod",
+    icon: "",
+    imbuingSlots: 1,
+  },
+  { name: "Dream Blossom Staff", icon: "", imbuingSlots: 2 },
+  { name: "Eldritch Rod", icon: "", imbuingSlots: 2 },
+  { name: "Energized Limb", icon: "", imbuingSlots: 2 },
+  { name: "Falcon Rod", icon: "", imbuingSlots: 2 },
+  { name: "Gilded Eldritch Rod", icon: "", imbuingSlots: 2 },
+  { name: "Grand Sanguine Rod", icon: "", imbuingSlots: 2 },
+  { name: "Inferniarch Rod", icon: "", imbuingSlots: 2 },
+  { name: "Jungle Rod", icon: "", imbuingSlots: 2 },
+  { name: "Lion Rod", icon: "", imbuingSlots: 2 },
+  { name: "Naga Rod", icon: "", imbuingSlots: 2 },
+  { name: "Northwind Rod", icon: "", imbuingSlots: 2 },
+  { name: "Ogre Scepta", icon: "", imbuingSlots: 2 },
+  {
+    name: "Rending Inferniarch Rod",
+    icon: "",
+    imbuingSlots: 1,
+  },
+  { name: "Rod of Carving", icon: "", imbuingSlots: 2 },
+  { name: "Rod of Destruction", icon: "", imbuingSlots: 2 },
+  { name: "Rod of Mayhem", icon: "", imbuingSlots: 2 },
+  { name: "Rod of Remedy", icon: "", imbuingSlots: 2 },
+  { name: "Sanguine Rod", icon: "", imbuingSlots: 2 },
+  {
+    name: "Siphoning Inferniarch Rod",
+    icon: "",
+    imbuingSlots: 1,
+  },
+  { name: "Soulhexer", icon: "", imbuingSlots: 2 },
+  { name: "Underworld Rod", icon: "", imbuingSlots: 2 },
+];

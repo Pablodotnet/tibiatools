@@ -1,0 +1,55 @@
+import { ImbuableItem } from "./imbuableItems";
+
+export const wands: ImbuableItem[] = [
+  { name: "Amber Wand", icon: "", imbuingSlots: 2 },
+  { name: "Cobra Wand", icon: "", imbuingSlots: 2 },
+  {
+    name: "Deepling Ceremonial Dagger",
+    icon: "",
+    imbuingSlots: 2,
+  },
+  { name: "Deepling Fork", icon: "", imbuingSlots: 2 },
+  {
+    name: "Draining Inferniarch Wand",
+    icon: "",
+    imbuingSlots: 1,
+  },
+  { name: "Dream Blossom Staff", icon: "", imbuingSlots: 2 },
+  { name: "Eldritch Wand", icon: "", imbuingSlots: 2 },
+  { name: "Energized Limb", icon: "", imbuingSlots: 2 },
+  { name: "Falcon Wand", icon: "", imbuingSlots: 2 },
+  {
+    name: "Gilded Eldritch Wand",
+    icon: "",
+    imbuingSlots: 2,
+  },
+  { name: "Grand Sanguine Coil", icon: "", imbuingSlots: 2 },
+  { name: "Inferniarch Wand", icon: "", imbuingSlots: 2 },
+  { name: "Jungle Wand", icon: "", imbuingSlots: 2 },
+  { name: "Lion Wand", icon: "", imbuingSlots: 2 },
+  { name: "Naga Wand", icon: "", imbuingSlots: 2 },
+  {
+    name: "Rending Inferniarch Wand",
+    icon: "",
+    imbuingSlots: 1,
+  },
+  { name: "Sanguine Coil", icon: "", imbuingSlots: 2 },
+  {
+    name: "Siphoning Inferniarch Wand",
+    icon: "",
+    imbuingSlots: 1,
+  },
+  { name: "Soultainter", icon: "", imbuingSlots: 2 },
+  { name: "Wand of Carving", icon: "", imbuingSlots: 2 },
+  { name: "Wand of Destruction", icon: "", imbuingSlots: 2 },
+  { name: "Wand of Draconia", icon: "", imbuingSlots: 2 },
+  {
+    name: "Wand of Dragonbreath",
+    icon: "",
+    imbuingSlots: 2,
+  },
+  { name: "Wand of Mayhem", icon: "", imbuingSlots: 2 },
+  { name: "Wand of Remedy", icon: "", imbuingSlots: 2 },
+  { name: "Wand of Starstorm", icon: "", imbuingSlots: 2 },
+  { name: "Wand of Voodoo", icon: "", imbuingSlots: 2 },
+];
