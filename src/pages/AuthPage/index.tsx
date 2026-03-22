@@ -4,26 +4,21 @@ import {
   CardDescription,
   CardFooter,
   CardHeader,
-  CardTitle
+  CardTitle,
 } from '@/components/ui/card';
 import { useState } from 'react';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
-import { useSelector } from 'react-redux';
-import { RootState } from '@/store';
+
+// Note: redirect logic is now handled by PublicRoute wrapper,
+// so this page doesn't need to check auth status itself.
 
 const AuthPage = () => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
-  const { status } = useSelector((state: RootState) => state.auth);
-  const isAuthenticated = status === 'authenticated';
 
   const toggleForms = () => {
-    setShowRegisterForm(!showRegisterForm);
+    setShowRegisterForm((prev) => !prev);
   };
-
-  if (isAuthenticated) {
-    window.location.href = '/'
-  }
 
   return (
     <Card className='w-[450px]'>
@@ -31,7 +26,9 @@ const AuthPage = () => {
         {!showRegisterForm ? (
           <>
             <CardTitle>Log In</CardTitle>
-            <CardDescription>Use email/password or choose Google.</CardDescription>
+            <CardDescription>
+              Use email/password or choose Google.
+            </CardDescription>
           </>
         ) : (
           <>
@@ -48,18 +45,16 @@ const AuthPage = () => {
           <p>
             You don't have an account?{' '}
             <a
-              type='button'
               className='cursor-pointer text-blue-500 underline'
               onClick={toggleForms}
             >
-              Sign In
+              Sign up
             </a>
           </p>
         ) : (
           <p>
-            You have an account?{' '}
+            Already have an account?{' '}
             <a
-              type='button'
               className='cursor-pointer text-blue-500 underline'
               onClick={toggleForms}
             >
@@ -70,6 +65,6 @@ const AuthPage = () => {
       </CardFooter>
     </Card>
   );
-}
+};
 
 export default AuthPage;

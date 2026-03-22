@@ -8,7 +8,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { RootState } from '@/store';
+import { startCreatingUserWithEmailPassword } from '@/store/auth/thunks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 
@@ -21,13 +25,26 @@ const formSchema = z.object({
 type FormData = z.infer<typeof formSchema>;
 
 export const RegisterForm = () => {
+  const dispatch = useAppDispatch();
+  const { status, errorMessage } = useAppSelector(
+    (state: RootState) => state.auth,
+  );
+  const isAuthenticating = useMemo(() => status === 'checking', [status]);
+
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
+    defaultValues: { name: '', email: '', password: '' },
   });
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
-    // TODO: Add actual login logic (e.g. API call)
+    if (isAuthenticating) return;
+    dispatch(
+      startCreatingUserWithEmailPassword({
+        displayName: data.name,
+        email: data.email,
+        password: data.password,
+      }),
+    );
   };
 
   return (
@@ -76,10 +93,15 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
+
+        {/* Show Firebase error if registration fails */}
+        {errorMessage && (
+          <p className='text-sm text-destructive'>{errorMessage}</p>
+        )}
+
         <div className='flex justify-end space-x-4'>
-          <Button type='submit'>Log In</Button>
-          <Button type='button' variant='outline'>
-            Google
+          <Button type='submit' disabled={isAuthenticating}>
+            {isAuthenticating ? 'Creating account...' : 'Register'}
           </Button>
         </div>
       </form>
