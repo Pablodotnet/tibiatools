@@ -9,9 +9,9 @@ import {
 
 const ExaltationPage = () => {
   return (
-    <Card className="max-w-4xl w-full bg-white dark:bg-card">
+    <Card className="max-w-4xl w-full bg-white dark:bg-card my-12">
       <CardHeader>
-        <CardTitle>Exaltation Forge simulator</CardTitle>
+        <CardTitle>Exaltation Forge Simulator</CardTitle>
         <CardDescription>
           Estimate fusion gold, Exalted Core usage, and item cost up to a target
           tier. Forge gold per classification matches Tibia Wiki (regular

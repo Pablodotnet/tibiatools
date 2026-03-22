@@ -8,7 +8,7 @@ import {
 
 const HuntingSpotsPage = () => {
   return (
-    <Card className="w-[350px]">
+    <Card className="w-[350px] bg-white dark:bg-card my-12">
       <CardHeader>
         <CardTitle>
           Where can I hunt at certain level? What set should I use?
