@@ -14,6 +14,7 @@ import { startGoogleSignIn, startLoginWithEmailPassword } from '@/store/auth/thu
 import { zodResolver } from '@hookform/resolvers/zod';
 import { FormEvent, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -25,6 +26,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const { status } = useAppSelector((state: RootState) => state.auth);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -43,6 +45,8 @@ export const LoginForm = () => {
     dispatch(startGoogleSignIn());
   };
 
+  const translate = (entry: string) => t(`auth.${entry}`);
+
   return (
     <Form {...form}>
       <form onSubmit={onSubmit} className='space-y-6'>
@@ -51,9 +55,9 @@ export const LoginForm = () => {
           name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{translate('email')}</FormLabel>
               <FormControl>
-                <Input placeholder='Enter your email...' {...field} />
+                <Input placeholder={translate('emailPlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -64,11 +68,11 @@ export const LoginForm = () => {
           name='password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{translate('password')}</FormLabel>
               <FormControl>
                 <Input
                   type='password'
-                  placeholder='Enter your password...'
+                  placeholder={translate('passwordPlaceholder')}
                   {...field}
                 />
               </FormControl>
@@ -77,9 +81,9 @@ export const LoginForm = () => {
           )}
         />
         <div className='flex justify-end space-x-4'>
-          <Button type='submit'>Log In</Button>
+          <Button type='submit'>{translate('login')}</Button>
           <Button type='button' variant='outline' onClick={onGoogleSignIn}>
-            Google
+            {translate('googleButton')}
           </Button>
         </div>
       </form>

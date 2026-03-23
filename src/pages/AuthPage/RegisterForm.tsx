@@ -14,6 +14,7 @@ import { startCreatingUserWithEmailPassword } from '@/store/auth/thunks';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -26,6 +27,7 @@ type FormData = z.infer<typeof formSchema>;
 
 export const RegisterForm = () => {
   const dispatch = useAppDispatch();
+  const { t } = useTranslation();
   const { status, errorMessage } = useAppSelector(
     (state: RootState) => state.auth,
   );
@@ -47,6 +49,8 @@ export const RegisterForm = () => {
     );
   };
 
+  const translate = (entry: string) => t(`auth.${entry}`);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
@@ -55,9 +59,9 @@ export const RegisterForm = () => {
           name='name'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>{translate('name')}</FormLabel>
               <FormControl>
-                <Input placeholder='Enter your name...' {...field} />
+                <Input placeholder={translate('namePlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -70,7 +74,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>Email</FormLabel>
               <FormControl>
-                <Input placeholder='Enter your email...' {...field} />
+                <Input placeholder={translate('emailPlaceholder')} {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -81,11 +85,11 @@ export const RegisterForm = () => {
           name='password'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Password</FormLabel>
+              <FormLabel>{translate('password')}</FormLabel>
               <FormControl>
                 <Input
                   type='password'
-                  placeholder='Enter your password...'
+                  placeholder={translate('passwordPlaceholder')}
                   {...field}
                 />
               </FormControl>

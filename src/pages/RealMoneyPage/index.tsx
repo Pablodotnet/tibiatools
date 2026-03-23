@@ -6,16 +6,17 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useTranslation } from 'react-i18next';
 
 const RealMoneyPage = () => {
+  const { t } = useTranslation();
+  const translate = (entry: string) => t(`realMoney.${entry}`);
+
   return (
-    <Card className="w-[350px]">
+    <Card className='w-[350px]'>
       <CardHeader>
-        <CardTitle>Real Money Spend Calculator</CardTitle>
-        <CardDescription>
-          Here you can calculate how much real money and Tibia Coins you would
-          spend to get certain quantity of Tibia Gold
-        </CardDescription>
+        <CardTitle>{translate('title')}</CardTitle>
+        <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <RealMoneyCalculator />

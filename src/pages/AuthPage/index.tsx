@@ -9,12 +9,16 @@ import {
 import { useState } from 'react';
 import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
+import { useTranslation } from 'react-i18next';
 
 // Note: redirect logic is now handled by PublicRoute wrapper,
 // so this page doesn't need to check auth status itself.
 
 const AuthPage = () => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
+  const { t } = useTranslation();
+
+  const translate = (entry: string) => t(`auth.${entry}`);
 
   const toggleForms = () => {
     setShowRegisterForm((prev) => !prev);
@@ -25,15 +29,13 @@ const AuthPage = () => {
       <CardHeader>
         {!showRegisterForm ? (
           <>
-            <CardTitle>Log In</CardTitle>
-            <CardDescription>
-              Use email/password or choose Google.
-            </CardDescription>
+            <CardTitle>{translate('login')}</CardTitle>
+            <CardDescription>{translate('useEmailOrGoogle')}</CardDescription>
           </>
         ) : (
           <>
-            <CardTitle>Register</CardTitle>
-            <CardDescription>Enter your email and password.</CardDescription>
+            <CardTitle>{translate('register')}</CardTitle>
+            <CardDescription>{translate('enterEmailPass')}</CardDescription>
           </>
         )}
       </CardHeader>
@@ -43,22 +45,22 @@ const AuthPage = () => {
       <CardFooter className='flex justify-end w-full'>
         {!showRegisterForm ? (
           <p>
-            You don't have an account?{' '}
+            {translate('youDontHave')}{' '}
             <a
               className='cursor-pointer text-blue-500 underline'
               onClick={toggleForms}
             >
-              Sign up
+              {translate('signUp')}
             </a>
           </p>
         ) : (
           <p>
-            Already have an account?{' '}
+            {translate('hasAccount')}{' '}
             <a
               className='cursor-pointer text-blue-500 underline'
               onClick={toggleForms}
             >
-              Log In
+              {translate('login')}
             </a>
           </p>
         )}

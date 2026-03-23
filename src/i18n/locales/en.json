@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "title": "Tibia Tools"
+  },
+  "auth": {
+    "login": "Log In",
+    "useEmailOrGoogle": "Use email/password or choose Google.",
+    "register": "Register",
+    "enterEmailPass": "Enter your email and password.",
+    "youDontHave": "You don't have an account?",
+    "signUp": "Sign up",
+    "hasAccount": "Already have an account?",
+    "email": "Email",
+    "emailPlaceholder": "Enter your email...",
+    "passwordPlaceholder": "Enter your password...",
+    "googleButton": "Google",
+    "namePlaceholder": "Enter your name...",
+    "password": "Password",
+    "name": "Name"
+  },
+  "account": {
+    "title": "My Account",
+    "email": "Email",
+    "userId": "User ID",
+    "displayName": "Display name",
+    "logout": "Log Out"
+  },
+  "vocationsHuntSpots": {
+    "title": "Find the best hunting spots for"
+  },
+  "realMoney": {
+    "title": "Real Money Spend Calculator",
+    "description": "Here you can calculate how much real money and Tibia Coins you would spend to get certain quantity of Tibia Gold"
+  },
+  "imbuings": {
+    "title": "What imbuements can I set to my item?",
+    "description": "Select your item from list and learn which imbuements it can have."
+  },
+  "huntingSpots": {
+    "title": "Where can I hunt at certain level? What set should I use?",
+    "description": "Here you can find hunting spots as well as recommendations of set to use there and which imbuements to use."
+  },
+  "exaltationForge": {
+    "title": "Exaltation Forge Simulator",
+    "description": "Estimate fusion gold, Exalted Core usage, and item cost up to a target tier. Forge gold per classification matches Tibia Wiki (regular fusion)."
+  },
+  "coinsToMoney": {
+    "title": "Tibia Coins to Real Money Calculator",
+    "description": "Here you can calculate how much real money would cost certain amount of Tibia Coins."
+  }
+}

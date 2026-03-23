@@ -11,12 +11,15 @@ import { Separator } from '@/components/ui/separator';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { RootState } from '@/store';
 import { startLogout } from '@/store/auth/thunks';
+import { useTranslation } from 'react-i18next';
 
 const AccountPage = () => {
+  const { t } = useTranslation();
   const dispatch = useAppDispatch();
   const { displayName, email, photoURL, uid } = useAppSelector(
     (state: RootState) => state.auth,
   );
+  const translate = (entry: string) => t(`account.${entry}`);
 
   const initials = displayName
     ? displayName
@@ -55,17 +58,23 @@ const AccountPage = () => {
 
           <div className='space-y-2 text-sm'>
             <div className='flex justify-between'>
-              <span className='text-muted-foreground'>User ID</span>
+              <span className='text-muted-foreground'>
+                {translate('userId')}
+              </span>
               <span className='font-mono text-xs text-muted-foreground truncate max-w-[240px]'>
                 {uid}
               </span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-muted-foreground'>Email</span>
+              <span className='text-muted-foreground'>
+                {translate('email')}
+              </span>
               <span>{email}</span>
             </div>
             <div className='flex justify-between'>
-              <span className='text-muted-foreground'>Display name</span>
+              <span className='text-muted-foreground'>
+                {translate('displayName')}
+              </span>
               <span>{displayName ?? '—'}</span>
             </div>
           </div>
@@ -73,8 +82,12 @@ const AccountPage = () => {
           <Separator />
 
           <div className='flex justify-end pt-2'>
-            <Button variant='destructive' onClick={handleLogout}>
-              Log Out
+            <Button
+              className='cursor-pointer'
+              variant='destructive'
+              onClick={handleLogout}
+            >
+              {translate('logout')}
             </Button>
           </div>
         </CardContent>

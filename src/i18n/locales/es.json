@@ -1,0 +1,51 @@
+{
+  "nav": {
+    "title": "Herramientas de Tibia"
+  },
+  "auth": {
+    "login": "Iniciar sesión",
+    "useEmailOrGoogle": "Usa correo/contraseña o elige Google.",
+    "register": "Registrarse",
+    "enterEmailPass": "Ingresa tu correo y contraseña.",
+    "youDontHave": "¿No tienes una cuenta?",
+    "signUp": "Crear cuenta",
+    "hasAccount": "¿Ya tienes una cuenta?",
+    "email": "Correo electrónico",
+    "emailPlaceholder": "Ingresa tu correo electrónico...",
+    "passwordPlaceholder": "Ingresa tu contraseña...",
+    "googleButton": "Google",
+    "namePlaceholder": "Ingresa tu nombre...",
+    "password": "Contraseña",
+    "name": "Nombre"
+  },
+  "account": {
+    "title": "Mi cuenta",
+    "email": "Correo electrónico",
+    "userId": "ID de usuario",
+    "displayName": "Nombre para mostrar",
+    "logout": "Cerrar sesión"
+  },
+  "vocationsHuntSpots": {
+    "title": "Encuentra los mejores lugares de caza para"
+  },
+  "realMoney": {
+    "title": "Calculadora de gasto en dinero real",
+    "description": "Aquí puedes calcular cuánto dinero real y Tibia Coins gastarías para obtener cierta cantidad de oro en Tibia"
+  },
+  "imbuings": {
+    "title": "¿Qué imbuements puedo ponerle a mi objeto?",
+    "description": "Selecciona tu objeto de la lista y descubre qué imbuements puede tener."
+  },
+  "huntingSpots": {
+    "title": "¿Dónde puedo cazar a cierto nivel? ¿Qué set debo usar?",
+    "description": "Aquí puedes encontrar lugares de caza, así como recomendaciones de sets y qué imbuements usar."
+  },
+  "exaltationForge": {
+    "title": "Simulador de Exaltation Forge",
+    "description": "Estima el oro de fusión, uso de Exalted Core y costo del objeto hasta un tier objetivo. El oro por clasificación coincide con Tibia Wiki (fusión regular)."
+  },
+  "coinsToMoney": {
+    "title": "Calculadora de Tibia Coins a dinero real",
+    "description": "Aquí puedes calcular cuánto costaría en dinero real cierta cantidad de Tibia Coins."
+  }
+}

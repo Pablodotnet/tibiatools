@@ -6,15 +6,17 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { useTranslation } from 'react-i18next';
 
 const CoinsToMoneyPage = () => {
+  const { t } = useTranslation();
+  const translate = (entry: string) => t(`coinsToMoney.${entry}`);
+
   return (
     <Card className='w-[350px]'>
       <CardHeader>
-        <CardTitle>Tibia Coins to Real Money Calculator</CardTitle>
-        <CardDescription>
-          Here you can calculate how much real money would cost certain amount of Tibia Coins.
-        </CardDescription>
+        <CardTitle>{translate('title')}</CardTitle>
+        <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>
       <CardContent>
         <CoinsToMoneyCalculator />

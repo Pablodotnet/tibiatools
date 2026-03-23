@@ -5,18 +5,16 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { useTranslation } from 'react-i18next';
 
 const HuntingSpotsPage = () => {
+  const { t } = useTranslation();
+  const translate = (entry: string) => t(`huntingSpots.${entry}`);
   return (
-    <Card className="w-[350px] bg-white dark:bg-card my-12">
+    <Card className='w-[350px] bg-white dark:bg-card my-12'>
       <CardHeader>
-        <CardTitle>
-          Where can I hunt at certain level? What set should I use?
-        </CardTitle>
-        <CardDescription>
-          Here you can find hunting spots as well as recommendations of set to
-          use there and which imbuements to use.
-        </CardDescription>
+        <CardTitle>{translate('title')}</CardTitle>
+        <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>
       <HuntingSpotsCard />
     </Card>
