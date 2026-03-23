@@ -9,34 +9,33 @@ export type PageListItem = {
 
 export const pagesList: PageListItem[] = [
   {
-    title: 'Real Money Calculator',
+    title: 'titleRealMoney',
     url: '/real-money-calculator',
-    description: 'Calculate how much real money will cost your Tibia gold.',
+    description: 'descriptionRealMoney',
     icon: PagesIcons.goldcoinGif,
   },
   {
-    title: 'Tibia Coins to Real Money Calculator',
+    title: 'titleTibiaCoins',
     url: '/coins-to-money',
-    description: 'Calculate how much real money will cost your Tibia Coins.',
+    description: 'descriptionTibiaCoins',
     icon: PagesIcons.crystalWolfGif,
   },
   {
-    title: 'Imbuing System',
+    title: 'titleImbuing',
     url: '/imbuings',
-    description: 'What imbuings can you put on your items?',
+    description: 'descriptionImbuing',
     icon: PagesIcons.imbuingshrineGif,
   },
   {
-    title: 'Hunting Spots',
+    title: 'titleHuntSpots',
     url: '/hunting-spots',
-    description:
-      'Find the best hunting spots for your level and which set to use.',
+    description: 'descriptionHuntSpots',
     icon: PagesIcons.guzzlemawGif,
   },
   {
-    title: 'Exaltation/Forge System',
+    title: 'titleExaltation',
     url: '/exaltation',
-    description: 'Learn how exaltation works and how to use it.',
+    description: 'descriptionExaltation',
     icon: PagesIcons.forgeGif,
   },
 ];

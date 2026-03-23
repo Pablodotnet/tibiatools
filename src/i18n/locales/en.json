@@ -47,5 +47,19 @@
   "coinsToMoney": {
     "title": "Tibia Coins to Real Money Calculator",
     "description": "Here you can calculate how much real money would cost certain amount of Tibia Coins."
+  },
+  "pagesCard": {
+    "title": "Utilities",
+    "description": "Useful or not so useful tools, just for practice.",
+    "titleRealMoney": "Real Money Calculator",
+    "descriptionRealMoney": "Calculate how much real money will cost your Tibia gold.",
+    "titleTibiaCoins": "Tibia Coins to Real Money Calculator",
+    "descriptionTibiaCoins": "Calculate how much real money will cost your Tibia Coins.",
+    "titleImbuing": "Imbuing System",
+    "descriptionImbuing": "What imbuings can you put on your items?",
+    "titleHuntSpots": "Hunting Spots",
+    "descriptionHuntSpots": "Find the best hunting spots for your level and which set to use.",
+    "titleExaltation": "Exaltation/Forge System",
+    "descriptionExaltation": "Learn how exaltation works and how to use it."
   }
 }

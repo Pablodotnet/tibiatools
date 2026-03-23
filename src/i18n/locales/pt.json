@@ -47,5 +47,19 @@
   "coinsToMoney": {
     "title": "Calculadora de Tibia Coins para dinheiro real",
     "description": "Aqui você pode calcular quanto custaria em dinheiro real uma certa quantidade de Tibia Coins."
+  },
+  "pagesCard": {
+    "title": "Utilidades",
+    "description": "Ferramentas úteis ou não tão úteis, apenas para praticar.",
+    "titleRealMoney": "Calculadora de dinheiro real",
+    "descriptionRealMoney": "Calcule quanto dinheiro real custará seu ouro no Tibia.",
+    "titleTibiaCoins": "Calculadora de Tibia Coins para dinheiro real",
+    "descriptionTibiaCoins": "Calcule quanto dinheiro real custarão suas Tibia Coins.",
+    "titleImbuing": "Sistema de imbuing",
+    "descriptionImbuing": "Quais imbuements você pode colocar nos seus itens?",
+    "titleHuntSpots": "Locais de caça",
+    "descriptionHuntSpots": "Encontre os melhores locais de caça para seu nível e qual set usar.",
+    "titleExaltation": "Sistema de Exaltação/Forja",
+    "descriptionExaltation": "Aprenda como a exaltação funciona e como usá-la."
   }
 }
