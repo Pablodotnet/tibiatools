@@ -26,12 +26,12 @@ export const pagesList: PageListItem[] = [
     description: 'descriptionImbuing',
     icon: PagesIcons.imbuingshrineGif,
   },
-  {
-    title: 'titleHuntSpots',
-    url: '/hunting-spots',
-    description: 'descriptionHuntSpots',
-    icon: PagesIcons.guzzlemawGif,
-  },
+  // {
+  //   title: 'titleHuntSpots',
+  //   url: '/hunting-spots',
+  //   description: 'descriptionHuntSpots',
+  //   icon: PagesIcons.guzzlemawGif,
+  // },
   {
     title: 'titleExaltation',
     url: '/exaltation',
