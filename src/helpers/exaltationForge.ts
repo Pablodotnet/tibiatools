@@ -447,3 +447,336 @@ export function calculateForgeTotals(params: {
     invalidRowIndices,
   };
 }
+
+// ─────────────────────────────────────────────────────────────
+// Tibia Exaltation Forge – Extended helpers
+// Covers: Transfer, Convergence Fusion, Convergence Transfer
+// Source: https://tibia.fandom.com/wiki/Equipment_Upgrade
+// ─────────────────────────────────────────────────────────────
+
+// TIER_LABELS maps each tier upgrade to its string representation (e.g., "2→3").
+// Used for displaying upgrade steps across Forge helpers and UI.
+//export const TIER_LABELS = [
+//  "0→1", "1→2", "2→3", "3→4", "4→5",
+//  "5→6", "6→7", "7→8", "8→9", "9→10",
+//] as const;
+
+// ─────────────────────────────────────────────────────────────
+// TRANSFER gold cost (gp) per tier – source item is tier N,
+// receiving item becomes tier N-1. Rows = resulting tier.
+// Class 1-4 from wiki.
+// null = not applicable for that class at that tier
+// ─────────────────────────────────────────────────────────────
+// Transfer: source must be ≥2. Receiving item gets tier-1.
+// Row index = resulting tier on receiver (1..10).
+// Index 0 → transfer resulting in tier 1 (source was tier 2, etc.)
+export const TRANSFER_GOLD_GP: Record<1 | 2 | 3 | 4, (number | null)[]> = {
+  1: [
+    null,         // tier 1 result → source tier 2 (class 1 max tier 1, can't be tier 2)
+    null, null, null, null, null, null, null, null, null,
+  ],
+  2: [
+    null,         // class 2 max tier 2, source must be tier 3 – not possible
+    null, null, null, null, null, null, null, null, null,
+  ],
+  3: [
+    // class 3: max tier 3 → transfer from T2→T3 source, receiver gets T1 or T2
+    // Resulting tiers 1 and 2 only
+    4_200_000,    // result tier 1
+    8_400_000,    // result tier 2
+    null, null, null, null, null, null, null, null,
+  ],
+  4: [
+    // class 4: max tier 10
+    4_200_000,    //  result tier 1
+    8_400_000,    //  result tier 2
+    16_800_000,   //  result tier 3
+    33_600_000,   //  result tier 4
+    67_200_000,   //  result tier 5
+    134_400_000,  //  result tier 6
+    268_800_000,  //  result tier 7
+    537_600_000,  //  result tier 8
+    1_075_200_000,//  result tier 9
+    null,         //  result tier 10 – source would need to be tier 11 (impossible)
+  ],
+};
+
+// Exalted Cores required per transfer result tier (dynamic since Feb 2023 patch)
+// These are the values for performing a single transfer resulting in that tier.
+export const TRANSFER_CORES: Record<1 | 2 | 3 | 4, (number | null)[]> = {
+  1:  [null, null, null, null, null, null, null, null, null, null],
+  2:  [null, null, null, null, null, null, null, null, null, null],
+  3:  [1, 2, null, null, null, null, null, null, null, null],
+  4:  [1, 2, 4, 6, 8, 10, 12, 14, 16, null],
+};
+
+// ─────────────────────────────────────────────────────────────
+// CONVERGENCE FUSION – Class 4 only, guaranteed, 130 Dust
+// Gold cost per tier step (0→1, 1→2, …)
+// ─────────────────────────────────────────────────────────────
+export const CONVERGENCE_FUSION_GOLD_GP: (number | null)[] = [
+  // tier 0→1 through 9→10 for class 4
+  4_200_000,
+  8_400_000,
+  16_800_000,
+  33_600_000,
+  67_200_000,
+  134_400_000,
+  268_800_000,
+  537_600_000,
+  1_075_200_000,
+  2_150_400_000,
+];
+
+// ─────────────────────────────────────────────────────────────
+// CONVERGENCE TRANSFER – Class 4 only, no tier loss, 160 Dust
+// Gold + Exalted Cores per resulting tier
+// ─────────────────────────────────────────────────────────────
+export const CONVERGENCE_TRANSFER_GOLD_GP: (number | null)[] = [
+  55_000_000,    // result tier 1
+  110_000_000,   // result tier 2
+  220_000_000,   // result tier 3
+  440_000_000,   // result tier 4
+  880_000_000,   // result tier 5
+  1_760_000_000, // result tier 6
+  3_520_000_000, // result tier 7
+  null,          // result tier 8 – not officially documented; placeholder
+  null,          // result tier 9
+  null,          // result tier 10
+];
+
+export const CONVERGENCE_TRANSFER_CORES: (number | null)[] = [
+  2,   // result tier 1
+  4,   // result tier 2
+  8,   // result tier 3
+  12,  // result tier 4
+  16,  // result tier 5
+  20,  // result tier 6
+  24,  // result tier 7
+  null,
+  null,
+  null,
+];
+
+// ─────────────────────────────────────────────────────────────
+// Utility formatters (shared)
+// ─────────────────────────────────────────────────────────────
+export function formatGp(n: number): string {
+  if (!Number.isFinite(n)) return "—";
+  return n.toLocaleString("de-DE");
+}
+
+export function parseGpInput(raw: string): number {
+  const cleaned = raw.replace(/\./g, "").replace(/\s/g, "").replace(/,/g, "");
+  const n = Number(cleaned);
+  return Number.isFinite(n) ? n : 0;
+}
+
+export function formatTc(n: number): string {
+  return n.toLocaleString("de-DE", { minimumFractionDigits: 0, maximumFractionDigits: 2 });
+}
+
+export function formatMxn(n: number): string {
+  return n.toLocaleString("de-DE", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// ─────────────────────────────────────────────────────────────
+// TRANSFER CALCULATOR
+// ─────────────────────────────────────────────────────────────
+export interface TransferInput {
+  /** The tier of the SOURCE item being destroyed (≥2) */
+  sourceTier: number;
+  classification: 1 | 2 | 3 | 4;
+  exaltedCoreValueGp: number;
+  tcGp: number;
+  mxnPer250Tc: number;
+  /** Value of the source item (consumed) */
+  sourceItemValueGp: number;
+  /** Value of the target item (tier 0, kept) */
+  targetItemValueGp: number;
+}
+
+export interface TransferResult {
+  resultingTier: number;
+  goldFee: number | null;
+  coresRequired: number | null;
+  coreCostGp: number;
+  sourceItemCostGp: number;
+  targetItemCostGp: number;
+  totalGp: number | null;
+  tibiaCoins: number;
+  mxn: number;
+  isValid: boolean;
+  errorMessage?: string;
+}
+
+export function calculateTransfer(input: TransferInput): TransferResult {
+  const { sourceTier, classification, exaltedCoreValueGp, tcGp, mxnPer250Tc,
+          sourceItemValueGp, targetItemValueGp } = input;
+
+  const resultingTier = sourceTier - 1;
+  const rowIndex = resultingTier - 1; // 0-based index into arrays
+
+  if (sourceTier < 2) {
+    return { resultingTier: 0, goldFee: null, coresRequired: null, coreCostGp: 0,
+      sourceItemCostGp: 0, targetItemCostGp: 0, totalGp: null, tibiaCoins: 0, mxn: 0,
+      isValid: false, errorMessage: "Source item must be at least tier 2." };
+  }
+
+  const goldTable = TRANSFER_GOLD_GP[classification];
+  const coreTable = TRANSFER_CORES[classification];
+
+  if (rowIndex < 0 || rowIndex >= goldTable.length) {
+    return { resultingTier, goldFee: null, coresRequired: null, coreCostGp: 0,
+      sourceItemCostGp: 0, targetItemCostGp: 0, totalGp: null, tibiaCoins: 0, mxn: 0,
+      isValid: false, errorMessage: "Tier not available for this classification." };
+  }
+
+  const goldFee = goldTable[rowIndex];
+  const coresRequired = coreTable[rowIndex];
+
+  if (goldFee === null || coresRequired === null) {
+    return { resultingTier, goldFee: null, coresRequired: null, coreCostGp: 0,
+      sourceItemCostGp: 0, targetItemCostGp: 0, totalGp: null, tibiaCoins: 0, mxn: 0,
+      isValid: false, errorMessage: "Transfer not available for this classification/tier." };
+  }
+
+  const coreCostGp = coresRequired * exaltedCoreValueGp;
+  const totalGp = goldFee + coreCostGp + sourceItemValueGp + targetItemValueGp;
+  const tibiaCoins = tcGp > 0 ? totalGp / tcGp * 1 : 0;
+  const mxn = mxnPer250Tc > 0 && tcGp > 0 ? (totalGp / tcGp) * (mxnPer250Tc / 250) : 0;
+
+  return {
+    resultingTier, goldFee, coresRequired, coreCostGp,
+    sourceItemCostGp: sourceItemValueGp,
+    targetItemCostGp: targetItemValueGp,
+    totalGp, tibiaCoins, mxn, isValid: true,
+  };
+}
+
+// ─────────────────────────────────────────────────────────────
+// CONVERGENCE FUSION CALCULATOR
+// ─────────────────────────────────────────────────────────────
+export interface ConvergenceFusionInput {
+  targetTier: number; // desired final tier (1–10), class 4 only
+  item1ValueGp: number;
+  item2ValueGp: number;
+  tcGp: number;
+  mxnPer250Tc: number;
+}
+
+export interface ConvergenceFusionStepResult {
+  tierLabel: string;
+  goldFee: number;
+  item1Cost: number;
+  item2Cost: number;
+  stepTotal: number;
+}
+
+export interface ConvergenceFusionResult {
+  steps: ConvergenceFusionStepResult[];
+  totalGoldFees: number;
+  totalItemCosts: number;
+  totalGp: number;
+  tibiaCoins: number;
+  mxn: number;
+  isValid: boolean;
+  errorMessage?: string;
+}
+
+export function calculateConvergenceFusion(input: ConvergenceFusionInput): ConvergenceFusionResult {
+  const { targetTier, item1ValueGp, item2ValueGp, tcGp, mxnPer250Tc } = input;
+
+  if (targetTier < 1 || targetTier > 10) {
+    return { steps: [], totalGoldFees: 0, totalItemCosts: 0, totalGp: 0,
+      tibiaCoins: 0, mxn: 0, isValid: false, errorMessage: "Target tier must be 1–10." };
+  }
+
+  const steps: ConvergenceFusionStepResult[] = [];
+  let totalGoldFees = 0;
+  let totalItemCosts = 0;
+
+  for (let i = 0; i < targetTier; i++) {
+    const goldFee = CONVERGENCE_FUSION_GOLD_GP[i];
+    if (goldFee === null) {
+      return { steps, totalGoldFees, totalItemCosts, totalGp: 0,
+        tibiaCoins: 0, mxn: 0, isValid: false,
+        errorMessage: `No gold cost data for tier step ${TIER_LABELS[i]}.` };
+    }
+    // Each convergence fusion step needs two items at the current tier.
+    // Item 1 becomes the output; item 2 is consumed.
+    const stepTotal = goldFee + item1ValueGp + item2ValueGp;
+    totalGoldFees += goldFee;
+    totalItemCosts += item1ValueGp + item2ValueGp;
+    steps.push({ tierLabel: TIER_LABELS[i], goldFee, item1Cost: item1ValueGp,
+      item2Cost: item2ValueGp, stepTotal });
+  }
+
+  const totalGp = totalGoldFees + totalItemCosts;
+  const tibiaCoins = tcGp > 0 ? totalGp / tcGp : 0;
+  const mxn = mxnPer250Tc > 0 && tcGp > 0 ? (totalGp / tcGp) * (mxnPer250Tc / 250) : 0;
+
+  return { steps, totalGoldFees, totalItemCosts, totalGp, tibiaCoins, mxn, isValid: true };
+}
+
+// ─────────────────────────────────────────────────────────────
+// CONVERGENCE TRANSFER CALCULATOR
+// ─────────────────────────────────────────────────────────────
+export interface ConvergenceTransferInput {
+  /** Tier of the source item (same tier is transferred, no -1 loss) */
+  sourceTier: number;
+  exaltedCoreValueGp: number;
+  sourceItemValueGp: number;
+  targetItemValueGp: number;
+  tcGp: number;
+  mxnPer250Tc: number;
+}
+
+export interface ConvergenceTransferResult {
+  resultingTier: number;
+  goldFee: number | null;
+  coresRequired: number | null;
+  coreCostGp: number;
+  sourceItemCostGp: number;
+  targetItemCostGp: number;
+  totalGp: number | null;
+  tibiaCoins: number;
+  mxn: number;
+  isValid: boolean;
+  errorMessage?: string;
+}
+
+export function calculateConvergenceTransfer(input: ConvergenceTransferInput): ConvergenceTransferResult {
+  const { sourceTier, exaltedCoreValueGp, sourceItemValueGp, targetItemValueGp,
+          tcGp, mxnPer250Tc } = input;
+
+  const rowIndex = sourceTier - 1;
+
+  if (sourceTier < 1 || sourceTier > 10) {
+    return { resultingTier: sourceTier, goldFee: null, coresRequired: null, coreCostGp: 0,
+      sourceItemCostGp: 0, targetItemCostGp: 0, totalGp: null, tibiaCoins: 0, mxn: 0,
+      isValid: false, errorMessage: "Source tier must be 1–10." };
+  }
+
+  const goldFee = CONVERGENCE_TRANSFER_GOLD_GP[rowIndex];
+  const coresRequired = CONVERGENCE_TRANSFER_CORES[rowIndex];
+
+  if (goldFee === null || coresRequired === null) {
+    return { resultingTier: sourceTier, goldFee: null, coresRequired: null, coreCostGp: 0,
+      sourceItemCostGp: 0, targetItemCostGp: 0, totalGp: null, tibiaCoins: 0, mxn: 0,
+      isValid: false, errorMessage: "No data available for this tier. Check the wiki for updated values." };
+  }
+
+  const coreCostGp = coresRequired * exaltedCoreValueGp;
+  const totalGp = goldFee + coreCostGp + sourceItemValueGp + targetItemValueGp;
+  const tibiaCoins = tcGp > 0 ? totalGp / tcGp : 0;
+  const mxn = mxnPer250Tc > 0 && tcGp > 0 ? (totalGp / tcGp) * (mxnPer250Tc / 250) : 0;
+
+  return {
+    resultingTier: sourceTier,
+    goldFee, coresRequired, coreCostGp,
+    sourceItemCostGp: sourceItemValueGp,
+    targetItemCostGp: targetItemValueGp,
+    totalGp, tibiaCoins, mxn, isValid: true,
+  };
+}
