@@ -14,6 +14,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { parseKkString } from '@/helpers';
+import { useTranslation } from 'react-i18next';
 
 type CalculationResult = {
   tibiaCoins: string;
@@ -30,6 +31,10 @@ const formSchema = z.object({
 });
 
 export function CoinsToMoneyCalculator() {
+  const { t } = useTranslation();
+  const translate = (entry: string) => t(`coinsToMoney.calculator.${entry}`);
+  const translateErrors = (entry: string) => t(`errors.${entry}`);
+
   const [calculationResult, setCalculationResult] =
     useState<CalculationResult | null>(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -50,7 +55,7 @@ export function CoinsToMoneyCalculator() {
 
   const calculateMoney = (values: z.infer<typeof formSchema>) => {
     const priceForOneTc = Number(values.priceForOneTc);
-    const tibiaCoinsQuantity = parseKkString(values.tibiaCoinsQuantity);
+    const tibiaCoinsQuantity = parseKkString(values.tibiaCoinsQuantity, translateErrors('invalidStringFormat'));
 
     const realMoneyCalculation = priceForOneTc * tibiaCoinsQuantity;
 
@@ -71,13 +76,13 @@ export function CoinsToMoneyCalculator() {
       <div>
         <p className='mb-2'>
           <strong>
-            To get {calculationResult?.tibiaCoins} Tibia Coins you would need:
+            {translate('toGet')} {calculationResult?.tibiaCoins} {translate('tcYouWould')}:
           </strong>
         </p>
         <p className='mb-4'>
-          Real Money: ${calculationResult?.realMoney}
+          {translate('realMoney')}: ${calculationResult?.realMoney}
         </p>
-        <Button onClick={handleClear}>Go Back</Button>
+        <Button onClick={handleClear}>{translate('goBack')}</Button>
       </div>
     );
   }
@@ -90,12 +95,12 @@ export function CoinsToMoneyCalculator() {
           name='priceForOneTc'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Price for One Tibia Coin</FormLabel>
+              <FormLabel>{translate('priceForOneTc')}</FormLabel>
               <FormControl>
                 <Input placeholder='0.84' {...field} />
               </FormControl>
               <FormDescription>
-                The price in real money, default is $0.84 pesos MXN.
+                {translate('priceForOneTcDesc')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -106,21 +111,19 @@ export function CoinsToMoneyCalculator() {
           name='tibiaCoinsQuantity'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tibia Coins Quantity</FormLabel>
+              <FormLabel>{translate('tcQuantity')}</FormLabel>
               <FormControl>
                 <Input placeholder='250' {...field} />
               </FormControl>
-              <FormDescription>
-                The amount of Tibia Coins you want to convert, default is 250.
-              </FormDescription>
+              <FormDescription>{translate('tcQuantityDesc')}</FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
         <div className='space-x-4'>
-          <Button type='submit'>Calculate</Button>
+          <Button type='submit'>{translate('calculate')}</Button>
           <Button type='button' onClick={handleClear} variant='outline'>
-            Clear
+            {translate('clear')}
           </Button>
         </div>
       </form>

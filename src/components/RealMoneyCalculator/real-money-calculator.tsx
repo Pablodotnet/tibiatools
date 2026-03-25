@@ -14,6 +14,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { parseKkString } from '@/helpers';
+import { useTranslation } from 'react-i18next';
 
 type CalculationResult = {
   tibiaCoins: string;
@@ -21,19 +22,23 @@ type CalculationResult = {
   goldToConvert: string;
 };
 
-const formSchema = z.object({
-  priceFor250Tc: z.string().min(2, {
-    message: "Price for 250 Tibia Coins must be at least 2 characters.",
-  }),
-  tibiaGoldForOneTc: z.string().min(2, {
-    message: "Tibia gold for one Tibia Coin must be at least 2 characters.",
-  }),
-  goldToConvert: z.string().min(2, {
-    message: "Gold to convert must be at least 2 characters.",
-  }),
-});
-
 export function RealMoneyCalculator() {
+  const { t } = useTranslation();
+  const translate = (entry: string) => t(`realMoney.calculator.${entry}`);
+  const translateErrors = (entry: string) => t(`errors.${entry}`);
+
+  const formSchema = z.object({
+    priceFor250Tc: z.string().min(2, {
+      message: translate('priceFor250TcMsg'),
+    }),
+    tibiaGoldForOneTc: z.string().min(2, {
+      message: translate('tibiaGoldForOneTcMsg'),
+    }),
+    goldToConvert: z.string().min(2, {
+      message: translate('goldToConvertMsg'),
+    }),
+  });
+
   const [calculationResult, setCalculationResult] =
     useState<CalculationResult | null>(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
@@ -57,9 +62,13 @@ export function RealMoneyCalculator() {
     const priceFor250 = Number(values.priceFor250Tc);
     const tibiaCoinsQuantity = 250;
     const tibiaGoldFor250 =
-      parseKkString(values.tibiaGoldForOneTc) * tibiaCoinsQuantity;
+      parseKkString(values.tibiaGoldForOneTc, translateErrors('invalidStringFormat')) *
+      tibiaCoinsQuantity;
     const goldToConvertInKks = values.goldToConvert;
-    const goldToConvert = parseKkString(values.goldToConvert);
+    const goldToConvert = parseKkString(
+      values.goldToConvert,
+      translateErrors('invalidStringFormat'),
+    );
 
     const tibiaCoinsCalculation =
       (goldToConvert / tibiaGoldFor250) * tibiaCoinsQuantity;
@@ -83,34 +92,35 @@ export function RealMoneyCalculator() {
   if (formSubmitted) {
     return (
       <div>
-        <p className="mb-2">
+        <p className='mb-2'>
           <strong>
-            To get {calculationResult?.goldToConvert} gold you would need:
+            {translate('toGet')} {calculationResult?.goldToConvert}{' '}
+            {translate('goldYouWould')}:
           </strong>
         </p>
-        <p className="mb-4">
-          Tibia Coins: {calculationResult?.tibiaCoins} <br />
-          Real Money: ${calculationResult?.realMoney}
+        <p className='mb-4'>
+          {translate('tibiaCoins')}: {calculationResult?.tibiaCoins} <br />
+          {translate('realMoney')}: ${calculationResult?.realMoney}
         </p>
-        <Button onClick={handleClear}>Go Back</Button>
+        <Button onClick={handleClear}>{translate('goBack')}</Button>
       </div>
     );
   }
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
         <FormField
           control={form.control}
-          name="priceFor250Tc"
+          name='priceFor250Tc'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Price for 250 Tibia Coins</FormLabel>
+              <FormLabel>{translate('priceFor250Tc')}</FormLabel>
               <FormControl>
-                <Input placeholder="200" {...field} />
+                <Input placeholder='200' {...field} />
               </FormControl>
               <FormDescription>
-                The price in real money, default is $200 pesos MXN.
+                {translate('priceFor250TcDesc')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -118,15 +128,15 @@ export function RealMoneyCalculator() {
         />
         <FormField
           control={form.control}
-          name="tibiaGoldForOneTc"
+          name='tibiaGoldForOneTc'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Tibia Gold for ONE Tibia Coin</FormLabel>
+              <FormLabel>{translate('tibiaGoldForOneTc')}</FormLabel>
               <FormControl>
-                <Input placeholder="10kk" {...field} />
+                <Input placeholder='10kk' {...field} />
               </FormControl>
               <FormDescription>
-                The amount of Tibia Gold for ONE Tibia Coin, default is 40k gold.
+                {translate('tibiaGoldForOneTcDesc')}
               </FormDescription>
               <FormMessage />
             </FormItem>
@@ -134,25 +144,24 @@ export function RealMoneyCalculator() {
         />
         <FormField
           control={form.control}
-          name="goldToConvert"
+          name='goldToConvert'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Gold to Convert</FormLabel>
+              <FormLabel>{translate('goldToConvert')}</FormLabel>
               <FormControl>
-                <Input placeholder="Enter amount" {...field} />
+                <Input placeholder='Enter amount' {...field} />
               </FormControl>
               <FormDescription>
-                Enter the amount of gold you want to convert, with format
-                "10kk", for example.
+                {translate('goldToConvertDesc')}
               </FormDescription>
               <FormMessage />
             </FormItem>
           )}
         />
-        <div className="space-x-4">
-          <Button type="submit">Calculate</Button>
-          <Button type="button" onClick={handleClear} variant="outline">
-            Clear
+        <div className='space-x-4'>
+          <Button type='submit'>{translate('calculate')}</Button>
+          <Button type='button' onClick={handleClear} variant='outline'>
+            {translate('clear')}
           </Button>
         </div>
       </form>

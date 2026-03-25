@@ -30,7 +30,25 @@
   },
   "realMoney": {
     "title": "Real Money Spend Calculator",
-    "description": "Here you can calculate how much real money and Tibia Coins you would spend to get certain quantity of Tibia Gold"
+    "description": "Here you can calculate how much real money and Tibia Coins you would spend to get certain quantity of Tibia Gold",
+    "calculator": {
+      "toGet": "To get",
+      "goldYouWould": "gold you would need",
+      "tibiaCoins": "Tibia Coins",
+      "realMoney": "Real Money",
+      "goBack": "Go Back",
+      "priceFor250TcMsg": "Price for 250 Tibia Coins must be at least 2 characters.",
+      "tibiaGoldForOneTcMsg": "Tibia gold for one Tibia Coin must be at least 2 characters.",
+      "goldToConvertMsg": "Gold to convert must be at least 2 characters.",
+      "priceFor250Tc": "Price for 250 Tibia Coins",
+      "priceFor250TcDesc": "The price in real money, default is $200 pesos MXN.",
+      "tibiaGoldForOneTc": "Tibia Gold for ONE Tibia Coin",
+      "tibiaGoldForOneTcDesc": "The amount of Tibia Gold for ONE Tibia Coin, default is 40k gold.",
+      "goldToConvert": "Gold to Convert",
+      "goldToConvertDesc": "Enter the amount of gold you want to convert, with format \"10kk\", for example.",
+      "calculate": "Calculate",
+      "clear": "Clear"
+    }
   },
   "imbuings": {
     "title": "What imbuements can I set to my item?",
@@ -46,7 +64,19 @@
   },
   "coinsToMoney": {
     "title": "Tibia Coins to Real Money Calculator",
-    "description": "Here you can calculate how much real money would cost certain amount of Tibia Coins."
+    "description": "Here you can calculate how much real money would cost certain amount of Tibia Coins.",
+    "calculator": {
+      "toGet": "To get",
+      "tcYouWould": "Tibia Coins you would need",
+      "realMoney": "Real Money",
+      "goBack": "Go Back",
+      "priceForOneTc": "Price for One Tibia Coin",
+      "priceForOneTcDesc": "The price in real money, default is $0.84 pesos MXN.",
+      "tcQuantity": "Tibia Coins Quantity",
+      "tcQuantityDesc": "The amount of Tibia Coins you want to convert, default is 250.",
+      "calculate": "Calculate",
+      "clear": "Clear"
+    }
   },
   "pagesCard": {
     "title": "Utilities",
@@ -61,5 +91,8 @@
     "descriptionHuntSpots": "Find the best hunting spots for your level and which set to use.",
     "titleExaltation": "Exaltation/Forge System",
     "descriptionExaltation": "Learn how exaltation works and how to use it."
+  },
+  "errors": {
+    "invalidStringFormat": "Invalid string format"
   }
 }

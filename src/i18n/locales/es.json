@@ -8,10 +8,10 @@
     "register": "Registrarse",
     "enterEmailPass": "Ingresa tu correo y contraseña.",
     "youDontHave": "¿No tienes una cuenta?",
-    "signUp": "Crear cuenta",
+    "signUp": "Regístrate",
     "hasAccount": "¿Ya tienes una cuenta?",
     "email": "Correo electrónico",
-    "emailPlaceholder": "Ingresa tu correo electrónico...",
+    "emailPlaceholder": "Ingresa tu correo...",
     "passwordPlaceholder": "Ingresa tu contraseña...",
     "googleButton": "Google",
     "namePlaceholder": "Ingresa tu nombre...",
@@ -30,36 +30,69 @@
   },
   "realMoney": {
     "title": "Calculadora de gasto en dinero real",
-    "description": "Aquí puedes calcular cuánto dinero real y Tibia Coins gastarías para obtener cierta cantidad de oro en Tibia"
+    "description": "Aquí puedes calcular cuánto dinero real y Tibia Coins gastarías para obtener cierta cantidad de Tibia Gold",
+    "calculator": {
+      "toGet": "Para obtener",
+      "goldYouWould": "oro que necesitarías",
+      "tibiaCoins": "Tibia Coins",
+      "realMoney": "Dinero real",
+      "goBack": "Volver",
+      "priceFor250TcMsg": "El precio para 250 Tibia Coins debe tener al menos 2 caracteres.",
+      "tibiaGoldForOneTcMsg": "El oro de Tibia por una Tibia Coin debe tener al menos 2 caracteres.",
+      "goldToConvertMsg": "El oro a convertir debe tener al menos 2 caracteres.",
+      "priceFor250Tc": "Precio por 250 Tibia Coins",
+      "priceFor250TcDesc": "El precio en dinero real, por defecto es $200 pesos MXN.",
+      "tibiaGoldForOneTc": "Tibia Gold por UNA Tibia Coin",
+      "tibiaGoldForOneTcDesc": "La cantidad de Tibia Gold por UNA Tibia Coin, por defecto es 40k de oro.",
+      "goldToConvert": "Oro a convertir",
+      "goldToConvertDesc": "Ingresa la cantidad de oro que quieres convertir, con formato \"10kk\", por ejemplo.",
+      "calculate": "Calcular",
+      "clear": "Limpiar"
+    }
   },
   "imbuings": {
     "title": "¿Qué imbuements puedo ponerle a mi objeto?",
     "description": "Selecciona tu objeto de la lista y descubre qué imbuements puede tener."
   },
   "huntingSpots": {
-    "title": "¿Dónde puedo cazar a cierto nivel? ¿Qué set debo usar?",
-    "description": "Aquí puedes encontrar lugares de caza, así como recomendaciones de sets y qué imbuements usar."
+    "title": "¿Dónde puedo cazar a cierto nivel? ¿Qué set debería usar?",
+    "description": "Aquí puedes encontrar lugares de caza así como recomendaciones de equipo y qué imbuements usar."
   },
   "exaltationForge": {
     "title": "Simulador de Exaltation Forge",
-    "description": "Estima el oro de fusión, uso de Exalted Core y costo del objeto hasta un tier objetivo. El oro por clasificación coincide con Tibia Wiki (fusión regular)."
+    "description": "Estima el oro de fusión, uso de Exalted Core y costo del objeto hasta un nivel objetivo. El oro por fusión coincide con Tibia Wiki (fusión regular)."
   },
   "coinsToMoney": {
     "title": "Calculadora de Tibia Coins a dinero real",
-    "description": "Aquí puedes calcular cuánto costaría en dinero real cierta cantidad de Tibia Coins."
+    "description": "Aquí puedes calcular cuánto dinero real costaría cierta cantidad de Tibia Coins.",
+    "calculator": {
+      "toGet": "Para obtener",
+      "tcYouWould": "Tibia Coins que necesitarías",
+      "realMoney": "Dinero real",
+      "goBack": "Volver",
+      "priceForOneTc": "Precio por una Tibia Coin",
+      "priceForOneTcDesc": "El precio en dinero real, por defecto es $0.84 pesos MXN.",
+      "tcQuantity": "Cantidad de Tibia Coins",
+      "tcQuantityDesc": "La cantidad de Tibia Coins que quieres convertir, por defecto es 250.",
+      "calculate": "Calcular",
+      "clear": "Limpiar"
+    }
   },
   "pagesCard": {
     "title": "Utilidades",
-    "description": "Herramientas útiles o no tan útiles, solo para practicar.",
+    "description": "Herramientas útiles o no tan útiles, solo por práctica.",
     "titleRealMoney": "Calculadora de dinero real",
-    "descriptionRealMoney": "Calcula cuánto dinero real costará tu oro de Tibia.",
+    "descriptionRealMoney": "Calcula cuánto dinero real costará tu Tibia gold.",
     "titleTibiaCoins": "Calculadora de Tibia Coins a dinero real",
     "descriptionTibiaCoins": "Calcula cuánto dinero real costarán tus Tibia Coins.",
-    "titleImbuing": "Sistema de imbuing",
+    "titleImbuing": "Sistema de Imbuing",
     "descriptionImbuing": "¿Qué imbuements puedes poner en tus objetos?",
     "titleHuntSpots": "Lugares de caza",
     "descriptionHuntSpots": "Encuentra los mejores lugares de caza para tu nivel y qué set usar.",
-    "titleExaltation": "Sistema de exaltación/forja",
+    "titleExaltation": "Sistema de Exaltación/Forge",
     "descriptionExaltation": "Aprende cómo funciona la exaltación y cómo usarla."
+  },
+  "errors": {
+    "invalidStringFormat": "Formato de cadena inválido"
   }
 }
