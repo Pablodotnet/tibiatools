@@ -40,8 +40,10 @@ function App() {
         <BrowserRouter>
           <AuthStateListener />
           <NavBar />
-          <div className='flex flex-col items-center justify-center min-h-screen pt-14'>
-            <AppRouting />
+          <div className='min-h-screen pt-14 w-full flex justify-center'>
+            <div className='w-full max-w-6xl px-4'>
+              <AppRouting />
+            </div>
           </div>
         </BrowserRouter>
       </ThemeProvider>
