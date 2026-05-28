@@ -88,10 +88,6 @@
   --color-chart-5: var(--chart-5);
 }
 
-:root {
-  --navbar-height: 3.5rem;
-}
-
 @custom-variant animate-in (&:is(.animate-in));
 
 @keyframes fade-in {
