@@ -22,25 +22,27 @@ type CalculationResult = {
   realMoney: string;
 };
 
-const formSchema = z.object({
-  priceForOneTc: z.string().min(1, {
-    message: 'Price for One Tibia Coin must be at least 1 character.',
-  }),
-  tibiaCoinsQuantity: z.string().min(1, {
-    message: 'Tibia Coins Quantity must be at least 1 character.',
-  }),
-});
-
 export function CoinsToMoneyCalculator() {
   const { t } = useTranslation();
   const translate = (entry: string) => t(`coinsToMoney.calculator.${entry}`);
   const translateErrors = (entry: string) => t(`errors.${entry}`);
 
+  const formSchema = z.object({
+    priceForOneTc: z.string().min(1, {
+      message: translate('priceForOneTcMsg'),
+    }),
+    tibiaCoinsQuantity: z.string().min(1, {
+      message: translate('tcQuantityMsg'),
+    }),
+  });
+
+  type FormData = z.infer<typeof formSchema>;
+
   const [calculationResult, setCalculationResult] =
     useState<CalculationResult | null>(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       priceForOneTc: '0.84',

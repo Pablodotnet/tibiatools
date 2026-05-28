@@ -38,7 +38,7 @@ export function PagesCard({ isLoggedIn }: PagesCardProps) {
                   cursor-pointer
                 '
               >
-                <img src={page.icon} alt='icon' className='w-12 h-12 mb-4' />
+                <img src={page.icon} alt={translate(page.title)} className='w-12 h-12 mb-4' />
 
                 <h4 className='text-lg font-semibold mb-1'>
                   {translate(page.title)}

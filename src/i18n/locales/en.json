@@ -75,7 +75,9 @@
       "tcQuantity": "Tibia Coins Quantity",
       "tcQuantityDesc": "The amount of Tibia Coins you want to convert, default is 250.",
       "calculate": "Calculate",
-      "clear": "Clear"
+      "clear": "Clear",
+      "priceForOneTcMsg": "Price for One Tibia Coin must be at least 1 character.",
+      "tcQuantityMsg": "Tibia Coins Quantity must be at least 1 character."
     }
   },
   "pagesCard": {
