@@ -42,7 +42,7 @@ function App() {
         <BrowserRouter>
           <AuthStateListener />
           <NavBar />
-          <div className='min-h-screen pt-14 w-full flex justify-center'>
+          <div className='min-h-screen pt-[--navbar-height] w-full flex justify-center'>
             <div className='w-full max-w-6xl px-4'>
               <ErrorBoundary>
                 <AppRouting />

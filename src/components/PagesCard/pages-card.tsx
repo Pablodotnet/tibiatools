@@ -28,8 +28,9 @@ export function PagesCard({ isLoggedIn }: PagesCardProps) {
         <div className='grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]'>
           {getPagesList(isLoggedIn).map((page: PageListItem) => (
             <Link key={page.url} to={page.url} className='block'>
-              <Card
+              <div
                 className='
+                  rounded-xl border bg-card text-card-foreground shadow-sm
                   p-6 h-full
                   flex flex-col items-center text-center
                   transition-all duration-200
@@ -46,7 +47,7 @@ export function PagesCard({ isLoggedIn }: PagesCardProps) {
                 <p className='text-sm text-muted-foreground'>
                   {translate(page.description)}
                 </p>
-              </Card>
+              </div>
             </Link>
           ))}
         </div>

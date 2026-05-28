@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -13,36 +13,14 @@ import {
   FUSION_GOLD_GP,
   TIER_LABELS,
   calculateForgeTotals,
-  runMonteCarloForge,
+  formatGp,
+  formatTc,
+  formatMxn,
+  parseGpInput,
   type MonteCarloForgeResult,
   type ScenarioSnapshot,
 } from "@/helpers/exaltationForge";
 import { cn } from "@/lib/utils";
-
-function formatGp(n: number): string {
-  if (!Number.isFinite(n)) return "—";
-  return n.toLocaleString("de-DE");
-}
-
-function parseGpInput(raw: string): number {
-  const cleaned = raw.replace(/\./g, "").replace(/\s/g, "").replace(/,/g, "");
-  const n = Number(cleaned);
-  return Number.isFinite(n) ? n : 0;
-}
-
-function formatTc(n: number): string {
-  return n.toLocaleString("de-DE", {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2,
-  });
-}
-
-function formatMxn(n: number): string {
-  return n.toLocaleString("de-DE", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-}
 
 function ScenarioBlock({
   label,
@@ -75,7 +53,7 @@ function ScenarioBlock({
         </div>
       </div>
       <div className="overflow-x-auto border-t border-blue-300/80 dark:border-slate-600">
-        <table className="w-full border-collapse text-center text-[10px] md:text-xs">
+        <table className="w-full border-collapse text-center text-xs">
           <thead>
             <tr className="bg-blue-900 text-white dark:bg-blue-950">
               <th className="border border-blue-800 px-0.5 py-1 font-semibold">
@@ -211,8 +189,16 @@ export function ExaltationForgeSimulator() {
     null,
   );
   const [simulationError, setSimulationError] = useState<string | null>(null);
+  const [calculating, setCalculating] = useState(false);
+  const workerRef = useRef<Worker | null>(null);
 
   const classNum = Number(classification) as 1 | 2 | 3 | 4;
+
+  useEffect(() => {
+    return () => {
+      workerRef.current?.terminate();
+    };
+  }, []);
 
   const handleCalculate = () => {
     const dt = Math.min(Math.max(parseInt(desiredTier, 10) || 0, 0), 10);
@@ -221,6 +207,9 @@ export function ExaltationForgeSimulator() {
     const exaltedCoreValueGp = parseGpInput(exaltedCoreValue);
     const tcGpNum = parseGpInput(tcGp);
     const mxnPer250Tc = parseFloat(mxn250.replace(",", ".")) || 0;
+
+    setCalculating(true);
+    setSimulationError(null);
 
     const res = calculateForgeTotals({
       desiredTier: dt,
@@ -234,9 +223,15 @@ export function ExaltationForgeSimulator() {
       useExaltedCore2: useCore2,
     });
     setResult(res);
-    setSimulationError(null);
 
-    const mc = runMonteCarloForge({
+    workerRef.current?.terminate();
+    const worker = new Worker(
+      new URL('@/workers/forge-worker.ts', import.meta.url),
+      { type: 'module' },
+    );
+    workerRef.current = worker;
+
+    worker.postMessage({
       desiredTier: dt,
       classification: classNum,
       class4GoldByRow,
@@ -249,14 +244,20 @@ export function ExaltationForgeSimulator() {
       runCount: 10_000,
     });
 
-    if (mc === null) {
-      setSimulation(null);
-      setSimulationError(
-        "Simulation could not run: missing forge gold for this classification at one or more tier steps.",
-      );
-      return;
-    }
-    setSimulation(mc);
+    worker.onmessage = (e: MessageEvent) => {
+      const mc = e.data;
+      if (mc === null) {
+        setSimulation(null);
+        setSimulationError(
+          "Simulation could not run: missing forge gold for this classification at one or more tier steps.",
+        );
+      } else {
+        setSimulation(mc);
+      }
+      setCalculating(false);
+      worker.terminate();
+      workerRef.current = null;
+    };
   };
 
   const updateClass4Row = (index: number, raw: string) => {
@@ -491,8 +492,16 @@ export function ExaltationForgeSimulator() {
           type="button"
           className="rounded-md bg-blue-900 px-8 font-bold text-white hover:bg-blue-950 dark:bg-blue-800 dark:hover:bg-blue-900"
           onClick={handleCalculate}
+          disabled={calculating}
         >
-          Calculate
+          {calculating ? (
+            <span className="flex items-center gap-2">
+              <span className="inline-block size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
+              Calculating...
+            </span>
+          ) : (
+            "Calculate"
+          )}
         </Button>
       </div>
 

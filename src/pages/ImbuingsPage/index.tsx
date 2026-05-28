@@ -12,7 +12,7 @@ const ImbuingsPage = () => {
   const translate = (entry: string) => t(`imbuings.${entry}`);
 
   return (
-    <Card className='w-[350px]'>
+    <Card className='w-full max-w-md mx-auto'>
       <CardHeader>
         <CardTitle>{translate('title')}</CardTitle>
         <CardDescription>{translate('description')}</CardDescription>

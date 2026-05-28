@@ -99,7 +99,7 @@ export function RealMoneyCalculator() {
 
   if (formSubmitted) {
     return (
-      <div>
+      <div className="animate-in fade-in duration-300">
         <p className='mb-2'>
           <strong>
             {translate('toGet')} {calculationResult?.goldToConvert}{' '}

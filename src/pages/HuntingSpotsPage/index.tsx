@@ -11,7 +11,7 @@ const HuntingSpotsPage = () => {
   const { t } = useTranslation();
   const translate = (entry: string) => t(`huntingSpots.${entry}`);
   return (
-    <Card className='w-[350px] bg-white dark:bg-card my-12'>
+    <Card className='w-full max-w-md mx-auto bg-white dark:bg-card my-12'>
       <CardHeader>
         <CardTitle>{translate('title')}</CardTitle>
         <CardDescription>{translate('description')}</CardDescription>
