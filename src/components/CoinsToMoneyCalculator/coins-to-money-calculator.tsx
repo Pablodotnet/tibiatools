@@ -15,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { useState } from 'react';
 import { parseKkString } from '@/helpers';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 type CalculationResult = {
   tibiaCoins: string;
@@ -49,13 +50,21 @@ export function CoinsToMoneyCalculator() {
 
   const onSubmit = (values: z.infer<typeof formSchema>) => {
     const result = calculateMoney(values);
+    if (result === null) {
+      toast.error(translateErrors('invalidStringFormat'));
+      return;
+    }
     setCalculationResult(result);
     setFormSubmitted(true);
   };
 
   const calculateMoney = (values: z.infer<typeof formSchema>) => {
     const priceForOneTc = Number(values.priceForOneTc);
-    const tibiaCoinsQuantity = parseKkString(values.tibiaCoinsQuantity, translateErrors('invalidStringFormat'));
+    const tibiaCoinsQuantity = parseKkString(values.tibiaCoinsQuantity);
+
+    if (isNaN(tibiaCoinsQuantity)) {
+      return null;
+    }
 
     const realMoneyCalculation = priceForOneTc * tibiaCoinsQuantity;
 
@@ -89,7 +98,7 @@ export function CoinsToMoneyCalculator() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-8'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
         <FormField
           control={form.control}
           name='priceForOneTc'

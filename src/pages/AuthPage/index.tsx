@@ -25,7 +25,7 @@ const AuthPage = () => {
   };
 
   return (
-    <Card className='w-[450px]'>
+    <Card className='w-full max-w-md mx-auto'>
       <CardHeader>
         {!showRegisterForm ? (
           <>
@@ -47,7 +47,7 @@ const AuthPage = () => {
           <p>
             {translate('youDontHave')}{' '}
             <a
-              className='cursor-pointer text-blue-500 underline'
+              className='cursor-pointer text-blue-500 underline hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 focus-visible:ring-2 focus-visible:ring-ring rounded'
               onClick={toggleForms}
             >
               {translate('signUp')}
@@ -57,7 +57,7 @@ const AuthPage = () => {
           <p>
             {translate('hasAccount')}{' '}
             <a
-              className='cursor-pointer text-blue-500 underline'
+              className='cursor-pointer text-blue-500 underline hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 focus-visible:ring-2 focus-visible:ring-ring rounded'
               onClick={toggleForms}
             >
               {translate('login')}

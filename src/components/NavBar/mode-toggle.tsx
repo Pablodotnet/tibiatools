@@ -8,14 +8,14 @@ export function ModeToggle() {
   const [currentTheme, setCurrentTheme] = useState<string>("light");
 
   useEffect(() => {
-    const savedTheme = (localStorage.getItem("theme") as Theme) || "light";
+    const savedTheme = (localStorage.getItem("vite-ui-theme") as Theme) || "light";
     setCurrentTheme(savedTheme);
-    setTheme(savedTheme); // Apply the saved theme
+    setTheme(savedTheme);
   }, [setTheme]);
 
   const handleToggle = () => {
     const newTheme = currentTheme === "dark" ? "light" : "dark";
-    localStorage.setItem("theme", newTheme);
+    localStorage.setItem("vite-ui-theme", newTheme);
     setTheme(newTheme);
     setCurrentTheme(newTheme);
   };

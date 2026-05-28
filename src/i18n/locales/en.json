@@ -90,9 +90,15 @@
     "titleHuntSpots": "Hunting Spots",
     "descriptionHuntSpots": "Find the best hunting spots for your level and which set to use.",
     "titleExaltation": "Exaltation/Forge System",
-    "descriptionExaltation": "Learn how exaltation works and how to use it."
+    "descriptionExaltation": "Learn how exaltation works and how to use it.",
+    "titleMyTierProjects": "My Tier Projects",
+    "descriptionMyTierProjects": "Track your usages and costs of your project to your desired tier."
   },
   "errors": {
     "invalidStringFormat": "Invalid string format"
+  },
+  "myTierProjects": {
+    "title": "My Tier Projects",
+    "description": "Track your usages and costs of the project to your desired tier."
   }
 }

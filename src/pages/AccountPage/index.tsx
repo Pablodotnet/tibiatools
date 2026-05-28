@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { RootState } from '@/store';
 import { startLogout } from '@/store/auth/thunks';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 const AccountPage = () => {
   const { t } = useTranslation();
@@ -32,6 +33,7 @@ const AccountPage = () => {
 
   const handleLogout = () => {
     dispatch(startLogout());
+    toast.success('Logged out successfully');
   };
 
   return (

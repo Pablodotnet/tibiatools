@@ -10,6 +10,7 @@ import AuthPage from '@/pages/AuthPage';
 import AccountPage from '@/pages/AccountPage';
 import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
+import MyTierProjectsPage from './pages/MyTierProjectsPage';
 
 const AppRouting = () => {
   return (
@@ -25,7 +26,6 @@ const AppRouting = () => {
         element={<VocationHuntSpotsPage />}
       />
       <Route path='/exaltation' element={<ExaltationPage />} />
-
       {/* Auth route - redirects to / if already authenticated */}
       <Route
         path='/auth'
@@ -35,7 +35,6 @@ const AppRouting = () => {
           </PublicRoute>
         }
       />
-
       {/* Protected routes - require authentication */}
       <Route
         path='/account'
@@ -45,7 +44,14 @@ const AppRouting = () => {
           </PrivateRoute>
         }
       />
-
+      <Route
+        path='/myTierProjects'
+        element={
+          <PrivateRoute>
+            <MyTierProjectsPage />
+          </PrivateRoute>
+        }
+      />
       <Route path='/*' element={<Navigate to='/' />} />
     </Routes>
   );

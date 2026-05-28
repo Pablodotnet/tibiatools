@@ -6,10 +6,14 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Link } from 'react-router-dom';
-import { PageListItem, pagesList } from './pages-list';
+import { getPagesList, PageListItem } from './pages-list';
 import { useTranslation } from 'react-i18next';
 
-export function PagesCard() {
+interface PagesCardProps {
+  isLoggedIn: boolean;
+}
+
+export function PagesCard({ isLoggedIn }: PagesCardProps) {
   const { t } = useTranslation();
   const translate = (entry: string) => t(`pagesCard.${entry}`);
 
@@ -22,7 +26,7 @@ export function PagesCard() {
 
       <CardContent>
         <div className='grid gap-5 [grid-template-columns:repeat(auto-fit,minmax(220px,1fr))]'>
-          {pagesList.map((page: PageListItem) => (
+          {getPagesList(isLoggedIn).map((page: PageListItem) => (
             <Link key={page.url} to={page.url} className='block'>
               <Card
                 className='

@@ -39,3 +39,21 @@ export const pagesList: PageListItem[] = [
     icon: PagesIcons.forgeGif,
   },
 ];
+
+export const privatePagesList: PageListItem[] = [
+  {
+    title: 'titleMyTierProjects',
+    url: '/myTierProjects',
+    description: 'descriptionMyTierProjects',
+    icon: PagesIcons.tierGif,
+  },
+];
+
+export const getPagesList: (loggedIn: boolean) => PageListItem[] = (
+  loggedIn: boolean,
+) => {
+  if (!loggedIn) {
+    return pagesList;
+  }
+  return [...pagesList, ...privatePagesList];
+};

@@ -1,11 +1,12 @@
 export const parseKkString = (
   stringWithKk: string,
-  errorMessage: string = 'Invalid string format',
 ): number => {
-  const match = stringWithKk.match(/^([\d.]+)(k+)?$/i);
+  if (!stringWithKk) return NaN;
+
+  const match = stringWithKk.replace(/,/g, '').match(/^([\d.]+)(k+)?$/i);
 
   if (!match) {
-    throw new Error(errorMessage);
+    return NaN;
   }
 
   const number = parseFloat(match[1]);

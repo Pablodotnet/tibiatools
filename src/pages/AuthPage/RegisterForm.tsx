@@ -12,9 +12,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { RootState } from '@/store';
 import { startCreatingUserWithEmailPassword } from '@/store/auth/thunks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -37,6 +38,12 @@ export const RegisterForm = () => {
     resolver: zodResolver(formSchema),
     defaultValues: { name: '', email: '', password: '' },
   });
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+  }, [errorMessage]);
 
   const onSubmit = (data: FormData) => {
     if (isAuthenticating) return;
@@ -98,7 +105,6 @@ export const RegisterForm = () => {
           )}
         />
 
-        {/* Show Firebase error if registration fails */}
         {errorMessage && (
           <p className='text-sm text-destructive'>{errorMessage}</p>
         )}

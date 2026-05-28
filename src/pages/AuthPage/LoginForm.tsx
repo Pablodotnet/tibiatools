@@ -12,9 +12,10 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { RootState } from '@/store';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '@/store/auth/thunks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormEvent, useMemo } from 'react';
+import { FormEvent, useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const formSchema = z.object({
@@ -27,11 +28,17 @@ type FormData = z.infer<typeof formSchema>;
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
-  const { status } = useAppSelector((state: RootState) => state.auth);
+  const { status, errorMessage } = useAppSelector((state: RootState) => state.auth);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });
   const isAuthenticating = useMemo(() => status === 'checking', [status]);
+
+  useEffect(() => {
+    if (errorMessage) {
+      toast.error(errorMessage);
+    }
+  }, [errorMessage]);
 
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();

@@ -8,7 +8,7 @@ export function RepositoryButton() {
       className="cursor-pointer"
       variant="outline"
       size="icon"
-      onClick={() => window.open(githubRepoUrl, "_blank")} // Redirect to GitHub on click
+      onClick={() => window.open(githubRepoUrl, "_blank", "noopener,noreferrer")}
       aria-label="Go to GitHub Repository"
     >
       <svg

@@ -8,6 +8,8 @@ import { useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { FirebaseAuth } from '@/firebase/config';
 import { login, logout } from '@/store/auth/authSlice';
+import { Toaster } from 'sonner';
+import { ErrorBoundary } from '@/components/ErrorBoundary';
 
 // Inner component so it can access the store via hooks
 function AuthStateListener() {
@@ -42,9 +44,12 @@ function App() {
           <NavBar />
           <div className='min-h-screen pt-14 w-full flex justify-center'>
             <div className='w-full max-w-6xl px-4'>
-              <AppRouting />
+              <ErrorBoundary>
+                <AppRouting />
+              </ErrorBoundary>
             </div>
           </div>
+          <Toaster richColors position='top-right' />
         </BrowserRouter>
       </ThemeProvider>
     </Provider>
