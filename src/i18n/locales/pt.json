@@ -58,6 +58,19 @@
     "title": "Onde posso caçar em determinado nível? Qual set devo usar?",
     "description": "Aqui você pode encontrar locais de caça, recomendações de equipamentos e quais imbuements usar."
   },
+  "huntingSpotsPage": {
+    "title": "Locais de caça para",
+    "comingSoon": "Dados em breve para",
+    "expRaw": "Exp base",
+    "expBonus": "Com bônus",
+    "loot": "Loot",
+    "set": "Equipamento",
+    "imbuements": "Imbuements",
+    "level": "Nível",
+    "location": "Localização",
+    "showDetails": "Mostrar detalhes",
+    "hideDetails": "Ocultar detalhes"
+  },
   "exaltationForge": {
     "title": "Simulador de Exaltation Forge",
     "description": "Estime o ouro de fusão, uso de Exalted Core e custo do item até um nível alvo. O ouro por fusão corresponde ao Tibia Wiki (fusão regular)."
