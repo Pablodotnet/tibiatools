@@ -37,7 +37,7 @@ const AccountPage = () => {
   };
 
   return (
-    <div className='w-full max-w-xl px-4'>
+    <div className='w-full max-w-xl px-4 mx-auto mt-6'>
       <Card>
         <CardHeader className='flex flex-row items-center gap-4'>
           <Avatar className='h-16 w-16'>
