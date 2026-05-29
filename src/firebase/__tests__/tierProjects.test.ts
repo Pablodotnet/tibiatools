@@ -33,7 +33,7 @@ vi.mock('../config', () => ({
   FirebaseDB: {},
 }));
 
-const { FirebaseAuth } = await import('../config');
+const { FirebaseAuth } = await import('../config') as { FirebaseAuth: { currentUser: typeof mockCurrentUser | null } };
 
 async function reloadModule() {
   vi.resetModules();
