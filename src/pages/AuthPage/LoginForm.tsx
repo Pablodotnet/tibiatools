@@ -12,7 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { RootState } from '@/store';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '@/store/auth/thunks';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { FormEvent, useEffect, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -40,11 +40,9 @@ export const LoginForm = () => {
     }
   }, [errorMessage]);
 
-  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
+  const onSubmit = (data: FormData) => {
     if (!isAuthenticating) {
-      const { email, password } = form.getValues();
-      dispatch(startLoginWithEmailPassword({ email, password }))
+      dispatch(startLoginWithEmailPassword({ email: data.email, password: data.password }))
     }
   };
 
@@ -56,7 +54,7 @@ export const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={onSubmit} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
         <FormField
           control={form.control}
           name='email'

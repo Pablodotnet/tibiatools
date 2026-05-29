@@ -31,9 +31,13 @@ const AccountPage = () => {
         .slice(0, 2)
     : '??';
 
-  const handleLogout = () => {
-    dispatch(startLogout());
-    toast.success('Logged out successfully');
+  const handleLogout = async () => {
+    try {
+      await dispatch(startLogout());
+      toast.success('Logged out successfully');
+    } catch {
+      toast.error('Failed to log out');
+    }
   };
 
   return (

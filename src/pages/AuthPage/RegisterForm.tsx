@@ -79,7 +79,7 @@ export const RegisterForm = () => {
           name='email'
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Email</FormLabel>
+              <FormLabel>{translate('email')}</FormLabel>
               <FormControl>
                 <Input placeholder={translate('emailPlaceholder')} {...field} />
               </FormControl>
@@ -104,10 +104,6 @@ export const RegisterForm = () => {
             </FormItem>
           )}
         />
-
-        {errorMessage && (
-          <p className='text-sm text-destructive'>{errorMessage}</p>
-        )}
 
         <div className='flex justify-end space-x-4'>
           <Button type='submit' disabled={isAuthenticating}>
