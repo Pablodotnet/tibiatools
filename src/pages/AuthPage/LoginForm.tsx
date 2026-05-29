@@ -62,7 +62,7 @@ export const LoginForm = () => {
             <FormItem>
               <FormLabel>{translate('email')}</FormLabel>
               <FormControl>
-                <Input placeholder={translate('emailPlaceholder')} {...field} />
+                <Input placeholder={translate('emailPlaceholder')} autoComplete='email' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -78,6 +78,7 @@ export const LoginForm = () => {
                 <Input
                   type='password'
                   placeholder={translate('passwordPlaceholder')}
+                  autoComplete='current-password'
                   {...field}
                 />
               </FormControl>

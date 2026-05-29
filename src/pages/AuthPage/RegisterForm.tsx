@@ -68,7 +68,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>{translate('name')}</FormLabel>
               <FormControl>
-                <Input placeholder={translate('namePlaceholder')} {...field} />
+                <Input placeholder={translate('namePlaceholder')} autoComplete='name' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -81,7 +81,7 @@ export const RegisterForm = () => {
             <FormItem>
               <FormLabel>{translate('email')}</FormLabel>
               <FormControl>
-                <Input placeholder={translate('emailPlaceholder')} {...field} />
+                <Input placeholder={translate('emailPlaceholder')} autoComplete='email' {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>
@@ -97,6 +97,7 @@ export const RegisterForm = () => {
                 <Input
                   type='password'
                   placeholder={translate('passwordPlaceholder')}
+                  autoComplete='new-password'
                   {...field}
                 />
               </FormControl>
