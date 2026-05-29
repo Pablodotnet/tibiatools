@@ -107,13 +107,51 @@
     "titleExaltation": "Exaltation/Forge System",
     "descriptionExaltation": "Learn how exaltation works and how to use it.",
     "titleMyTierProjects": "My Tier Projects",
-    "descriptionMyTierProjects": "Track your usages and costs of your project to your desired tier."
+    "descriptionMyTierProjects": "Track your usages and costs of your project to your desired tier.",
+    "titlePublicProjects": "Public Projects",
+    "descriptionPublicProjects": "Browse tier projects shared by the community."
   },
   "errors": {
     "invalidStringFormat": "Invalid string format"
   },
   "myTierProjects": {
     "title": "My Tier Projects",
-    "description": "Track your usages and costs of the project to your desired tier."
+    "description": "Track your usages and costs of the project to your desired tier.",
+    "createNew": "Create project",
+    "projectName": "Project name",
+    "targetTier": "Target tier",
+    "addProject": "Add project",
+    "noProjects": "No projects yet. Create one to get started.",
+    "public": "Public",
+    "private": "Private",
+    "makePublic": "Make public",
+    "makePrivate": "Make private",
+    "delete": "Delete",
+    "deleteConfirm": "Are you sure?",
+    "entries": "Entries",
+    "noEntries": "No entries yet. Add your first spending record.",
+    "addEntry": "Add entry",
+    "fromTier": "From tier",
+    "toTier": "To tier",
+    "itemsUsed": "Items used",
+    "costGp": "Cost (gp)",
+    "notes": "Notes",
+    "loading": "Loading projects...",
+    "projectCreated": "Project created",
+    "projectDeleted": "Project deleted",
+    "entryAdded": "Entry added",
+    "entryDeleted": "Entry deleted",
+    "visibilityUpdated": "Visibility updated",
+    "fillAllFields": "Please fill in all required fields",
+    "backToProjects": "Back to projects"
+  },
+  "publicTierProjects": {
+    "title": "Public Projects",
+    "description": "Browse tier projects shared by the community.",
+    "loading": "Loading projects...",
+    "empty": "No public projects yet.",
+    "target": "Target",
+    "current": "Current",
+    "by": "By"
   }
 }

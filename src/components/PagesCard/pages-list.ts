@@ -49,11 +49,18 @@ export const privatePagesList: PageListItem[] = [
   },
 ];
 
+const publicPagesListItem: PageListItem = {
+  title: 'titlePublicProjects',
+  url: '/public-projects',
+  description: 'descriptionPublicProjects',
+  icon: PagesIcons.tierGif,
+};
+
 export const getPagesList: (loggedIn: boolean) => PageListItem[] = (
   loggedIn: boolean,
 ) => {
   if (!loggedIn) {
-    return pagesList;
+    return [...pagesList, publicPagesListItem];
   }
   return [...pagesList, ...privatePagesList];
 };

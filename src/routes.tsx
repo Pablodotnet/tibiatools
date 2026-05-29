@@ -10,6 +10,7 @@ import CoinsToMoneyPage from '@/pages/CoinsToMoneyPage';
 import AuthPage from '@/pages/AuthPage';
 import AccountPage from '@/pages/AccountPage';
 import NotFoundPage from '@/pages/NotFoundPage';
+import PublicTierProjectsPage from '@/pages/PublicTierProjectsPage';
 import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
 import MyTierProjectsPage from './pages/MyTierProjectsPage';
@@ -24,6 +25,7 @@ const TITLES: Record<string, string> = {
   '/auth': 'Auth',
   '/account': 'Account',
   '/myTierProjects': 'My Tier Projects',
+  '/public-projects': 'Public Projects',
 };
 
 const AppRouting = () => {
@@ -71,6 +73,7 @@ const AppRouting = () => {
           </PrivateRoute>
         }
       />
+      <Route path='/public-projects' element={<PublicTierProjectsPage />} />
       <Route path='*' element={<NotFoundPage />} />
     </Routes>
   );
