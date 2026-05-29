@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -6,8 +6,17 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import * as firebase from '@/firebase/tierProjects';
-import type { TierProject, TierProjectEntry } from '@/types/tierProject';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import {
+  startFetchUserProjects,
+  startCreateProject,
+  startToggleVisibility,
+  startDeleteProject,
+  startSelectProject,
+  startFetchEntries,
+  startAddEntry,
+  startDeleteEntry,
+} from '@/store/tierProjects';
 import { Trash2, Plus, ArrowLeft, Globe, Lock } from 'lucide-react';
 
 const TIERS = Array.from({ length: 11 }, (_, i) => i);
@@ -15,12 +24,10 @@ const TIERS = Array.from({ length: 11 }, (_, i) => i);
 const MyTierProjectsPage = () => {
   const { t } = useTranslation();
   const translate = (entry: string) => t(`myTierProjects.${entry}`);
-
-  const [projects, setProjects] = useState<TierProject[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [selectedProject, setSelectedProject] = useState<TierProject | null>(null);
-  const [entries, setEntries] = useState<TierProjectEntry[]>([]);
-  const [entriesLoading, setEntriesLoading] = useState(false);
+  const dispatch = useAppDispatch();
+  const { projects, selectedProjectId, entries, projectsLoading, entriesLoading } = useAppSelector((s) => s.tierProjects);
+  const selectedProject = projects.find((p) => p.id === selectedProjectId) ?? null;
+  const currentEntries = selectedProjectId ? entries[selectedProjectId] ?? [] : [];
 
   const [newName, setNewName] = useState('');
   const [newTarget, setNewTarget] = useState('');
@@ -32,87 +39,60 @@ const MyTierProjectsPage = () => {
   const [entryCost, setEntryCost] = useState('');
   const [entryNotes, setEntryNotes] = useState('');
 
-  const loadProjects = useCallback(async () => {
-    try {
-      setLoading(true);
-      const data = await firebase.getUserProjects();
-      setProjects(data);
-    } catch {
-      toast.error('Failed to load projects');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
   useEffect(() => {
-    loadProjects();
-  }, [loadProjects]);
-
-  const loadEntries = useCallback(async (projectId: string) => {
-    try {
-      setEntriesLoading(true);
-      const data = await firebase.getProjectEntries(projectId);
-      setEntries(data);
-    } catch {
-      toast.error('Failed to load entries');
-    } finally {
-      setEntriesLoading(false);
-    }
-  }, []);
+    dispatch(startFetchUserProjects());
+  }, [dispatch]);
 
   const handleCreateProject = async () => {
     if (!newName.trim() || !newTarget) {
       toast.error(translate('fillAllFields'));
       return;
     }
-    try {
-      await firebase.createProject({
-        name: newName.trim(),
-        targetTier: Number(newTarget),
-        isPublic: newIsPublic,
-      });
+    const result = await dispatch(startCreateProject({
+      name: newName.trim(),
+      targetTier: Number(newTarget),
+      isPublic: newIsPublic,
+    }));
+    if (result.ok) {
       toast.success(translate('projectCreated'));
       setNewName('');
       setNewTarget('');
       setNewIsPublic(false);
-      await loadProjects();
-    } catch {
-      toast.error('Failed to create project');
+    } else {
+      toast.error(result.error);
     }
   };
 
-  const handleToggleVisibility = async (project: TierProject) => {
-    try {
-      await firebase.updateProject(project.id, { isPublic: !project.isPublic });
+  const handleToggleVisibility = async () => {
+    if (!selectedProject) return;
+    const result = await dispatch(startToggleVisibility(selectedProject.id, !selectedProject.isPublic));
+    if (result.ok) {
       toast.success(translate('visibilityUpdated'));
-      setProjects((prev) =>
-        prev.map((p) => (p.id === project.id ? { ...p, isPublic: !p.isPublic } : p)),
-      );
-      if (selectedProject?.id === project.id) {
-        setSelectedProject((prev) => (prev ? { ...prev, isPublic: !prev.isPublic } : null));
-      }
-    } catch {
-      toast.error('Failed to update visibility');
+    } else {
+      toast.error(result.error);
     }
   };
 
   const handleDeleteProject = async (projectId: string) => {
-    try {
-      await firebase.deleteProject(projectId);
+    const result = await dispatch(startDeleteProject(projectId));
+    if (result.ok) {
       toast.success(translate('projectDeleted'));
-      if (selectedProject?.id === projectId) {
-        setSelectedProject(null);
-        setEntries([]);
-      }
-      await loadProjects();
-    } catch {
-      toast.error('Failed to delete project');
+    } else {
+      toast.error(result.error);
     }
   };
 
-  const handleSelectProject = async (project: TierProject) => {
-    setSelectedProject(project);
-    await loadEntries(project.id);
+  const handleSelectProject = async (projectId: string) => {
+    dispatch(startSelectProject(projectId));
+    try {
+      await dispatch(startFetchEntries(projectId));
+    } catch {
+      toast.error('Failed to load entries');
+    }
+  };
+
+  const handleBack = () => {
+    dispatch(startSelectProject(null));
   };
 
   const handleAddEntry = async () => {
@@ -121,38 +101,36 @@ const MyTierProjectsPage = () => {
       return;
     }
     if (!selectedProject) return;
-    try {
-      await firebase.addEntry(selectedProject.id, {
-        fromTier: Number(entryFrom),
-        toTier: Number(entryTo),
-        itemsUsed: entryItems.trim(),
-        costGp: Number(entryCost) || 0,
-        notes: entryNotes.trim(),
-      });
+    const result = await dispatch(startAddEntry(selectedProject.id, {
+      fromTier: Number(entryFrom),
+      toTier: Number(entryTo),
+      itemsUsed: entryItems.trim(),
+      costGp: Number(entryCost) || 0,
+      notes: entryNotes.trim(),
+    }));
+    if (result.ok) {
       toast.success(translate('entryAdded'));
       setEntryFrom('');
       setEntryTo('');
       setEntryItems('');
       setEntryCost('');
       setEntryNotes('');
-      await loadEntries(selectedProject.id);
-    } catch {
-      toast.error('Failed to add entry');
+    } else {
+      toast.error(result.error);
     }
   };
 
   const handleDeleteEntry = async (entryId: string) => {
     if (!selectedProject) return;
-    try {
-      await firebase.deleteEntry(selectedProject.id, entryId);
+    const result = await dispatch(startDeleteEntry(selectedProject.id, entryId));
+    if (result.ok) {
       toast.success(translate('entryDeleted'));
-      await loadEntries(selectedProject.id);
-    } catch {
-      toast.error('Failed to delete entry');
+    } else {
+      toast.error(result.error);
     }
   };
 
-  if (loading) {
+  if (projectsLoading) {
     return (
       <Card className='w-full max-w-2xl mx-auto mt-6'>
         <CardContent className='py-12 text-center text-muted-foreground'>
@@ -165,16 +143,16 @@ const MyTierProjectsPage = () => {
   if (selectedProject) {
     return (
       <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
-        <Button variant='ghost' onClick={() => { setSelectedProject(null); setEntries([]); }} className='gap-2'>
+        <Button variant='ghost' onClick={handleBack} className='gap-2'>
           <ArrowLeft className='size-4' />
           {translate('backToProjects')}
         </Button>
 
         <Card>
           <CardHeader>
-              <div className='flex items-center justify-between'>
+            <div className='flex items-center justify-between'>
               <CardTitle>{selectedProject.name}</CardTitle>
-              <Button variant='outline' size='sm' onClick={() => handleToggleVisibility(selectedProject)} className='gap-2'>
+              <Button variant='outline' size='sm' onClick={handleToggleVisibility} className='gap-2'>
                 {selectedProject.isPublic ? <Globe className='size-4' /> : <Lock className='size-4' />}
                 {selectedProject.isPublic ? translate('public') : translate('private')}
               </Button>
@@ -190,12 +168,12 @@ const MyTierProjectsPage = () => {
             <CardTitle className='text-lg'>{translate('entries')}</CardTitle>
           </CardHeader>
           <CardContent className='space-y-3'>
-            {entries.length === 0 && !entriesLoading && (
+            {currentEntries.length === 0 && !entriesLoading && (
               <p className='text-muted-foreground text-center py-4 text-sm'>
                 {translate('noEntries')}
               </p>
             )}
-            {entries.map((entry) => (
+            {currentEntries.map((entry) => (
               <div key={entry.id} className='flex items-start justify-between rounded-lg border p-3'>
                 <div className='space-y-1 text-sm'>
                   <p className='font-medium'>
@@ -306,7 +284,7 @@ const MyTierProjectsPage = () => {
       ) : (
         <div className='space-y-3'>
           {projects.map((project) => (
-            <Card key={project.id} className='cursor-pointer hover:shadow-md transition-shadow' onClick={() => handleSelectProject(project)}>
+            <Card key={project.id} className='cursor-pointer hover:shadow-md transition-shadow' onClick={() => handleSelectProject(project.id)}>
               <CardContent className='p-4'>
                 <div className='flex items-center justify-between'>
                   <div>
@@ -316,9 +294,6 @@ const MyTierProjectsPage = () => {
                     </p>
                   </div>
                   <div className='flex items-center gap-2' onClick={(e) => e.stopPropagation()}>
-                    <Button variant='ghost' size='icon' onClick={() => handleToggleVisibility(project)} aria-label={project.isPublic ? translate('makePrivate') : translate('makePublic')}>
-                      {project.isPublic ? <Globe className='size-4' /> : <Lock className='size-4' />}
-                    </Button>
                     <Button variant='ghost' size='icon' onClick={() => handleDeleteProject(project.id)} aria-label='Delete project'>
                       <Trash2 className='size-4 text-destructive' />
                     </Button>

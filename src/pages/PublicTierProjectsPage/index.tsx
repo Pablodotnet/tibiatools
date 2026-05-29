@@ -1,29 +1,19 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
-import * as firebase from '@/firebase/tierProjects';
-import type { TierProject } from '@/types/tierProject';
+import { useAppDispatch, useAppSelector } from '@/hooks';
+import { startFetchPublicProjects } from '@/store/tierProjects';
 import { Globe } from 'lucide-react';
 
 const PublicTierProjectsPage = () => {
   const { t } = useTranslation();
   const translate = (entry: string) => t(`publicTierProjects.${entry}`);
-
-  const [projects, setProjects] = useState<TierProject[]>([]);
-  const [loading, setLoading] = useState(true);
+  const dispatch = useAppDispatch();
+  const { projects, projectsLoading } = useAppSelector((s) => s.tierProjects);
 
   useEffect(() => {
-    (async () => {
-      try {
-        const data = await firebase.getPublicProjects();
-        setProjects(data);
-      } catch {
-        setProjects([]);
-      } finally {
-        setLoading(false);
-      }
-    })();
-  }, []);
+    dispatch(startFetchPublicProjects());
+  }, [dispatch]);
 
   return (
     <div className='w-full max-w-2xl mx-auto mt-6'>
@@ -33,7 +23,7 @@ const PublicTierProjectsPage = () => {
           <CardDescription>{translate('description')}</CardDescription>
         </CardHeader>
         <CardContent>
-          {loading ? (
+          {projectsLoading ? (
             <p className='text-center text-muted-foreground py-8'>{translate('loading')}</p>
           ) : projects.length === 0 ? (
             <p className='text-center text-muted-foreground py-8'>{translate('empty')}</p>

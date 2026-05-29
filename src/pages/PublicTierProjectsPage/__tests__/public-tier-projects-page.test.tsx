@@ -1,14 +1,9 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { Provider } from 'react-redux';
+import { configureStore } from '@reduxjs/toolkit';
+import { tierProjectsSlice } from '@/store/tierProjects';
 import PublicTierProjectsPage from '../index';
-
-const { mockGetPublicProjects } = vi.hoisted(() => ({
-  mockGetPublicProjects: vi.fn(),
-}));
-
-vi.mock('@/firebase/tierProjects', () => ({
-  getPublicProjects: mockGetPublicProjects,
-}));
 
 vi.mock('react-i18next', () => ({
   useTranslation: () => ({
@@ -27,20 +22,36 @@ vi.mock('react-i18next', () => ({
   }),
 }));
 
+const { mockGetPublicProjects } = vi.hoisted(() => ({
+  mockGetPublicProjects: vi.fn(),
+}));
+
+vi.mock('@/firebase/tierProjects', () => ({
+  getPublicProjects: mockGetPublicProjects,
+}));
+
+function createStore() {
+  return configureStore({
+    reducer: { tierProjects: tierProjectsSlice.reducer },
+  });
+}
+
 describe('PublicTierProjectsPage', () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
 
-  it('shows loading state initially', () => {
+  it('shows loading state when projectsLoading is true', () => {
     mockGetPublicProjects.mockReturnValue(new Promise(() => {}));
-    render(<PublicTierProjectsPage />);
+    const store = createStore();
+    render(<Provider store={store}><PublicTierProjectsPage /></Provider>);
     expect(screen.getByText('Loading projects...')).toBeInTheDocument();
   });
 
   it('shows empty state when no projects', async () => {
     mockGetPublicProjects.mockResolvedValue([]);
-    render(<PublicTierProjectsPage />);
+    const store = createStore();
+    render(<Provider store={store}><PublicTierProjectsPage /></Provider>);
     expect(await screen.findByText('No public projects yet.')).toBeInTheDocument();
   });
 
@@ -58,8 +69,8 @@ describe('PublicTierProjectsPage', () => {
         updatedAt: new Date('2025-01-01'),
       },
     ]);
-    render(<PublicTierProjectsPage />);
-
+    const store = createStore();
+    render(<Provider store={store}><PublicTierProjectsPage /></Provider>);
     expect(await screen.findByText('Test Project')).toBeInTheDocument();
     expect(screen.getByText(/Target/)).toBeInTheDocument();
     expect(screen.getByText(/By TestUser/)).toBeInTheDocument();
