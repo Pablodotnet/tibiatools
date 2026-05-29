@@ -17,7 +17,8 @@ import {
   startAddEntry,
   startDeleteEntry,
 } from '@/store/tierProjects';
-import { Trash2, Plus, ArrowLeft, Globe, Lock } from 'lucide-react';
+import type { TierProjectItem } from '@/types/tierProject';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X } from 'lucide-react';
 
 const TIERS = Array.from({ length: 11 }, (_, i) => i);
 
@@ -35,9 +36,10 @@ const MyTierProjectsPage = () => {
 
   const [entryFrom, setEntryFrom] = useState('');
   const [entryTo, setEntryTo] = useState('');
-  const [entryItems, setEntryItems] = useState('');
-  const [entryCost, setEntryCost] = useState('');
   const [entryNotes, setEntryNotes] = useState('');
+  const [pendingItems, setPendingItems] = useState<TierProjectItem[]>([]);
+  const [itemName, setItemName] = useState('');
+  const [itemCost, setItemCost] = useState('');
 
   useEffect(() => {
     dispatch(startFetchUserProjects());
@@ -95,8 +97,19 @@ const MyTierProjectsPage = () => {
     dispatch(startSelectProject(null));
   };
 
-  const handleAddEntry = async () => {
-    if (!entryFrom || !entryTo || !entryItems.trim()) {
+  const handleAddItem = () => {
+    if (!itemName.trim() || !itemCost) return;
+    setPendingItems([...pendingItems, { name: itemName.trim(), costGp: Number(itemCost) }]);
+    setItemName('');
+    setItemCost('');
+  };
+
+  const handleRemoveItem = (index: number) => {
+    setPendingItems(pendingItems.filter((_, i) => i !== index));
+  };
+
+  const handleSaveEntry = async () => {
+    if (!entryFrom || !entryTo || pendingItems.length === 0) {
       toast.error(translate('fillAllFields'));
       return;
     }
@@ -104,17 +117,15 @@ const MyTierProjectsPage = () => {
     const result = await dispatch(startAddEntry(selectedProject.id, {
       fromTier: Number(entryFrom),
       toTier: Number(entryTo),
-      itemsUsed: entryItems.trim(),
-      costGp: Number(entryCost) || 0,
+      items: pendingItems,
       notes: entryNotes.trim(),
     }));
     if (result.ok) {
       toast.success(translate('entryAdded'));
       setEntryFrom('');
       setEntryTo('');
-      setEntryItems('');
-      setEntryCost('');
       setEntryNotes('');
+      setPendingItems([]);
     } else {
       toast.error(result.error);
     }
@@ -129,6 +140,12 @@ const MyTierProjectsPage = () => {
       toast.error(result.error);
     }
   };
+
+  function entryTotalCost(entry: { items: TierProjectItem[] }): number {
+    return entry.items.reduce((sum, i) => sum + i.costGp, 0);
+  }
+
+  const pendingTotal = pendingItems.reduce((sum, i) => sum + i.costGp, 0);
 
   if (projectsLoading) {
     return (
@@ -174,22 +191,26 @@ const MyTierProjectsPage = () => {
               </p>
             )}
             {currentEntries.map((entry) => (
-              <div key={entry.id} className='flex items-start justify-between rounded-lg border p-3'>
-                <div className='space-y-1 text-sm'>
-                  <p className='font-medium'>
-                    Tier {entry.fromTier} → Tier {entry.toTier}
-                  </p>
-                  <p className='text-muted-foreground'>{entry.itemsUsed}</p>
-                  {entry.costGp > 0 && (
-                    <p className='text-muted-foreground tabular-nums'>
-                      {entry.costGp.toLocaleString()} gp
+              <div key={entry.id} className='rounded-lg border p-3'>
+                <div className='flex items-start justify-between'>
+                  <div className='space-y-1 text-sm'>
+                    <p className='font-medium'>
+                      Tier {entry.fromTier} → Tier {entry.toTier}
                     </p>
-                  )}
-                  {entry.notes && <p className='text-xs text-muted-foreground italic'>{entry.notes}</p>}
+                    {entry.items.map((item, idx) => (
+                      <p key={idx} className='text-muted-foreground'>
+                        {item.name} — {item.costGp.toLocaleString()} gp
+                      </p>
+                    ))}
+                    <p className='text-sm font-medium tabular-nums'>
+                      Total: {entryTotalCost(entry).toLocaleString()} gp
+                    </p>
+                    {entry.notes && <p className='text-xs text-muted-foreground italic'>{entry.notes}</p>}
+                  </div>
+                  <Button variant='ghost' size='icon' onClick={() => handleDeleteEntry(entry.id)} aria-label='Delete entry'>
+                    <Trash2 className='size-4 text-destructive' />
+                  </Button>
                 </div>
-                <Button variant='ghost' size='icon' onClick={() => handleDeleteEntry(entry.id)} aria-label='Delete entry'>
-                  <Trash2 className='size-4 text-destructive' />
-                </Button>
               </div>
             ))}
             {entriesLoading && (
@@ -223,19 +244,41 @@ const MyTierProjectsPage = () => {
                 </Select>
               </div>
             </div>
+
             <div className='space-y-2'>
-              <Label>{translate('itemsUsed')}</Label>
-              <Input placeholder='e.g. 2x Falcon Greaves' value={entryItems} onChange={(e) => setEntryItems(e.target.value)} />
+              <Label>{translate('items')}</Label>
+              <div className='flex gap-2'>
+                <Input placeholder='Item name' value={itemName} onChange={(e) => setItemName(e.target.value)} className='flex-1' />
+                <Input type='number' placeholder='Cost (gp)' value={itemCost} onChange={(e) => setItemCost(e.target.value)} className='w-36' />
+                <Button type='button' variant='outline' size='icon' onClick={handleAddItem} disabled={!itemName.trim() || !itemCost}>
+                  <Plus className='size-4' />
+                </Button>
+              </div>
             </div>
-            <div className='space-y-2'>
-              <Label>{translate('costGp')}</Label>
-              <Input type='number' placeholder='0' value={entryCost} onChange={(e) => setEntryCost(e.target.value)} />
-            </div>
+
+            {pendingItems.length > 0 && (
+              <div className='space-y-1.5 rounded-lg border p-3'>
+                {pendingItems.map((item, idx) => (
+                  <div key={idx} className='flex items-center justify-between text-sm'>
+                    <span>
+                      {item.name} — <span className='tabular-nums'>{item.costGp.toLocaleString()} gp</span>
+                    </span>
+                    <Button variant='ghost' size='icon' className='size-6' onClick={() => handleRemoveItem(idx)}>
+                      <X className='size-3' />
+                    </Button>
+                  </div>
+                ))}
+                <div className='border-t pt-1.5 text-sm font-medium tabular-nums'>
+                  Total: {pendingTotal.toLocaleString()} gp
+                </div>
+              </div>
+            )}
+
             <div className='space-y-2'>
               <Label>{translate('notes')}</Label>
               <Input placeholder='Optional' value={entryNotes} onChange={(e) => setEntryNotes(e.target.value)} />
             </div>
-            <Button onClick={handleAddEntry} className='gap-2'>
+            <Button onClick={handleSaveEntry} className='gap-2' disabled={pendingItems.length === 0}>
               <Plus className='size-4' />
               {translate('addEntry')}
             </Button>

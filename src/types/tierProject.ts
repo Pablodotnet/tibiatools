@@ -10,13 +10,17 @@ export interface TierProject {
   updatedAt: Date;
 }
 
+export interface TierProjectItem {
+  name: string;
+  costGp: number;
+}
+
 export interface TierProjectEntry {
   id: string;
   projectId: string;
   fromTier: number;
   toTier: number;
-  itemsUsed: string;
-  costGp: number;
+  items: TierProjectItem[];
   notes: string;
   createdAt: Date;
 }
@@ -30,7 +34,6 @@ export interface TierProjectFormData {
 export interface TierProjectEntryFormData {
   fromTier: number;
   toTier: number;
-  itemsUsed: string;
-  costGp: number;
+  items: TierProjectItem[];
   notes: string;
 }

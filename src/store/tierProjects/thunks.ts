@@ -86,7 +86,7 @@ export const startFetchEntries = (projectId: string) => async (dispatch: AppDisp
   }
 };
 
-export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; itemsUsed: string; costGp: number; notes: string }) => async (dispatch: AppDispatch): Promise<ThunkResult> => {
+export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; items: Array<{ name: string; costGp: number }>; notes: string }) => async (dispatch: AppDispatch): Promise<ThunkResult> => {
   try {
     const entryId = await api.addEntry(projectId, data);
     dispatch(addEntry({

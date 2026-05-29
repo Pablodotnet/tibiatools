@@ -28,13 +28,15 @@ function mapProjectDoc(id: string, data: Record<string, unknown>): TierProject {
 }
 
 function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntry {
+  const items = data.items as Array<Record<string, unknown>> | undefined;
   return {
     id,
     projectId: data.projectId as string,
     fromTier: data.fromTier as number,
     toTier: data.toTier as number,
-    itemsUsed: data.itemsUsed as string,
-    costGp: data.costGp as number,
+    items: items
+      ? items.map((i) => ({ name: i.name as string, costGp: i.costGp as number }))
+      : [{ name: (data.itemsUsed as string) || '', costGp: (data.costGp as number) || 0 }],
     notes: data.notes as string,
     createdAt: (data.createdAt as Timestamp).toDate(),
   };
@@ -110,8 +112,7 @@ export async function addEntry(
   data: {
     fromTier: number;
     toTier: number;
-    itemsUsed: string;
-    costGp: number;
+    items: Array<{ name: string; costGp: number }>;
     notes: string;
   },
 ): Promise<string> {

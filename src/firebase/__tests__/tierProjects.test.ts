@@ -177,14 +177,14 @@ describe('tierProjects', () => {
       const result = await getProjectEntries('p1');
       expect(result).toHaveLength(1);
       expect(result[0].fromTier).toBe(0);
-      expect(result[0].itemsUsed).toBe('10 items');
+      expect(result[0].items[0].name).toBe('10 items');
     });
 
     it('addEntry creates doc in subcollection', async () => {
       mockAddDoc.mockResolvedValue({ id: 'entry1' });
       const { addEntry } = await reloadModule();
 
-      const id = await addEntry('p1', { fromTier: 1, toTier: 2, itemsUsed: '5 items', costGp: 25000, notes: '' });
+      const id = await addEntry('p1', { fromTier: 1, toTier: 2, items: [{ name: '5 items', costGp: 25000 }], notes: '' });
 
       expect(id).toBe('entry1');
     });
