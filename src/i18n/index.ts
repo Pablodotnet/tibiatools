@@ -10,10 +10,10 @@ i18n.use(initReactI18next).init({
     es: { translation: es },
     pt: { translation: pt },
   },
-  lng: localStorage.getItem('language') ?? 'en', // persist choice
+  lng: localStorage.getItem('language') ?? 'en',
   fallbackLng: 'en',
   interpolation: {
-    escapeValue: false, // React already escapes
+    escapeValue: false,
   },
 });
 
