@@ -13,6 +13,7 @@ const mockProject = (overrides: Partial<TierProject> = {}): TierProject => ({
   name: 'Test',
   targetTier: 5,
   currentTier: 1,
+  totalSpentGp: 0,
   isPublic: false,
   ownerUid: 'u1',
   ownerDisplayName: 'User',

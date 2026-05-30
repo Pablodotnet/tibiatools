@@ -1,10 +1,10 @@
-import { AppDispatch } from '@/store';
+import { AppDispatch, RootState } from '@/store';
 import {
   setProjectsLoading, setProjects, addProject, updateProject, removeProject,
   setSelectedProjectId, setEntriesLoading, setEntries, addEntry, removeEntry,
 } from './tierProjectsSlice';
 import * as api from '@/firebase/tierProjects';
-import type { TierProject, TierProjectEntry } from '@/types/tierProject';
+import type { TierProject } from '@/types/tierProject';
 
 type ThunkResult = { ok: true } | { ok: false; error: string };
 
@@ -87,7 +87,7 @@ export const startFetchEntries = (projectId: string) => async (dispatch: AppDisp
   }
 };
 
-export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; items: Array<{ name: string; costGp: number }>; notes: string; method?: string; classification?: number }) => async (dispatch: AppDispatch, getState): Promise<ThunkResult> => {
+export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; items: Array<{ name: string; costGp: number }>; notes: string; method?: string; classification?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
   try {
     const entryId = await api.addEntry(projectId, data);
     const entryTotal = data.items.reduce((sum, i) => sum + i.costGp, 0);
@@ -95,7 +95,7 @@ export const startAddEntry = (projectId: string, data: { fromTier: number; toTie
       projectId,
       entry: { id: entryId, projectId, ...data, createdAt: new Date() },
     }));
-    const state = getState() as { tierProjects: { projects: TierProject[] } };
+    const state = getState();
     const project = state.tierProjects.projects.find((p) => p.id === projectId);
     const currentTotal = project?.totalSpentGp ?? 0;
     dispatch(updateProject({ id: projectId, changes: { totalSpentGp: currentTotal + entryTotal } }));
@@ -105,10 +105,10 @@ export const startAddEntry = (projectId: string, data: { fromTier: number; toTie
   }
 };
 
-export const startDeleteEntry = (projectId: string, entryId: string) => async (dispatch: AppDispatch, getState): Promise<ThunkResult> => {
+export const startDeleteEntry = (projectId: string, entryId: string) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
   try {
     await api.deleteEntry(projectId, entryId);
-    const state = getState() as { tierProjects: { entries: Record<string, TierProjectEntry[]>; projects: TierProject[] } };
+    const state = getState();
     const projectEntries = state.tierProjects.entries[projectId] ?? [];
     const entry = projectEntries.find((e) => e.id === entryId);
     const entryTotal = entry ? entry.items.reduce((sum, i) => sum + i.costGp, 0) : 0;
