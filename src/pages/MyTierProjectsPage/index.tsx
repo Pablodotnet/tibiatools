@@ -29,9 +29,10 @@ import {
   startAddEntry,
   startUpdateEntry,
   startDeleteEntry,
+  startDuplicateProject,
 } from '@/store/tierProjects';
 import type { TierProjectItem, TierProjectEntry } from '@/types/tierProject';
-import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown, BarChart3, Cpu, Diamond, TrendingUp, Search } from 'lucide-react';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown, BarChart3, Cpu, Diamond, TrendingUp, Search, Copy } from 'lucide-react';
 import {
   FUSION_GOLD_GP,
   TRANSFER_GOLD_GP,
@@ -203,6 +204,8 @@ const MyTierProjectsPage = () => {
 
   const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
   const [deleteEntryId, setDeleteEntryId] = useState<string | null>(null);
+  const [duplicateDialogOpen, setDuplicateDialogOpen] = useState(false);
+  const [duplicateName, setDuplicateName] = useState('');
 
   useEffect(() => {
     dispatch(startFetchUserProjects());
@@ -244,6 +247,23 @@ const MyTierProjectsPage = () => {
     setDeleteProjectId(null);
     if (result.ok) {
       toast.success(translate('projectDeleted'));
+    } else {
+      toast.error(result.error);
+    }
+  };
+
+  const handleOpenDuplicate = () => {
+    if (!selectedProject) return;
+    setDuplicateName(`${translate('copyOf')} ${selectedProject.name}`);
+    setDuplicateDialogOpen(true);
+  };
+
+  const handleConfirmDuplicate = async () => {
+    if (!selectedProject || !duplicateName.trim()) return;
+    const result = await dispatch(startDuplicateProject(selectedProject.id, duplicateName.trim()));
+    setDuplicateDialogOpen(false);
+    if (result.ok) {
+      toast.success(translate('projectDuplicated'));
     } else {
       toast.error(result.error);
     }
@@ -401,10 +421,16 @@ const MyTierProjectsPage = () => {
           <CardHeader>
             <div className='flex items-center justify-between'>
               <CardTitle>{selectedProject.name}</CardTitle>
-              <Button variant='outline' size='sm' onClick={handleToggleVisibility} className='gap-2'>
-                {selectedProject.isPublic ? <Globe className='size-4' /> : <Lock className='size-4' />}
-                {selectedProject.isPublic ? translate('public') : translate('private')}
-              </Button>
+              <div className='flex items-center gap-2'>
+                <Button variant='outline' size='sm' onClick={handleOpenDuplicate} className='gap-1.5'>
+                  <Copy className='size-3.5' />
+                  {translate('duplicate')}
+                </Button>
+                <Button variant='outline' size='sm' onClick={handleToggleVisibility} className='gap-2'>
+                  {selectedProject.isPublic ? <Globe className='size-4' /> : <Lock className='size-4' />}
+                  {selectedProject.isPublic ? translate('public') : translate('private')}
+                </Button>
+              </div>
             </div>
             <CardDescription>
               Target: Tier {selectedProject.targetTier} &middot; Current: Tier {selectedProject.currentTier}
@@ -728,6 +754,27 @@ const MyTierProjectsPage = () => {
             </div>
           </CardContent>
         </Card>
+
+        <AlertDialog open={duplicateDialogOpen} onOpenChange={setDuplicateDialogOpen}>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>{translate('duplicateProjectTitle')}</AlertDialogTitle>
+              <AlertDialogDescription>
+                {translate('duplicateProjectDesc')}
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <div className='py-2'>
+              <Input value={duplicateName} onChange={(e) => setDuplicateName(e.target.value)} placeholder={translate('projectName')} />
+            </div>
+            <AlertDialogFooter>
+              <AlertDialogCancel>{translate('cancel')}</AlertDialogCancel>
+              <AlertDialogAction onClick={handleConfirmDuplicate} disabled={!duplicateName.trim()}>
+                <Copy className='size-3.5' />
+                {translate('duplicate')}
+              </AlertDialogAction>
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
       </div>
     );
   }

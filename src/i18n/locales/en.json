@@ -170,7 +170,12 @@
     "allMethods": "All methods",
     "minTier": "Min tier",
     "maxTier": "Max tier",
-    "noMatches": "No entries match your filters."
+    "noMatches": "No entries match your filters.",
+    "duplicate": "Duplicate",
+    "duplicateProjectTitle": "Duplicate project",
+    "duplicateProjectDesc": "Create a copy of this project with all its entries as a template.",
+    "projectDuplicated": "Project duplicated",
+    "copyOf": "Copy of"
   },
   "publicTierProjects": {
     "title": "Tier Projects",

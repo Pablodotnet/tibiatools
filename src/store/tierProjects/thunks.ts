@@ -72,6 +72,16 @@ export const startDeleteProject = (projectId: string) => async (dispatch: AppDis
   }
 };
 
+export const startDuplicateProject = (projectId: string, newName: string) => async (dispatch: AppDispatch): Promise<ThunkResult> => {
+  try {
+    const { project } = await api.duplicateProject(projectId, newName);
+    dispatch(addProject(project));
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message };
+  }
+};
+
 export const startSelectProject = (projectId: string | null) => (dispatch: AppDispatch) => {
   dispatch(setSelectedProjectId(projectId));
 };

@@ -228,6 +228,57 @@ export async function updateEntry(
   });
 }
 
+export async function duplicateProject(
+  projectId: string,
+  newName: string,
+): Promise<{ project: TierProject; entryCount: number }> {
+  const user = FirebaseAuth.currentUser;
+  if (!user) throw new Error('Not authenticated');
+
+  const srcSnap = await getDoc(doc(FirebaseDB, 'tierProjects', projectId));
+  if (!srcSnap.exists()) throw new Error('Source project not found');
+  const src = srcSnap.data();
+
+  const entriesSnap = await getDocs(collection(FirebaseDB, 'tierProjects', projectId, 'entries'));
+  const entries = entriesSnap.docs.map((d) => d.data());
+
+  const newRef = await addDoc(collection(FirebaseDB, 'tierProjects'), {
+    name: newName,
+    targetTier: src.targetTier as number,
+    isPublic: false,
+    currentTier: 0,
+    totalSpentGp: 0,
+    ownerUid: user.uid,
+    ownerDisplayName: user.displayName || user.email || 'Unknown',
+    createdAt: Timestamp.now(),
+    updatedAt: Timestamp.now(),
+  });
+
+  const batch = entries.map((e) =>
+    addDoc(collection(FirebaseDB, 'tierProjects', newRef.id, 'entries'), {
+      ...e,
+      createdAt: Timestamp.now(),
+    }),
+  );
+  await Promise.all(batch);
+
+  return {
+    project: {
+      id: newRef.id,
+      name: newName,
+      targetTier: src.targetTier as number,
+      currentTier: 0,
+      totalSpentGp: 0,
+      isPublic: false,
+      ownerUid: user.uid,
+      ownerDisplayName: user.displayName || user.email || 'Unknown',
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    },
+    entryCount: entries.length,
+  };
+}
+
 export async function deleteEntry(projectId: string, entryId: string) {
   const entrySnap = await getDoc(doc(FirebaseDB, 'tierProjects', projectId, 'entries', entryId));
   if (entrySnap.exists()) {
