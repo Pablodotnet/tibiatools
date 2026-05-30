@@ -47,6 +47,19 @@ function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntr
   };
 }
 
+async function backfillTotalSpent(project: TierProject): Promise<void> {
+  if (project.totalSpentGp !== 0) return;
+  const entries = await getProjectEntries(project.id);
+  const total = entries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
+  if (total > 0) {
+    project.totalSpentGp = total;
+    await updateDoc(doc(FirebaseDB, 'tierProjects', project.id), {
+      totalSpentGp: total,
+      updatedAt: Timestamp.now(),
+    });
+  }
+}
+
 export async function createProject(data: {
   name: string;
   targetTier: number;
@@ -77,7 +90,9 @@ export async function getUserProjects(): Promise<TierProject[]> {
     orderBy('updatedAt', 'desc'),
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => mapProjectDoc(d.id, d.data() as Record<string, unknown>));
+  const projects = snapshot.docs.map((d) => mapProjectDoc(d.id, d.data() as Record<string, unknown>));
+  await Promise.all(projects.map(backfillTotalSpent));
+  return projects;
 }
 
 export async function getPublicProjects(): Promise<TierProject[]> {
@@ -87,12 +102,14 @@ export async function getPublicProjects(): Promise<TierProject[]> {
     orderBy('updatedAt', 'desc'),
   );
   const snapshot = await getDocs(q);
-  return snapshot.docs.map((d) => mapProjectDoc(d.id, d.data() as Record<string, unknown>));
+  const projects = snapshot.docs.map((d) => mapProjectDoc(d.id, d.data() as Record<string, unknown>));
+  await Promise.all(projects.map(backfillTotalSpent));
+  return projects;
 }
 
 export async function updateProject(
   projectId: string,
-  data: Partial<{ name: string; targetTier: number; isPublic: boolean; currentTier: number }>,
+  data: Partial<{ name: string; targetTier: number; isPublic: boolean; currentTier: number; totalSpentGp: number }>,
 ) {
   await updateDoc(doc(FirebaseDB, 'tierProjects', projectId), {
     ...data,
