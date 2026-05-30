@@ -15,6 +15,14 @@ import {
 import { FirebaseAuth, FirebaseDB } from './config';
 import type { TierProject, TierProjectEntry } from '@/types/tierProject';
 
+function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
+  const out: Record<string, unknown> = {};
+  for (const [k, v] of Object.entries(obj)) {
+    if (v !== undefined) out[k] = v;
+  }
+  return out;
+}
+
 function mapProjectDoc(id: string, data: Record<string, unknown>): TierProject {
   return {
     id,
@@ -77,7 +85,7 @@ async function backfillProjectFields(project: TierProject): Promise<void> {
     if (needsUpdate) {
       try {
         await updateDoc(doc(FirebaseDB, 'tierProjects', project.id), {
-          ...updates,
+          ...stripUndefined(updates),
           updatedAt: Timestamp.now(),
         });
       } catch {
@@ -141,7 +149,7 @@ export async function updateProject(
   data: Partial<{ name: string; targetTier: number; isPublic: boolean; currentTier: number; totalSpentGp: number }>,
 ) {
   await updateDoc(doc(FirebaseDB, 'tierProjects', projectId), {
-    ...data,
+    ...stripUndefined(data),
     updatedAt: Timestamp.now(),
   });
 }
@@ -177,7 +185,7 @@ export async function addEntry(
   const docRef = await addDoc(
     collection(FirebaseDB, 'tierProjects', projectId, 'entries'),
     {
-      ...data,
+      ...stripUndefined(data),
       projectId,
       createdAt: Timestamp.now(),
     },
@@ -206,7 +214,7 @@ export async function updateEntry(
   },
 ) {
   await updateDoc(doc(FirebaseDB, 'tierProjects', projectId, 'entries', entryId), {
-    ...data,
+    ...stripUndefined(data),
     projectId,
   });
 }
