@@ -108,7 +108,7 @@
     "descriptionExaltation": "Aprende cómo funciona la exaltación y cómo usarla.",
     "titleMyTierProjects": "Mis Proyectos de Tier",
     "descriptionMyTierProjects": "Rastrea tus usos y costos del proyecto hasta tu tier deseado.",
-    "titlePublicProjects": "Proyectos Públicos",
+    "titlePublicProjects": "Proyectos de Tier",
     "descriptionPublicProjects": "Explora proyectos de tier compartidos por la comunidad."
   },
   "myTierProjects": {
@@ -150,13 +150,16 @@
     "addCostToItems": "Agregar costo a los items"
   },
   "publicTierProjects": {
-    "title": "Proyectos Públicos",
+    "title": "Proyectos de Tier",
     "description": "Explora proyectos de tier compartidos por la comunidad.",
     "loading": "Cargando proyectos...",
     "empty": "Aún no hay proyectos públicos.",
     "target": "Objetivo",
     "current": "Actual",
-    "by": "Por"
+    "by": "Por",
+    "backToProjects": "Volver a proyectos",
+    "entries": "Entradas",
+    "total": "Total"
   },
   "errors": {
     "invalidStringFormat": "Formato de cadena inválido"

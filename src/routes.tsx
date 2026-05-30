@@ -25,7 +25,7 @@ const TITLES: Record<string, string> = {
   '/auth': 'Auth',
   '/account': 'Account',
   '/myTierProjects': 'My Tier Projects',
-  '/public-projects': 'Public Projects',
+  '/public-projects': 'Tier Projects',
 };
 
 const AppRouting = () => {

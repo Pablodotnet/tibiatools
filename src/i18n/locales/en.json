@@ -108,7 +108,7 @@
     "descriptionExaltation": "Learn how exaltation works and how to use it.",
     "titleMyTierProjects": "My Tier Projects",
     "descriptionMyTierProjects": "Track your usages and costs of your project to your desired tier.",
-    "titlePublicProjects": "Public Projects",
+    "titlePublicProjects": "Tier Projects",
     "descriptionPublicProjects": "Browse tier projects shared by the community."
   },
   "errors": {
@@ -153,12 +153,15 @@
     "addCostToItems": "Add cost to items"
   },
   "publicTierProjects": {
-    "title": "Public Projects",
+    "title": "Tier Projects",
     "description": "Browse tier projects shared by the community.",
     "loading": "Loading projects...",
     "empty": "No public projects yet.",
     "target": "Target",
     "current": "Current",
-    "by": "By"
+    "by": "By",
+    "backToProjects": "Back to projects",
+    "entries": "Entries",
+    "total": "Total"
   }
 }
