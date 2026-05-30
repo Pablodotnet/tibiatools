@@ -139,7 +139,15 @@
     "entryDeleted": "Entrada eliminada",
     "visibilityUpdated": "Visibilidad actualizada",
     "fillAllFields": "Por favor llena todos los campos requeridos",
-    "backToProjects": "Volver a proyectos"
+    "backToProjects": "Volver a proyectos",
+    "method": "Método",
+    "classification": "Clase",
+    "fusion": "Fusión",
+    "transfer": "Transferir",
+    "convergenceFusion": "Fusión de convergencia",
+    "convergenceTransfer": "Transferencia de convergencia",
+    "estimatedCost": "Costo estimado",
+    "addCostToItems": "Agregar costo a los items"
   },
   "publicTierProjects": {
     "title": "Proyectos Públicos",

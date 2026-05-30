@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,9 +18,66 @@ import {
   startDeleteEntry,
 } from '@/store/tierProjects';
 import type { TierProjectItem } from '@/types/tierProject';
-import { Trash2, Plus, ArrowLeft, Globe, Lock, X } from 'lucide-react';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins } from 'lucide-react';
+import {
+  FUSION_GOLD_GP,
+  TRANSFER_GOLD_GP,
+  CONVERGENCE_FUSION_GOLD_GP,
+  CONVERGENCE_TRANSFER_GOLD_GP,
+  formatGp,
+} from '@/helpers/exaltationForge';
 
 const TIERS = Array.from({ length: 11 }, (_, i) => i);
+
+const METHODS = ['fusion', 'transfer', 'convergence-fusion', 'convergence-transfer'] as const;
+const CLASSIFICATIONS = [1, 2, 3, 4] as const;
+
+function computeMethodCost(
+  method: string,
+  classification: number,
+  fromTier: number,
+  toTier: number,
+): number | null {
+  try {
+    switch (method) {
+      case 'fusion': {
+        const cls = classification as 1 | 2 | 3 | 4;
+        let total = 0;
+        for (let t = fromTier; t < toTier; t++) {
+          const cost = FUSION_GOLD_GP[cls][t];
+          if (cost === null) return null;
+          total += cost;
+        }
+        return total;
+      }
+      case 'transfer': {
+        const cls = classification as 1 | 2 | 3 | 4;
+        if (fromTier < 2) return null;
+        const cost = TRANSFER_GOLD_GP[cls][fromTier - 1];
+        return cost ?? null;
+      }
+      case 'convergence-fusion': {
+        let total = 0;
+        for (let t = fromTier; t < toTier; t++) {
+          const cost = CONVERGENCE_FUSION_GOLD_GP[t];
+          if (cost === null) return null;
+          total += cost;
+        }
+        return total;
+      }
+      case 'convergence-transfer': {
+        const cls = classification as 3 | 4;
+        if (cls !== 4 || toTier < 1) return null;
+        const cost = CONVERGENCE_TRANSFER_GOLD_GP[cls][toTier - 1];
+        return cost ?? null;
+      }
+      default:
+        return null;
+    }
+  } catch {
+    return null;
+  }
+}
 
 const MyTierProjectsPage = () => {
   const { t } = useTranslation();
@@ -36,10 +93,21 @@ const MyTierProjectsPage = () => {
 
   const [entryFrom, setEntryFrom] = useState('');
   const [entryTo, setEntryTo] = useState('');
+  const [entryMethod, setEntryMethod] = useState('');
+  const [entryClassification, setEntryClassification] = useState('4');
   const [entryNotes, setEntryNotes] = useState('');
   const [pendingItems, setPendingItems] = useState<TierProjectItem[]>([]);
   const [itemName, setItemName] = useState('');
   const [itemCost, setItemCost] = useState('');
+
+  const estimatedCost = useMemo(() => {
+    if (!entryFrom || !entryTo || !entryMethod || !entryClassification) return null;
+    const from = Number(entryFrom);
+    const to = Number(entryTo);
+    const cls = Number(entryClassification);
+    if (from >= to) return null;
+    return computeMethodCost(entryMethod, cls, from, to);
+  }, [entryFrom, entryTo, entryMethod, entryClassification]);
 
   useEffect(() => {
     dispatch(startFetchUserProjects());
@@ -108,6 +176,14 @@ const MyTierProjectsPage = () => {
     setPendingItems(pendingItems.filter((_, i) => i !== index));
   };
 
+  const handleAddMethodCost = () => {
+    if (estimatedCost === null || !entryMethod) return;
+    const methodLabel = translate(entryMethod);
+    const label = `${methodLabel} (${entryFrom}→${entryTo})`;
+    setPendingItems([...pendingItems, { name: label, costGp: estimatedCost }]);
+    toast.success(`${label}: ${formatGp(estimatedCost)} gp`);
+  };
+
   const handleSaveEntry = async () => {
     if (!entryFrom || !entryTo || pendingItems.length === 0) {
       toast.error(translate('fillAllFields'));
@@ -119,11 +195,15 @@ const MyTierProjectsPage = () => {
       toTier: Number(entryTo),
       items: pendingItems,
       notes: entryNotes.trim(),
+      method: entryMethod || undefined,
+      classification: entryClassification ? Number(entryClassification) : undefined,
     }));
     if (result.ok) {
       toast.success(translate('entryAdded'));
       setEntryFrom('');
       setEntryTo('');
+      setEntryMethod('');
+      setEntryClassification('4');
       setEntryNotes('');
       setPendingItems([]);
     } else {
@@ -197,6 +277,11 @@ const MyTierProjectsPage = () => {
                     <p className='font-medium'>
                       Tier {entry.fromTier} → Tier {entry.toTier}
                     </p>
+                    {entry.method && (
+                      <p className='text-xs text-muted-foreground'>
+                        {translate(entry.method)}{entry.classification ? ` · ${translate('classification')} ${entry.classification}` : ''}
+                      </p>
+                    )}
                     {entry.items.map((item, idx) => (
                       <p key={idx} className='text-muted-foreground'>
                         {item.name} — {item.costGp.toLocaleString()} gp
@@ -244,6 +329,45 @@ const MyTierProjectsPage = () => {
                 </Select>
               </div>
             </div>
+
+            <div className='grid grid-cols-2 gap-4'>
+              <div className='space-y-2'>
+                <Label>{translate('method')}</Label>
+                <Select value={entryMethod} onValueChange={setEntryMethod}>
+                  <SelectTrigger><SelectValue placeholder='Select method' /></SelectTrigger>
+                  <SelectContent>
+                    {METHODS.map((m) => (
+                      <SelectItem key={m} value={m}>{translate(m)}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <div className='space-y-2'>
+                <Label>{translate('classification')}</Label>
+                <Select value={entryClassification} onValueChange={setEntryClassification}>
+                  <SelectTrigger><SelectValue placeholder='4' /></SelectTrigger>
+                  <SelectContent>
+                    {CLASSIFICATIONS.map((c) => (
+                      <SelectItem key={c} value={String(c)}>{c}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+
+            {estimatedCost !== null && (
+              <div className='flex items-center justify-between rounded-lg border p-3'>
+                <div className='flex items-center gap-2'>
+                  <Coins className='size-4 text-yellow-500' />
+                  <span className='text-sm font-medium'>{translate('estimatedCost')}:</span>
+                  <span className='text-sm font-bold tabular-nums'>{formatGp(estimatedCost)} gp</span>
+                </div>
+                <Button type='button' variant='outline' size='sm' onClick={handleAddMethodCost} className='gap-1.5'>
+                  <Plus className='size-3.5' />
+                  {translate('addCostToItems')}
+                </Button>
+              </div>
+            )}
 
             <div className='space-y-2'>
               <Label>{translate('items')}</Label>

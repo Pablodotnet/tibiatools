@@ -38,6 +38,8 @@ function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntr
       ? items.map((i) => ({ name: i.name as string, costGp: i.costGp as number }))
       : [{ name: (data.itemsUsed as string) || '', costGp: (data.costGp as number) || 0 }],
     notes: data.notes as string,
+    method: data.method as string | undefined,
+    classification: data.classification as number | undefined,
     createdAt: (data.createdAt as Timestamp).toDate(),
   };
 }
@@ -114,6 +116,8 @@ export async function addEntry(
     toTier: number;
     items: Array<{ name: string; costGp: number }>;
     notes: string;
+    method?: string;
+    classification?: number;
   },
 ): Promise<string> {
   const docRef = await addDoc(

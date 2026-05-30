@@ -22,6 +22,8 @@ export interface TierProjectEntry {
   toTier: number;
   items: TierProjectItem[];
   notes: string;
+  method?: string;
+  classification?: number;
   createdAt: Date;
 }
 
@@ -36,4 +38,6 @@ export interface TierProjectEntryFormData {
   toTier: number;
   items: TierProjectItem[];
   notes: string;
+  method?: string;
+  classification?: number;
 }
