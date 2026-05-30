@@ -16,8 +16,10 @@ import {
   type ConvergenceFusionResult,
 } from '@/helpers/exaltationForge';
 import { ResultRow } from './result-row';
+import { useTranslation } from 'react-i18next';
 
 export function ConvergenceFusionCalculator() {
+  const { t } = useTranslation();
   const [currentTier, setCurrentTier] = useState('0');
   const [item1Value, setItem1Value] = useState('0');
   const [item2Value, setItem2Value] = useState('0');
@@ -41,35 +43,20 @@ export function ConvergenceFusionCalculator() {
     <div className='max-w-lg space-y-5 font-sans text-sm text-slate-900 dark:text-slate-100'>
       <div className='rounded-md border-2 border-blue-800 bg-sky-100 p-4 dark:border-sky-600 dark:bg-sky-950/40'>
         <h2 className='mb-2 font-semibold text-orange-600 dark:text-orange-400'>
-          &gt;&gt; How Convergence Fusion works
+          &gt;&gt; {t("exaltationForge.convergenceFusionHelp")}
         </h2>
         <ul className='list-disc space-y-1 pl-5 text-blue-950 dark:text-sky-100'>
-          <li>
-            Available for <strong>Classification 4 items only</strong>.
-          </li>
-          <li>
-            Fuse two different items of the same <strong>body slot</strong> at
-            the same tier (e.g. two tier-3 class-4 armors) — they don't have to
-            be identical items.
-          </li>
-          <li>
-            <strong>Guaranteed success</strong> — no RNG, no bonus effects, no
-            tier loss.
-          </li>
-          <li>
-            Costs <strong>130 Dust</strong> per fusion (vs 100 for regular
-            fusion).
-          </li>
-          <li>
-            Item 2 is always <strong>consumed</strong>. Result is item 1 at
-            current tier + 1.
-          </li>
+          <li>{t("exaltationForge.convergenceFusionHelp1")}</li>
+          <li>{t("exaltationForge.convergenceFusionHelp2")}</li>
+          <li>{t("exaltationForge.convergenceFusionHelp3")}</li>
+          <li>{t("exaltationForge.convergenceFusionHelp4")}</li>
+          <li>{t("exaltationForge.convergenceFusionHelp5")}</li>
         </ul>
       </div>
 
       <div className='grid max-w-md grid-cols-[1fr_auto] items-center gap-x-3 gap-y-3'>
         <Label htmlFor='cf-tier' className='justify-self-end text-right'>
-          Current tier of both items
+          {t("exaltationForge.currentTier")}
         </Label>
         <Input
           id='cf-tier'
@@ -82,7 +69,7 @@ export function ConvergenceFusionCalculator() {
         />
 
         <Label htmlFor='cf-item1' className='justify-self-end text-right'>
-          Item 1 value (gp)
+          {t("exaltationForge.item1Cost")}
         </Label>
         <Input
           id='cf-item1'
@@ -93,8 +80,7 @@ export function ConvergenceFusionCalculator() {
         />
 
         <Label htmlFor='cf-item2' className='justify-self-end text-right'>
-          Item 2 value (gp){' '}
-          <span className='text-muted-foreground'>(consumed)</span>
+          {t("exaltationForge.item2Cost")}
         </Label>
         <Input
           id='cf-item2'
@@ -105,7 +91,7 @@ export function ConvergenceFusionCalculator() {
         />
 
         <Label htmlFor='cf-tc' className='justify-self-end text-right'>
-          Tibia Coin value (gp)
+          {t("exaltationForge.tibiaCoinValue")}
         </Label>
         <Input
           id='cf-tc'
@@ -116,7 +102,7 @@ export function ConvergenceFusionCalculator() {
         />
 
         <Label htmlFor='cf-mxn' className='justify-self-end text-right'>
-          Price of 250 TC (MXN)
+          {t("exaltationForge.priceOf250Tc")}
         </Label>
         <Input
           id='cf-mxn'
@@ -133,14 +119,14 @@ export function ConvergenceFusionCalculator() {
           className='rounded-md bg-blue-900 px-8 font-bold text-white hover:bg-blue-950 dark:bg-blue-800 dark:hover:bg-blue-900'
           onClick={handleCalculate}
         >
-          Calculate
+          {t("exaltationForge.calculate")}
         </Button>
       </div>
 
       {result && (
         <div className='overflow-hidden rounded-md border border-blue-900/40'>
           <div className='bg-blue-900 px-3 py-2 text-center text-sm font-semibold text-white dark:bg-blue-950'>
-            Convergence Fusion Result
+            {t("exaltationForge.convergenceFusionResult")}
           </div>
           {!result.isValid ? (
             <p className='p-3 text-sm text-red-600 dark:text-red-400'>
@@ -149,32 +135,38 @@ export function ConvergenceFusionCalculator() {
           ) : (
             <>
               <ResultRow
-                label='Tier step'
+                label={t("exaltationForge.tierStep")}
                 value={TIER_LABELS[result.currentTier]}
               />
               <ResultRow
-                label='Forge gold fee'
+                label={t("exaltationForge.forgeGoldFee")}
                 value={`${formatGp(result.goldFee!)} gp`}
               />
               <ResultRow
-                label='Item 1 cost'
+                label={t("exaltationForge.item1Cost")}
                 value={`${formatGp(result.item1CostGp)} gp`}
               />
               <ResultRow
-                label='Item 2 cost (consumed)'
+                label={t("exaltationForge.item2Cost")}
                 value={`${formatGp(result.item2CostGp)} gp`}
               />
-              <ResultRow label='Dust required' value='130 Dust' />
               <ResultRow
-                label='Total cost (gp)'
+                label={t("exaltationForge.dustRequired")}
+                value="130 Dust"
+              />
+              <ResultRow
+                label={t("exaltationForge.totalCost")}
                 value={`${formatGp(result.totalGp!)} gp`}
                 highlight
               />
               <ResultRow
-                label='≈ Tibia Coins'
+                label={`≈ ${t("exaltationForge.tibiaCoins")}`}
                 value={`${formatTc(result.tibiaCoins)} TC`}
               />
-              <ResultRow label='≈ MXN' value={`MX$ ${formatMxn(result.mxn)}`} />
+              <ResultRow
+                label={`≈ ${t("exaltationForge.realMoney")}`}
+                value={`MX$ ${formatMxn(result.mxn)}`}
+              />
             </>
           )}
         </div>

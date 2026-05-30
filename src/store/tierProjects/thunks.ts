@@ -97,7 +97,7 @@ export const startFetchEntries = (projectId: string) => async (dispatch: AppDisp
   }
 };
 
-export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; items: Array<{ name: string; costGp: number; marketPriceGp?: number }>; notes: string; method?: string; classification?: number; exaltedCores?: number; exaltedCorePriceGp?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
+export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; items: Array<{ name: string; costGp: number; marketPriceGp?: number }>; notes: string; method?: string; classification?: number; exaltedCores?: number; exaltedCorePriceGp?: number; dust?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
   try {
     const entryId = await api.addEntry(projectId, data);
     const entryTotal = data.items.reduce((sum, i) => sum + i.costGp, 0);
@@ -136,7 +136,7 @@ export const startDeleteEntry = (projectId: string, entryId: string) => async (d
   }
 };
 
-export const startUpdateEntry = (projectId: string, entryId: string, data: { fromTier?: number; toTier?: number; items?: Array<{ name: string; costGp: number; marketPriceGp?: number }>; notes?: string; method?: string; classification?: number; exaltedCores?: number; exaltedCorePriceGp?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
+export const startUpdateEntry = (projectId: string, entryId: string, data: { fromTier?: number; toTier?: number; items?: Array<{ name: string; costGp: number; marketPriceGp?: number }>; notes?: string; method?: string; classification?: number; exaltedCores?: number; exaltedCorePriceGp?: number; dust?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
   try {
     await api.updateEntry(projectId, entryId, data);
     dispatch(updateEntryInStore({ projectId, entryId, changes: data }));

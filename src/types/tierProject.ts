@@ -28,6 +28,7 @@ export interface TierProjectEntry {
   classification?: number;
   exaltedCores?: number;
   exaltedCorePriceGp?: number;
+  dust?: number;
   createdAt: Date;
 }
 
@@ -45,4 +46,5 @@ export interface TierProjectEntryFormData {
   method?: string;
   classification?: number;
   exaltedCores?: number;
+  dust?: number;
 }

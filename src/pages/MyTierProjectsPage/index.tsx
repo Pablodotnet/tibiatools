@@ -118,6 +118,7 @@ const MyTierProjectsPage = () => {
   const [itemMarketPrice, setItemMarketPrice] = useState('');
   const [entryCores, setEntryCores] = useState('');
   const [entryCorePrice, setEntryCorePrice] = useState('');
+  const [entryDust, setEntryDust] = useState('');
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
 
   const estimatedCost = useMemo(() => {
@@ -328,6 +329,7 @@ const MyTierProjectsPage = () => {
     setPendingItems(entry.items.map((i) => ({ ...i })));
     setEntryCores(entry.exaltedCores ? String(entry.exaltedCores) : '');
     setEntryCorePrice(entry.exaltedCorePriceGp ? String(entry.exaltedCorePriceGp) : '');
+    setEntryDust(entry.dust ? String(entry.dust) : '');
   };
 
   const handleCancelEdit = () => {
@@ -350,6 +352,7 @@ const MyTierProjectsPage = () => {
       classification: entryClassification ? Number(entryClassification) : undefined,
       exaltedCores: entryCores ? Number(entryCores) : undefined,
       exaltedCorePriceGp: entryCorePrice ? Number(entryCorePrice) : undefined,
+      dust: entryDust ? Number(entryDust) : undefined,
     };
     if (editingEntryId) {
       const result = await dispatch(startUpdateEntry(selectedProject.id, editingEntryId, entryData));
@@ -380,6 +383,7 @@ const MyTierProjectsPage = () => {
     setPendingItems([]);
     setEntryCores('');
     setEntryCorePrice('');
+    setEntryDust('');
   };
 
   const handleConfirmDeleteEntry = async () => {
@@ -562,7 +566,7 @@ const MyTierProjectsPage = () => {
                     {entry.method && (
                       <p className='text-xs text-muted-foreground'>
                         {translate(entry.method)}{entry.classification ? ` · ${translate('classification')} ${entry.classification}` : ''}
-                        {entry.exaltedCores ? ` · ${entry.exaltedCores} cores${entry.exaltedCorePriceGp ? ` @ ${formatGp(entry.exaltedCorePriceGp)} gp` : ''}` : ''}
+                        {entry.exaltedCores ? ` · ${entry.exaltedCores} cores${entry.exaltedCorePriceGp ? ` @ ${formatGp(entry.exaltedCorePriceGp)} gp` : ''}` : ''}{entry.dust ? ` · ${entry.dust} dust` : ''}
                       </p>
                     )}
                     {entry.items.map((item, idx) => (
@@ -680,6 +684,10 @@ const MyTierProjectsPage = () => {
                     </Button>
                   </div>
                 )}
+              </div>
+              <div className='space-y-2'>
+                <Label>{translate('dustRequired')}</Label>
+                <Input type='number' min={0} placeholder='Count' value={entryDust} onChange={(e) => setEntryDust(e.target.value)} />
               </div>
             </div>
 

@@ -15,8 +15,10 @@ import {
   type ConvergenceTransferResult,
 } from '@/helpers/exaltationForge';
 import { ResultRow } from './result-row';
+import { useTranslation } from 'react-i18next';
 
 export function ConvergenceTransferCalculator() {
+  const { t } = useTranslation();
   const [sourceTier, setSourceTier] = useState('1');
   const [sourceItemValue, setSourceItemValue] = useState('0');
   const [targetItemValue, setTargetItemValue] = useState('0');
@@ -42,33 +44,20 @@ export function ConvergenceTransferCalculator() {
     <div className='max-w-lg space-y-5 font-sans text-sm text-slate-900 dark:text-slate-100'>
       <div className='rounded-md border-2 border-blue-800 bg-sky-100 p-4 dark:border-sky-600 dark:bg-sky-950/40'>
         <h2 className='mb-2 font-semibold text-orange-600 dark:text-orange-400'>
-          &gt;&gt; How Convergence Transfer works
+          &gt;&gt; {t("exaltationForge.convergenceTransferHelp")}
         </h2>
         <ul className='list-disc space-y-1 pl-5 text-blue-950 dark:text-sky-100'>
-          <li>
-            Available for <strong>Classification 4 items only</strong>.
-          </li>
-          <li>
-            Transfers a tier with <strong>no tier loss</strong> — target
-            receives the <strong>same</strong> tier as the source (unlike
-            regular transfer which gives tier-1).
-          </li>
-          <li>
-            Allows transferring between <strong>different body slots</strong>{' '}
-            (e.g. Falcon Wand → Sanguine Legs).
-          </li>
-          <li>
-            Source item is <strong>destroyed</strong>. Target must be at tier 0.
-          </li>
-          <li>
-            Costs <strong>160 Dust</strong> + Exalted Cores + Gold.
-          </li>
+          <li>{t("exaltationForge.convergenceTransferHelp1")}</li>
+          <li>{t("exaltationForge.convergenceTransferHelp2")}</li>
+          <li>{t("exaltationForge.convergenceTransferHelp3")}</li>
+          <li>{t("exaltationForge.convergenceTransferHelp4")}</li>
+          <li>{t("exaltationForge.convergenceTransferHelp5")}</li>
         </ul>
       </div>
 
       <div className='grid max-w-md grid-cols-[1fr_auto] items-center gap-x-3 gap-y-3'>
         <Label htmlFor='ct-tier' className='justify-self-end text-right'>
-          Source item tier
+          {t("exaltationForge.sourceItemTier")}
         </Label>
         <Input
           id='ct-tier'
@@ -81,7 +70,7 @@ export function ConvergenceTransferCalculator() {
         />
 
         <Label htmlFor='ct-src-val' className='justify-self-end text-right'>
-          Source item value (gp)
+          {t("exaltationForge.sourceItemValue")}
         </Label>
         <Input
           id='ct-src-val'
@@ -92,7 +81,7 @@ export function ConvergenceTransferCalculator() {
         />
 
         <Label htmlFor='ct-tgt-val' className='justify-self-end text-right'>
-          Target item value (gp)
+          {t("exaltationForge.targetItemValue")}
         </Label>
         <Input
           id='ct-tgt-val'
@@ -103,7 +92,7 @@ export function ConvergenceTransferCalculator() {
         />
 
         <Label htmlFor='ct-core-val' className='justify-self-end text-right'>
-          Exalted Core value (gp)
+          {t("exaltationForge.exaltedCoreValue")}
         </Label>
         <Input
           id='ct-core-val'
@@ -114,7 +103,7 @@ export function ConvergenceTransferCalculator() {
         />
 
         <Label htmlFor='ct-tc' className='justify-self-end text-right'>
-          Tibia Coin value (gp)
+          {t("exaltationForge.tibiaCoinValue")}
         </Label>
         <Input
           id='ct-tc'
@@ -125,7 +114,7 @@ export function ConvergenceTransferCalculator() {
         />
 
         <Label htmlFor='ct-mxn' className='justify-self-end text-right'>
-          Price of 250 TC (MXN)
+          {t("exaltationForge.priceOf250Tc")}
         </Label>
         <Input
           id='ct-mxn'
@@ -142,14 +131,14 @@ export function ConvergenceTransferCalculator() {
           className='rounded-md bg-blue-900 px-8 font-bold text-white hover:bg-blue-950 dark:bg-blue-800 dark:hover:bg-blue-900'
           onClick={handleCalculate}
         >
-          Calculate
+          {t("exaltationForge.calculate")}
         </Button>
       </div>
 
       {result && (
         <div className='overflow-hidden rounded-md border border-blue-900/40'>
           <div className='bg-blue-900 px-3 py-2 text-center text-sm font-semibold text-white dark:bg-blue-950'>
-            Convergence Transfer Result
+            {t("exaltationForge.convergenceTransferResult")}
           </div>
           {!result.isValid ? (
             <p className='p-3 text-sm text-red-600 dark:text-red-400'>
@@ -158,36 +147,42 @@ export function ConvergenceTransferCalculator() {
           ) : (
             <>
               <ResultRow
-                label='Resulting tier on target'
-                value={`Tier ${result.resultingTier} (no tier loss!)`}
+                label={t("exaltationForge.resultingTier")}
+                value={t("exaltationForge.resultingTierNoLoss").replace("{{tier}}", String(result.resultingTier))}
               />
               <ResultRow
-                label='Forge gold fee'
+                label={t("exaltationForge.forgeGoldFee")}
                 value={`${formatGp(result.goldFee!)} gp`}
               />
               <ResultRow
-                label='Exalted Cores required'
+                label={t("exaltationForge.exaltedCoresRequired")}
                 value={`${result.coresRequired} cores (${formatGp(result.coreCostGp)} gp)`}
               />
               <ResultRow
-                label='Source item cost'
+                label={t("exaltationForge.sourceItemCost")}
                 value={`${formatGp(result.sourceItemCostGp)} gp`}
               />
               <ResultRow
-                label='Target item cost'
+                label={t("exaltationForge.targetItemCost")}
                 value={`${formatGp(result.targetItemCostGp)} gp`}
               />
-              <ResultRow label='Dust required' value='160 Dust' />
               <ResultRow
-                label='Total cost (gp)'
+                label={t("exaltationForge.dustRequired")}
+                value="160 Dust"
+              />
+              <ResultRow
+                label={t("exaltationForge.totalCost")}
                 value={`${formatGp(result.totalGp!)} gp`}
                 highlight
               />
               <ResultRow
-                label='≈ Tibia Coins'
+                label={`≈ ${t("exaltationForge.tibiaCoins")}`}
                 value={`${formatTc(result.tibiaCoins)} TC`}
               />
-              <ResultRow label='≈ MXN' value={`MX$ ${formatMxn(result.mxn)}`} />
+              <ResultRow
+                label={`≈ ${t("exaltationForge.realMoney")}`}
+                value={`MX$ ${formatMxn(result.mxn)}`}
+              />
             </>
           )}
         </div>

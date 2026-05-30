@@ -38,17 +38,20 @@ import {
   startAddEntry,
 } from "@/store/tierProjects";
 import type { TierProject } from "@/types/tierProject";
+import { useTranslation } from "react-i18next";
 
 function ScenarioBlock({
   label,
   scenario,
   coresDecimals,
   visibleTierRows,
+  t,
 }: {
   label: string;
   scenario: ScenarioSnapshot;
   coresDecimals: number;
   visibleTierRows: number;
+  t: (key: string) => string;
 }) {
   return (
     <div className="flex min-w-0 flex-1 flex-col border border-blue-300/80 dark:border-slate-600">
@@ -62,7 +65,7 @@ function ScenarioBlock({
           MX$ {formatMxn(scenario.mxn)}
         </div>
         <div className="text-muted-foreground text-[11px]">
-          Cores:{" "}
+          {t("exaltationForge.cores")}:{" "}
           {scenario.exaltedCoresUsed.toLocaleString("de-DE", {
             minimumFractionDigits: coresDecimals,
             maximumFractionDigits: coresDecimals,
@@ -74,16 +77,16 @@ function ScenarioBlock({
           <thead>
             <tr className="bg-blue-900 text-white dark:bg-blue-950">
               <th className="border border-blue-800 px-0.5 py-1 font-semibold">
-                Tier
+                {t("exaltationForge.tier")}
               </th>
               <th className="border border-blue-800 px-0.5 py-1 font-semibold">
-                Successes
+                {t("exaltationForge.successes")}
               </th>
               <th className="border border-blue-800 px-0.5 py-1 font-semibold">
-                Failures
+                {t("exaltationForge.failures")}
               </th>
               <th className="border border-blue-800 px-0.5 py-1 font-semibold">
-                Saved
+                {t("exaltationForge.saved")}
               </th>
             </tr>
           </thead>
@@ -94,7 +97,7 @@ function ScenarioBlock({
                   colSpan={4}
                   className="border border-blue-200/80 py-2 text-muted-foreground dark:border-slate-700"
                 >
-                  No fusion steps for target tier 0.
+                  {t("exaltationForge.noFusionSteps")}
                 </td>
               </tr>
             ) : (
@@ -136,43 +139,44 @@ function ScenarioBlock({
 function SimulationResultsDashboard({
   snapshot,
   visibleTierRows,
+  t,
 }: {
   snapshot: MonteCarloForgeResult;
   visibleTierRows: number;
+  t: (key: string) => string;
 }) {
   const n = snapshot.runCount.toLocaleString("de-DE");
   const rows = Math.min(Math.max(visibleTierRows, 0), 10);
   return (
     <div className="overflow-x-auto rounded-md border border-blue-900/40">
       <div className="bg-blue-900 px-3 py-2 text-center text-sm font-semibold text-white md:text-base dark:bg-blue-950">
-        Result of {n} simulations
+        {t("exaltationForge.resultOfSimulations").replace("{{count}}", n)}
       </div>
       <div className="flex flex-col gap-0 md:flex-row md:items-stretch">
         <ScenarioBlock
-          label="Best case scenario"
+          label={t("exaltationForge.bestCase")}
           scenario={snapshot.best}
           coresDecimals={0}
           visibleTierRows={rows}
+          t={t}
         />
         <ScenarioBlock
-          label="Average"
+          label={t("exaltationForge.averageCase")}
           scenario={snapshot.average}
           coresDecimals={1}
           visibleTierRows={rows}
+          t={t}
         />
         <ScenarioBlock
-          label="Worst case scenario"
+          label={t("exaltationForge.worstCase")}
           scenario={snapshot.worst}
           coresDecimals={0}
           visibleTierRows={rows}
+          t={t}
         />
       </div>
       <p className="border-t border-blue-200 bg-sky-50/80 px-3 py-2 text-[11px] text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">
-        Each run simulates fusions until one item reaches your desired tier.
-        Success chance is 50% (65% with &quot;Use Exalted Core 1&quot;). On
-        failure, one item may lose a tier unless &quot;Use Exalted Core 2&quot;
-        avoids it (50% chance). Extra items are bought at your item price when
-        needed.
+        {t("exaltationForge.simulationNote")}
       </p>
     </div>
   );
@@ -212,6 +216,7 @@ export function ExaltationForgeSimulator() {
   const workerRef = useRef<Worker | null>(null);
   const [showImportDialog, setShowImportDialog] = useState(false);
   const [importProjectId, setImportProjectId] = useState("");
+  const { t } = useTranslation();
 
   const classNum = Number(classification) as 1 | 2 | 3 | 4;
 
@@ -245,7 +250,7 @@ export function ExaltationForgeSimulator() {
     };
     const res = await dispatch(startAddEntry(importProjectId, entryData));
     if (res.ok) {
-      toast.success('Simulation imported to project');
+      toast.success(t("exaltationForge.importSuccess"));
       setShowImportDialog(false);
       setImportProjectId("");
     } else {
@@ -301,9 +306,7 @@ export function ExaltationForgeSimulator() {
       const mc = e.data;
       if (mc === null) {
         setSimulation(null);
-        setSimulationError(
-          "Simulation could not run: missing forge gold for this classification at one or more tier steps.",
-        );
+        setSimulationError(t("exaltationForge.simErrorMissingGold"));
       } else {
         setSimulation(mc);
       }
@@ -325,40 +328,31 @@ export function ExaltationForgeSimulator() {
     <div className="max-w-4xl space-y-6 font-sans text-sm text-slate-900 dark:text-slate-100">
       <div className="rounded-md border-2 border-blue-800 bg-sky-100 p-4 dark:border-sky-600 dark:bg-sky-950/40">
         <h2 className="mb-2 font-semibold text-orange-600 dark:text-orange-400">
-          &gt;&gt; How to use this tool?
+          &gt;&gt; {t("exaltationForge.howToUse")}
         </h2>
         <p className="mb-3 text-blue-950 dark:text-sky-100">
-          Use this tool to estimate the cost of forging an item up to a certain
-          tier (regular fusion gold from the wiki, plus item and Exalted Core
-          prices you provide).
+          {t("exaltationForge.howToUseDesc")}
         </p>
         <ol className="list-decimal space-y-2 pl-5 text-blue-950 dark:text-sky-100">
           <li>
-            <span className="font-medium">Fill in the information:</span>
+            <span className="font-medium">{t("exaltationForge.fusionHelp1")}</span>
             <ul className="mt-1 list-disc pl-5">
-              <li>Desired tier</li>
-              <li>Item classification (1–4)</li>
-              <li>Value (price) of the item used in the forge (gp)</li>
-              <li>Value of the Exalted Core (gp)</li>
-              <li>Value of one Tibia Coin (gp)</li>
-              <li>Price of 250 Tibia Coins (MXN)</li>
+              <li>{t("exaltationForge.fusionHelp1a")}</li>
+              <li>{t("exaltationForge.fusionHelp1b")}</li>
+              <li>{t("exaltationForge.fusionHelp1c")}</li>
+              <li>{t("exaltationForge.fusionHelp1d")}</li>
+              <li>{t("exaltationForge.fusionHelp1e")}</li>
+              <li>{t("exaltationForge.fusionHelp1f")}</li>
             </ul>
           </li>
-          <li>
-            In the tier table, choose in which fusions you plan to use
-            Exalted Cores (e.g. success rate / tier-loss mitigation).
-          </li>
-          <li>
-            Click <strong>Calculate</strong> to run 10,000 random simulations and
-            see best, average, and worst total cost (plus per-tier successes,
-            failures, and saves).
-          </li>
+          <li>{t("exaltationForge.fusionHelp2")}</li>
+          <li>{t("exaltationForge.fusionHelp3")}</li>
         </ol>
       </div>
 
       <div className="grid max-w-md grid-cols-[1fr_auto] items-center gap-x-3 gap-y-3">
         <Label htmlFor="desired-tier" className="justify-self-end text-right">
-          Desired tier
+          {t("exaltationForge.desiredTier")}
         </Label>
         <Input
           id="desired-tier"
@@ -370,7 +364,7 @@ export function ExaltationForgeSimulator() {
           onChange={(e) => setDesiredTier(e.target.value)}
         />
 
-        <Label className="justify-self-end text-right">Item classification</Label>
+        <Label className="justify-self-end text-right">{t("exaltationForge.itemClassification")}</Label>
         <Select
           value={classification}
           onValueChange={(v) => setClassification(v as "1" | "2" | "3" | "4")}
@@ -387,7 +381,7 @@ export function ExaltationForgeSimulator() {
         </Select>
 
         <Label htmlFor="item-val" className="justify-self-end text-right">
-          Item value (gp)
+          {t("exaltationForge.itemValue")}
         </Label>
         <Input
           id="item-val"
@@ -398,7 +392,7 @@ export function ExaltationForgeSimulator() {
         />
 
         <Label htmlFor="core-val" className="justify-self-end text-right">
-          Exalted Core value (gp)
+          {t("exaltationForge.exaltedCoreValue")}
         </Label>
         <Input
           id="core-val"
@@ -409,7 +403,7 @@ export function ExaltationForgeSimulator() {
         />
 
         <Label htmlFor="tc-gp" className="justify-self-end text-right">
-          Tibia Coin value (gp)
+          {t("exaltationForge.tibiaCoinValue")}
         </Label>
         <Input
           id="tc-gp"
@@ -420,7 +414,7 @@ export function ExaltationForgeSimulator() {
         />
 
         <Label htmlFor="mxn-250" className="justify-self-end text-right">
-          Price of 250 Tibia Coins (MXN)
+          {t("exaltationForge.priceOf250Tc")}
         </Label>
         <Input
           id="mxn-250"
@@ -436,25 +430,25 @@ export function ExaltationForgeSimulator() {
           <thead>
             <tr className="bg-blue-900 text-white dark:bg-blue-950">
               <th className="border border-blue-800 px-1 py-2 font-semibold">
-                Tier
+                {t("exaltationForge.tier")}
               </th>
               <th className="border border-blue-800 px-1 py-2 font-semibold">
-                Use Exalted Core 1
+                {t("exaltationForge.useCore1")}
               </th>
               <th className="border border-blue-800 px-1 py-2 font-semibold">
-                Use Exalted Core 2
+                {t("exaltationForge.useCore2")}
               </th>
               <th className="border border-blue-800 px-1 py-2 font-semibold">
-                Forge gold (Class 1)
+                {t("exaltationForge.forgeGoldClass1")}
               </th>
               <th className="border border-blue-800 px-1 py-2 font-semibold">
-                Forge gold (Class 2)
+                {t("exaltationForge.forgeGoldClass2")}
               </th>
               <th className="border border-blue-800 px-1 py-2 font-semibold">
-                Forge gold (Class 3)
+                {t("exaltationForge.forgeGoldClass3")}
               </th>
               <th className="border border-blue-800 px-1 py-2 font-semibold">
-                Forge gold (Class 4)
+                {t("exaltationForge.forgeGoldClass4")}
               </th>
             </tr>
           </thead>
@@ -534,10 +528,7 @@ export function ExaltationForgeSimulator() {
       </div>
 
       <p className="text-muted-foreground text-xs">
-        Forge gold values follow Tibia Wiki (
-        <span className="whitespace-nowrap">Equipment Upgrade → Fusion</span>
-        ). Class 4 amounts are editable if you want to model other costs.
-        Totals use the column that matches your classification.
+        {t("exaltationForge.forgeGoldNote")}
       </p>
 
       <div className="flex justify-end">
@@ -550,10 +541,10 @@ export function ExaltationForgeSimulator() {
           {calculating ? (
             <span className="flex items-center gap-2">
               <span className="inline-block size-4 animate-spin rounded-full border-2 border-white border-t-transparent" />
-              Calculating...
+              {t("exaltationForge.calculating")}
             </span>
           ) : (
-            "Calculate"
+            t("exaltationForge.calculate")
           )}
         </Button>
       </div>
@@ -562,12 +553,9 @@ export function ExaltationForgeSimulator() {
         <div className="space-y-4">
           {result.invalidRowIndices.length > 0 && (
             <p className="text-destructive text-sm">
-              Classification {classification} has no listed fusion gold for tier
-              step(s):{" "}
-              {result.invalidRowIndices
-                .map((i) => TIER_LABELS[i])
-                .join(", ")}
-              . Deterministic totals skip those steps.
+              {t("exaltationForge.noFusionGold")
+                .replace("{{classification}}", classification)
+                .replace("{{steps}}", result.invalidRowIndices.map((i) => TIER_LABELS[i]).join(", "))}
             </p>
           )}
 
@@ -582,6 +570,7 @@ export function ExaltationForgeSimulator() {
                 Math.max(parseInt(desiredTier, 10) || 0, 0),
                 10,
               )}
+              t={t}
             />
           )}
 
@@ -593,7 +582,7 @@ export function ExaltationForgeSimulator() {
                 onClick={() => setShowImportDialog(true)}
                 className="gap-2"
               >
-                Import to Project
+                {t("exaltationForge.importToProject")}
               </Button>
             </div>
           )}
@@ -601,19 +590,19 @@ export function ExaltationForgeSimulator() {
           <AlertDialog open={showImportDialog} onOpenChange={setShowImportDialog}>
             <AlertDialogContent>
               <AlertDialogHeader>
-                <AlertDialogTitle>Import to Tier Project</AlertDialogTitle>
+                <AlertDialogTitle>{t("exaltationForge.importDialogTitle")}</AlertDialogTitle>
                 <AlertDialogDescription>
-                  Select a project to add this simulation as a new entry.
+                  {t("exaltationForge.importDialogDesc")}
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <div className="py-4">
                 <Select value={importProjectId} onValueChange={setImportProjectId}>
                   <SelectTrigger>
-                    <SelectValue placeholder="Select a project..." />
+                    <SelectValue placeholder={t("exaltationForge.importDialogSelect")} />
                   </SelectTrigger>
                   <SelectContent>
                     {projects.length === 0 && (
-                      <SelectItem value="" disabled>No projects found</SelectItem>
+                      <SelectItem value="" disabled>{t("exaltationForge.importDialogNoProjects")}</SelectItem>
                     )}
                     {projects.map((p: TierProject) => (
                       <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
@@ -623,10 +612,10 @@ export function ExaltationForgeSimulator() {
               </div>
               <AlertDialogFooter>
                 <AlertDialogCancel onClick={() => setImportProjectId("")}>
-                  Cancel
+                  {t("exaltationForge.importDialogCancel")}
                 </AlertDialogCancel>
                 <AlertDialogAction onClick={handleImportToProject} disabled={!importProjectId}>
-                  Import
+                  {t("exaltationForge.importDialogImport")}
                 </AlertDialogAction>
               </AlertDialogFooter>
             </AlertDialogContent>
