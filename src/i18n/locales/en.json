@@ -150,7 +150,14 @@
     "convergenceFusion": "Convergence Fusion",
     "convergenceTransfer": "Convergence Transfer",
     "estimatedCost": "Estimated cost",
-    "addCostToItems": "Add cost to items"
+    "addCostToItems": "Add cost to items",
+    "exaltedCores": "Exalted Cores used",
+    "estimatedCores": "Est. cores",
+    "editEntry": "Edit entry",
+    "updateEntry": "Update entry",
+    "cancel": "Cancel",
+    "marketPrice": "Market price (gp)",
+    "marketPriceShort": "Mkt price"
   },
   "publicTierProjects": {
     "title": "Tier Projects",
@@ -163,6 +170,7 @@
     "backToProjects": "Back to projects",
     "entries": "Entries",
     "total": "Total",
-    "noEntries": "No entries yet."
+    "noEntries": "No entries yet.",
+    "classification": "Class"
   }
 }

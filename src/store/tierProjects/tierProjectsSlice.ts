@@ -65,6 +65,15 @@ export const tierProjectsSlice = createSlice({
         state.entries[payload.projectId] = [payload.entry];
       }
     },
+    updateEntryInStore: (state, { payload }: PayloadAction<{ projectId: string; entryId: string; changes: Partial<TierProjectEntry> }>) => {
+      const projectEntries = state.entries[payload.projectId];
+      if (projectEntries) {
+        const idx = projectEntries.findIndex((e) => e.id === payload.entryId);
+        if (idx !== -1) {
+          projectEntries[idx] = { ...projectEntries[idx], ...payload.changes };
+        }
+      }
+    },
     removeEntry: (state, { payload }: PayloadAction<{ projectId: string; entryId: string }>) => {
       const existing = state.entries[payload.projectId];
       if (existing) {
@@ -87,6 +96,7 @@ export const {
   setEntriesLoading,
   setEntries,
   addEntry,
+  updateEntryInStore,
   removeEntry,
   setError,
 } = tierProjectsSlice.actions;

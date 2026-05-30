@@ -150,10 +150,12 @@ describe('tierProjects', () => {
   });
 
   describe('deleteProject', () => {
-    it('calls deleteDoc with correct ref', async () => {
+    it('deletes entries then project doc', async () => {
+      mockGetDocs.mockResolvedValue({ docs: [] });
       const { deleteProject } = await reloadModule();
       await deleteProject('proj1');
-      expect(mockDeleteDoc).toHaveBeenCalledOnce();
+      expect(mockGetDocs).toHaveBeenCalledOnce();
+      expect(mockDeleteDoc).toHaveBeenCalledTimes(1);
     });
   });
 

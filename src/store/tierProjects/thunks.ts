@@ -1,7 +1,7 @@
 import { AppDispatch, RootState } from '@/store';
 import {
   setProjectsLoading, setProjects, addProject, updateProject, removeProject,
-  setSelectedProjectId, setEntriesLoading, setEntries, addEntry, removeEntry,
+  setSelectedProjectId, setEntriesLoading, setEntries, addEntry, updateEntryInStore, removeEntry,
 } from './tierProjectsSlice';
 import * as api from '@/firebase/tierProjects';
 import type { TierProject } from '@/types/tierProject';
@@ -87,7 +87,7 @@ export const startFetchEntries = (projectId: string) => async (dispatch: AppDisp
   }
 };
 
-export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; items: Array<{ name: string; costGp: number }>; notes: string; method?: string; classification?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
+export const startAddEntry = (projectId: string, data: { fromTier: number; toTier: number; items: Array<{ name: string; costGp: number; marketPriceGp?: number }>; notes: string; method?: string; classification?: number; exaltedCores?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
   try {
     const entryId = await api.addEntry(projectId, data);
     const entryTotal = data.items.reduce((sum, i) => sum + i.costGp, 0);
@@ -99,6 +99,10 @@ export const startAddEntry = (projectId: string, data: { fromTier: number; toTie
     const project = state.tierProjects.projects.find((p) => p.id === projectId);
     const currentTotal = project?.totalSpentGp ?? 0;
     dispatch(updateProject({ id: projectId, changes: { totalSpentGp: currentTotal + entryTotal } }));
+    if (project && data.toTier > project.currentTier) {
+      await api.updateProject(projectId, { currentTier: data.toTier });
+      dispatch(updateProject({ id: projectId, changes: { currentTier: data.toTier } }));
+    }
     return { ok: true };
   } catch (e) {
     return { ok: false, error: (e as Error).message };
@@ -116,6 +120,21 @@ export const startDeleteEntry = (projectId: string, entryId: string) => async (d
     const project = state.tierProjects.projects.find((p) => p.id === projectId);
     const currentTotal = project?.totalSpentGp ?? 0;
     dispatch(updateProject({ id: projectId, changes: { totalSpentGp: Math.max(0, currentTotal - entryTotal) } }));
+    return { ok: true };
+  } catch (e) {
+    return { ok: false, error: (e as Error).message };
+  }
+};
+
+export const startUpdateEntry = (projectId: string, entryId: string, data: { fromTier?: number; toTier?: number; items?: Array<{ name: string; costGp: number; marketPriceGp?: number }>; notes?: string; method?: string; classification?: number; exaltedCores?: number }) => async (dispatch: AppDispatch, getState: () => RootState): Promise<ThunkResult> => {
+  try {
+    await api.updateEntry(projectId, entryId, data);
+    dispatch(updateEntryInStore({ projectId, entryId, changes: data }));
+    const state = getState();
+    const projectEntries = state.tierProjects.entries[projectId] ?? [];
+    const total = projectEntries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
+    await api.updateProject(projectId, { totalSpentGp: total });
+    dispatch(updateProject({ id: projectId, changes: { totalSpentGp: total } }));
     return { ok: true };
   } catch (e) {
     return { ok: false, error: (e as Error).message };

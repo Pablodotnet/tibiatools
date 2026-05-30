@@ -15,15 +15,18 @@ import {
   startSelectProject,
   startFetchEntries,
   startAddEntry,
+  startUpdateEntry,
   startDeleteEntry,
 } from '@/store/tierProjects';
-import type { TierProjectItem } from '@/types/tierProject';
-import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins } from 'lucide-react';
+import type { TierProjectItem, TierProjectEntry } from '@/types/tierProject';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil } from 'lucide-react';
 import {
   FUSION_GOLD_GP,
   TRANSFER_GOLD_GP,
+  TRANSFER_CORES,
   CONVERGENCE_FUSION_GOLD_GP,
   CONVERGENCE_TRANSFER_GOLD_GP,
+  CONVERGENCE_TRANSFER_CORES,
   formatGp,
 } from '@/helpers/exaltationForge';
 
@@ -99,6 +102,9 @@ const MyTierProjectsPage = () => {
   const [pendingItems, setPendingItems] = useState<TierProjectItem[]>([]);
   const [itemName, setItemName] = useState('');
   const [itemCost, setItemCost] = useState('');
+  const [itemMarketPrice, setItemMarketPrice] = useState('');
+  const [entryCores, setEntryCores] = useState('');
+  const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
 
   const estimatedCost = useMemo(() => {
     if (!entryFrom || !entryTo || !entryMethod || !entryClassification) return null;
@@ -108,6 +114,37 @@ const MyTierProjectsPage = () => {
     if (from >= to) return null;
     return computeMethodCost(entryMethod, cls, from, to);
   }, [entryFrom, entryTo, entryMethod, entryClassification]);
+
+  const estimatedCores = useMemo(() => {
+    if (!entryMethod || !entryFrom || !entryClassification) return null;
+    const from = Number(entryFrom);
+    const cls = Number(entryClassification);
+    if (entryMethod === 'transfer') {
+      const resultTier = from - 2;
+      if (resultTier < 0) return null;
+      const table = TRANSFER_CORES[cls as 1 | 2 | 3 | 4];
+      if (!table) return null;
+      return table[resultTier];
+    }
+    if (entryMethod === 'convergenceTransfer') {
+      const idx = from - 1;
+      if (idx < 0) return null;
+      return CONVERGENCE_TRANSFER_CORES[4][idx];
+    }
+    return null;
+  }, [entryMethod, entryFrom, entryClassification]);
+
+  const methodWarning = useMemo(() => {
+    if (!entryMethod || !entryClassification) return null;
+    const cls = Number(entryClassification);
+    if (entryMethod === 'transfer' && cls === 1) return 'Transfer not available for class 1';
+    if (entryMethod === 'transfer' && Number(entryFrom) < 2) return 'Transfer requires source tier ≥ 2';
+    if ((entryMethod === 'convergenceFusion' || entryMethod === 'convergenceTransfer') && cls !== 4)
+      return 'This method requires class 4';
+    if (estimatedCost === null && Number(entryFrom) < Number(entryTo))
+      return 'No cost data for this combination';
+    return null;
+  }, [entryMethod, entryClassification, entryFrom, entryTo, estimatedCost]);
 
   useEffect(() => {
     dispatch(startFetchUserProjects());
@@ -167,9 +204,12 @@ const MyTierProjectsPage = () => {
 
   const handleAddItem = () => {
     if (!itemName.trim() || !itemCost) return;
-    setPendingItems([...pendingItems, { name: itemName.trim(), costGp: Number(itemCost) }]);
+    const item: TierProjectItem = { name: itemName.trim(), costGp: Number(itemCost) };
+    if (itemMarketPrice) item.marketPriceGp = Number(itemMarketPrice);
+    setPendingItems([...pendingItems, item]);
     setItemName('');
     setItemCost('');
+    setItemMarketPrice('');
   };
 
   const handleRemoveItem = (index: number) => {
@@ -184,31 +224,65 @@ const MyTierProjectsPage = () => {
     toast.success(`${label}: ${formatGp(estimatedCost)} gp`);
   };
 
+  const handleEditEntry = (entry: TierProjectEntry) => {
+    setEditingEntryId(entry.id);
+    setEntryFrom(String(entry.fromTier));
+    setEntryTo(String(entry.toTier));
+    setEntryMethod(entry.method || '');
+    setEntryClassification(entry.classification ? String(entry.classification) : '4');
+    setEntryNotes(entry.notes);
+    setPendingItems(entry.items.map((i) => ({ ...i })));
+    setEntryCores(entry.exaltedCores ? String(entry.exaltedCores) : '');
+  };
+
+  const handleCancelEdit = () => {
+    setEditingEntryId(null);
+    resetEntryForm();
+  };
+
   const handleSaveEntry = async () => {
     if (!entryFrom || !entryTo || pendingItems.length === 0) {
       toast.error(translate('fillAllFields'));
       return;
     }
     if (!selectedProject) return;
-    const result = await dispatch(startAddEntry(selectedProject.id, {
+    const entryData = {
       fromTier: Number(entryFrom),
       toTier: Number(entryTo),
       items: pendingItems,
       notes: entryNotes.trim(),
       method: entryMethod || undefined,
       classification: entryClassification ? Number(entryClassification) : undefined,
-    }));
-    if (result.ok) {
-      toast.success(translate('entryAdded'));
-      setEntryFrom('');
-      setEntryTo('');
-      setEntryMethod('');
-      setEntryClassification('4');
-      setEntryNotes('');
-      setPendingItems([]);
+      exaltedCores: entryCores ? Number(entryCores) : undefined,
+    };
+    if (editingEntryId) {
+      const result = await dispatch(startUpdateEntry(selectedProject.id, editingEntryId, entryData));
+      if (result.ok) {
+        toast.success(translate('entryAdded'));
+        resetEntryForm();
+        setEditingEntryId(null);
+      } else {
+        toast.error(result.error);
+      }
     } else {
-      toast.error(result.error);
+      const result = await dispatch(startAddEntry(selectedProject.id, entryData));
+      if (result.ok) {
+        toast.success(translate('entryAdded'));
+        resetEntryForm();
+      } else {
+        toast.error(result.error);
+      }
     }
+  };
+
+  const resetEntryForm = () => {
+    setEntryFrom('');
+    setEntryTo('');
+    setEntryMethod('');
+    setEntryClassification('4');
+    setEntryNotes('');
+    setPendingItems([]);
+    setEntryCores('');
   };
 
   const handleDeleteEntry = async (entryId: string) => {
@@ -280,11 +354,13 @@ const MyTierProjectsPage = () => {
                     {entry.method && (
                       <p className='text-xs text-muted-foreground'>
                         {translate(entry.method)}{entry.classification ? ` · ${translate('classification')} ${entry.classification}` : ''}
+                        {entry.exaltedCores ? ` · ${entry.exaltedCores} cores` : ''}
                       </p>
                     )}
                     {entry.items.map((item, idx) => (
                       <p key={idx} className='text-muted-foreground'>
                         {item.name} — {item.costGp.toLocaleString()} gp
+                        {item.marketPriceGp ? <span className='text-xs ml-2'>(mkt: {item.marketPriceGp.toLocaleString()} gp)</span> : ''}
                       </p>
                     ))}
                     <p className='text-sm font-medium tabular-nums'>
@@ -292,9 +368,14 @@ const MyTierProjectsPage = () => {
                     </p>
                     {entry.notes && <p className='text-xs text-muted-foreground italic'>{entry.notes}</p>}
                   </div>
-                  <Button variant='ghost' size='icon' onClick={() => handleDeleteEntry(entry.id)} aria-label='Delete entry'>
-                    <Trash2 className='size-4 text-destructive' />
-                  </Button>
+                  <div className='flex items-center gap-1'>
+                    <Button variant='ghost' size='icon' onClick={() => handleEditEntry(entry)} aria-label='Edit entry'>
+                      <Pencil className='size-4' />
+                    </Button>
+                    <Button variant='ghost' size='icon' onClick={() => handleDeleteEntry(entry.id)} aria-label='Delete entry'>
+                      <Trash2 className='size-4 text-destructive' />
+                    </Button>
+                  </div>
                 </div>
               </div>
             ))}
@@ -306,7 +387,7 @@ const MyTierProjectsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle className='text-lg'>{translate('addEntry')}</CardTitle>
+            <CardTitle className='text-lg'>{editingEntryId ? translate('editEntry') : translate('addEntry')}</CardTitle>
           </CardHeader>
           <CardContent className='space-y-4'>
             <div className='grid grid-cols-2 gap-4'>
@@ -353,7 +434,20 @@ const MyTierProjectsPage = () => {
                   </SelectContent>
                 </Select>
               </div>
+              <div className='space-y-2'>
+                <Label>{translate('exaltedCores')}</Label>
+                <Input type='number' min={0} placeholder='0' value={entryCores} onChange={(e) => setEntryCores(e.target.value)} />
+                {estimatedCores !== null && !entryCores && (
+                  <p className='text-xs text-muted-foreground'>{translate('estimatedCores')}: {estimatedCores}</p>
+                )}
+              </div>
             </div>
+
+            {methodWarning && (
+              <div className='rounded-lg border border-yellow-300 bg-yellow-50 dark:bg-yellow-950/20 p-3 text-sm text-yellow-800 dark:text-yellow-200'>
+                {methodWarning}
+              </div>
+            )}
 
             {estimatedCost !== null && (
               <div className='flex items-center justify-between rounded-lg border p-3'>
@@ -373,11 +467,15 @@ const MyTierProjectsPage = () => {
               <Label>{translate('items')}</Label>
               <div className='flex gap-2'>
                 <Input placeholder='Item name' value={itemName} onChange={(e) => setItemName(e.target.value)} className='flex-1' />
-                <Input type='number' placeholder='Cost (gp)' value={itemCost} onChange={(e) => setItemCost(e.target.value)} className='w-36' />
+                <Input type='number' placeholder='Cost (gp)' value={itemCost} onChange={(e) => setItemCost(e.target.value)} className='w-28' />
+                <Input type='number' placeholder='Mkt price' value={itemMarketPrice} onChange={(e) => setItemMarketPrice(e.target.value)} className='w-28' />
                 <Button type='button' variant='outline' size='icon' onClick={handleAddItem} disabled={!itemName.trim() || !itemCost}>
                   <Plus className='size-4' />
                 </Button>
               </div>
+            </div>
+            <div className='flex gap-2 text-xs text-muted-foreground -mt-2'>
+              <span>{translate('marketPriceShort')} (optional)</span>
             </div>
 
             {pendingItems.length > 0 && (
@@ -402,10 +500,18 @@ const MyTierProjectsPage = () => {
               <Label>{translate('notes')}</Label>
               <Input placeholder='Optional' value={entryNotes} onChange={(e) => setEntryNotes(e.target.value)} />
             </div>
-            <Button onClick={handleSaveEntry} className='gap-2' disabled={pendingItems.length === 0}>
-              <Plus className='size-4' />
-              {translate('addEntry')}
-            </Button>
+            <div className='flex gap-2'>
+              {editingEntryId && (
+                <Button type='button' variant='outline' onClick={handleCancelEdit} className='gap-2'>
+                  <X className='size-4' />
+                  {translate('cancel')}
+                </Button>
+              )}
+              <Button onClick={handleSaveEntry} className='gap-2' disabled={pendingItems.length === 0}>
+                <Plus className='size-4' />
+                {editingEntryId ? translate('updateEntry') : translate('addEntry')}
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>

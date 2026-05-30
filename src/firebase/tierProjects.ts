@@ -38,11 +38,12 @@ function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntr
     fromTier: data.fromTier as number,
     toTier: data.toTier as number,
     items: items
-      ? items.map((i) => ({ name: i.name as string, costGp: i.costGp as number }))
+      ? items.map((i) => ({ name: i.name as string, costGp: i.costGp as number, marketPriceGp: i.marketPriceGp as number | undefined }))
       : [{ name: (data.itemsUsed as string) || '', costGp: (data.costGp as number) || 0 }],
     notes: data.notes as string,
     method: data.method as string | undefined,
     classification: data.classification as number | undefined,
+    exaltedCores: data.exaltedCores as number | undefined,
     createdAt: (data.createdAt as Timestamp).toDate(),
   };
 }
@@ -126,6 +127,8 @@ export async function updateProject(
 }
 
 export async function deleteProject(projectId: string) {
+  const entriesSnap = await getDocs(collection(FirebaseDB, 'tierProjects', projectId, 'entries'));
+  await Promise.all(entriesSnap.docs.map((d) => deleteDoc(d.ref)));
   await deleteDoc(doc(FirebaseDB, 'tierProjects', projectId));
 }
 
@@ -143,10 +146,11 @@ export async function addEntry(
   data: {
     fromTier: number;
     toTier: number;
-    items: Array<{ name: string; costGp: number }>;
+    items: Array<{ name: string; costGp: number; marketPriceGp?: number }>;
     notes: string;
     method?: string;
     classification?: number;
+    exaltedCores?: number;
   },
 ): Promise<string> {
   const docRef = await addDoc(
@@ -164,6 +168,25 @@ export async function addEntry(
     updatedAt: Timestamp.now(),
   });
   return docRef.id;
+}
+
+export async function updateEntry(
+  projectId: string,
+  entryId: string,
+  data: {
+    fromTier?: number;
+    toTier?: number;
+    items?: Array<{ name: string; costGp: number; marketPriceGp?: number }>;
+    notes?: string;
+    method?: string;
+    classification?: number;
+    exaltedCores?: number;
+  },
+) {
+  await updateDoc(doc(FirebaseDB, 'tierProjects', projectId, 'entries', entryId), {
+    ...data,
+    projectId,
+  });
 }
 
 export async function deleteEntry(projectId: string, entryId: string) {

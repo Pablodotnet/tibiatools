@@ -147,7 +147,14 @@
     "convergenceFusion": "Fusão de convergência",
     "convergenceTransfer": "Transferência de convergência",
     "estimatedCost": "Custo estimado",
-    "addCostToItems": "Adicionar custo aos itens"
+    "addCostToItems": "Adicionar custo aos itens",
+    "exaltedCores": "Exalted Cores usados",
+    "estimatedCores": "Est. cores",
+    "editEntry": "Editar entrada",
+    "updateEntry": "Atualizar entrada",
+    "cancel": "Cancelar",
+    "marketPrice": "Preço de mercado (gp)",
+    "marketPriceShort": "Preço mkt"
   },
   "publicTierProjects": {
     "title": "Projetos de Tier",
@@ -160,7 +167,8 @@
     "backToProjects": "Voltar aos projetos",
     "entries": "Entradas",
     "total": "Total",
-    "noEntries": "Nenhuma entrada ainda."
+    "noEntries": "Nenhuma entrada ainda.",
+    "classification": "Classe"
   },
   "errors": {
     "invalidStringFormat": "Formato de string inválido"

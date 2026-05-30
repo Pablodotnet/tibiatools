@@ -14,6 +14,7 @@ export interface TierProject {
 export interface TierProjectItem {
   name: string;
   costGp: number;
+  marketPriceGp?: number;
 }
 
 export interface TierProjectEntry {
@@ -25,6 +26,7 @@ export interface TierProjectEntry {
   notes: string;
   method?: string;
   classification?: number;
+  exaltedCores?: number;
   createdAt: Date;
 }
 
@@ -41,4 +43,5 @@ export interface TierProjectEntryFormData {
   notes: string;
   method?: string;
   classification?: number;
+  exaltedCores?: number;
 }
