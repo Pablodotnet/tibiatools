@@ -6,6 +6,7 @@ export interface TierProject {
   isPublic: boolean;
   ownerUid: string;
   ownerDisplayName: string;
+  totalSpentGp: number;
   createdAt: Date;
   updatedAt: Date;
 }

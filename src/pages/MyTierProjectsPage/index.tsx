@@ -459,6 +459,9 @@ const MyTierProjectsPage = () => {
                     <p className='text-sm text-muted-foreground'>
                       Target: Tier {project.targetTier} &middot; Current: Tier {project.currentTier}
                     </p>
+                    <p className='text-xs text-muted-foreground tabular-nums'>
+                      Total spent: {project.totalSpentGp.toLocaleString()} gp
+                    </p>
                   </div>
                   <div className='flex items-center gap-2' onClick={(e) => e.stopPropagation()}>
                     <Button variant='ghost' size='icon' onClick={() => handleDeleteProject(project.id)} aria-label='Delete project'>

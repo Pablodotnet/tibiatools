@@ -123,6 +123,11 @@ const PublicTierProjectsPage = () => {
                       <p className='text-sm text-muted-foreground'>
                         {translate('target')}: Tier {project.targetTier} &middot; {translate('current')}: Tier {project.currentTier}
                       </p>
+                      {project.totalSpentGp > 0 && (
+                        <p className='text-xs text-muted-foreground tabular-nums mt-0.5'>
+                          Total spent: {project.totalSpentGp.toLocaleString()} gp
+                        </p>
+                      )}
                     </div>
                     <Globe className='size-4 text-muted-foreground shrink-0' />
                   </div>

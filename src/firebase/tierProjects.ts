@@ -2,12 +2,14 @@ import {
   collection,
   doc,
   addDoc,
+  getDoc,
   getDocs,
   updateDoc,
   deleteDoc,
   query,
   where,
   orderBy,
+  increment,
   Timestamp,
 } from 'firebase/firestore';
 import { FirebaseAuth, FirebaseDB } from './config';
@@ -22,6 +24,7 @@ function mapProjectDoc(id: string, data: Record<string, unknown>): TierProject {
     isPublic: data.isPublic as boolean,
     ownerUid: data.ownerUid as string,
     ownerDisplayName: data.ownerDisplayName as string,
+    totalSpentGp: (data.totalSpentGp as number) ?? 0,
     createdAt: (data.createdAt as Timestamp).toDate(),
     updatedAt: (data.updatedAt as Timestamp).toDate(),
   };
@@ -55,6 +58,7 @@ export async function createProject(data: {
   const docRef = await addDoc(collection(FirebaseDB, 'tierProjects'), {
     ...data,
     currentTier: 0,
+    totalSpentGp: 0,
     ownerUid: user.uid,
     ownerDisplayName: user.displayName || user.email || 'Unknown',
     createdAt: Timestamp.now(),
@@ -128,9 +132,25 @@ export async function addEntry(
       createdAt: Timestamp.now(),
     },
   );
+  const entryTotal = data.items.reduce((sum, i) => sum + i.costGp, 0);
+  const projectRef = doc(FirebaseDB, 'tierProjects', projectId);
+  await updateDoc(projectRef, {
+    totalSpentGp: increment(entryTotal),
+    updatedAt: Timestamp.now(),
+  });
   return docRef.id;
 }
 
 export async function deleteEntry(projectId: string, entryId: string) {
+  const entrySnap = await getDoc(doc(FirebaseDB, 'tierProjects', projectId, 'entries', entryId));
+  if (entrySnap.exists()) {
+    const entryData = entrySnap.data();
+    const items = entryData.items as Array<{ costGp: number }> | undefined;
+    const entryTotal = items ? items.reduce((sum, i) => sum + (i.costGp || 0), 0) : 0;
+    await updateDoc(doc(FirebaseDB, 'tierProjects', projectId), {
+      totalSpentGp: increment(-entryTotal),
+      updatedAt: Timestamp.now(),
+    });
+  }
   await deleteDoc(doc(FirebaseDB, 'tierProjects', projectId, 'entries', entryId));
 }

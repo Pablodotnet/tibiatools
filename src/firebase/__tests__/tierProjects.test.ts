@@ -12,6 +12,7 @@ const mockWhere = vi.fn();
 const mockOrderBy = vi.fn();
 const mockTimestamp = { now: vi.fn(() => ({ seconds: 1, nanoseconds: 0 })) };
 const mockToDate = vi.fn(() => new Date('2025-01-01'));
+const mockIncrement = vi.fn((n: number) => n);
 
 vi.mock('firebase/firestore', () => ({
   collection: mockCollection,
@@ -24,6 +25,7 @@ vi.mock('firebase/firestore', () => ({
   query: mockQuery,
   where: mockWhere,
   orderBy: mockOrderBy,
+  increment: mockIncrement,
   Timestamp: mockTimestamp,
 }));
 
@@ -180,18 +182,27 @@ describe('tierProjects', () => {
       expect(result[0].items[0].name).toBe('10 items');
     });
 
-    it('addEntry creates doc in subcollection', async () => {
+    it('addEntry creates doc in subcollection and updates project total', async () => {
       mockAddDoc.mockResolvedValue({ id: 'entry1' });
       const { addEntry } = await reloadModule();
 
       const id = await addEntry('p1', { fromTier: 1, toTier: 2, items: [{ name: '5 items', costGp: 25000 }], notes: '' });
 
       expect(id).toBe('entry1');
+      expect(mockUpdateDoc).toHaveBeenCalledOnce();
+      expect(mockIncrement).toHaveBeenCalledWith(25000);
     });
 
-    it('deleteEntry calls deleteDoc', async () => {
+    it('deleteEntry fetches entry, updates total, and calls deleteDoc', async () => {
+      mockGetDoc.mockResolvedValue({
+        exists: () => true,
+        data: () => ({ items: [{ costGp: 25000 }, { costGp: 30000 }] }),
+      });
       const { deleteEntry } = await reloadModule();
       await deleteEntry('p1', 'e1');
+      expect(mockGetDoc).toHaveBeenCalledOnce();
+      expect(mockIncrement).toHaveBeenCalledWith(-55000);
+      expect(mockUpdateDoc).toHaveBeenCalledOnce();
       expect(mockDeleteDoc).toHaveBeenCalledOnce();
     });
   });
