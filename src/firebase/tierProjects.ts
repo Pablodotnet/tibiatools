@@ -48,20 +48,39 @@ function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntr
   };
 }
 
-async function backfillTotalSpent(project: TierProject): Promise<void> {
-  if (project.totalSpentGp !== 0) return;
+async function backfillProjectFields(project: TierProject): Promise<void> {
+  if (project.totalSpentGp !== 0 && project.currentTier > 0) return;
   try {
     const entries = await getProjectEntries(project.id);
-    const total = entries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
-    if (total > 0) {
-      project.totalSpentGp = total;
+    let needsUpdate = false;
+    const updates: Record<string, unknown> = {};
+
+    if (project.totalSpentGp === 0) {
+      const total = entries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
+      if (total > 0) {
+        project.totalSpentGp = total;
+        updates.totalSpentGp = total;
+        needsUpdate = true;
+      }
+    }
+
+    if (project.currentTier === 0) {
+      const maxTier = entries.reduce((max, e) => Math.max(max, e.toTier), 0);
+      if (maxTier > 0) {
+        project.currentTier = maxTier;
+        updates.currentTier = maxTier;
+        needsUpdate = true;
+      }
+    }
+
+    if (needsUpdate) {
       try {
         await updateDoc(doc(FirebaseDB, 'tierProjects', project.id), {
-          totalSpentGp: total,
+          ...updates,
           updatedAt: Timestamp.now(),
         });
       } catch {
-        // Not the owner — just set the value in memory without persisting
+        // Not the owner — just set fields in memory without persisting
       }
     }
   } catch {
@@ -100,7 +119,7 @@ export async function getUserProjects(): Promise<TierProject[]> {
   );
   const snapshot = await getDocs(q);
   const projects = snapshot.docs.map((d) => mapProjectDoc(d.id, d.data() as Record<string, unknown>));
-  await Promise.all(projects.map(backfillTotalSpent));
+  await Promise.all(projects.map(backfillProjectFields));
   return projects;
 }
 
@@ -112,7 +131,7 @@ export async function getPublicProjects(): Promise<TierProject[]> {
   );
   const snapshot = await getDocs(q);
   const projects = snapshot.docs.map((d) => mapProjectDoc(d.id, d.data() as Record<string, unknown>));
-  await Promise.all(projects.map(backfillTotalSpent));
+  await Promise.all(projects.map(backfillProjectFields));
   return projects;
 }
 
