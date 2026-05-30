@@ -44,6 +44,7 @@ function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntr
     method: data.method as string | undefined,
     classification: data.classification as number | undefined,
     exaltedCores: data.exaltedCores as number | undefined,
+    exaltedCorePriceGp: data.exaltedCorePriceGp as number | undefined,
     createdAt: (data.createdAt as Timestamp).toDate(),
   };
 }
@@ -170,6 +171,7 @@ export async function addEntry(
     method?: string;
     classification?: number;
     exaltedCores?: number;
+    exaltedCorePriceGp?: number;
   },
 ): Promise<string> {
   const docRef = await addDoc(
@@ -200,6 +202,7 @@ export async function updateEntry(
     method?: string;
     classification?: number;
     exaltedCores?: number;
+    exaltedCorePriceGp?: number;
   },
 ) {
   await updateDoc(doc(FirebaseDB, 'tierProjects', projectId, 'entries', entryId), {

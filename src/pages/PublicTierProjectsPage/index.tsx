@@ -91,7 +91,7 @@ const PublicTierProjectsPage = () => {
                     {entry.method && (
                       <p className='text-xs text-muted-foreground'>
                         {mt(entry.method)}{entry.classification ? ` · ${translate('classification')} ${entry.classification}` : ''}
-                        {entry.exaltedCores ? ` · ${entry.exaltedCores} cores` : ''}
+                        {entry.exaltedCores ? ` · ${entry.exaltedCores} cores${entry.exaltedCorePriceGp ? ` @ ${entry.exaltedCorePriceGp.toLocaleString()} gp` : ''}` : ''}
                       </p>
                     )}
                     {entry.items.map((item, idx) => (

@@ -27,6 +27,7 @@ export interface TierProjectEntry {
   method?: string;
   classification?: number;
   exaltedCores?: number;
+  exaltedCorePriceGp?: number;
   createdAt: Date;
 }
 

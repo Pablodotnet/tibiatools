@@ -116,6 +116,7 @@ const MyTierProjectsPage = () => {
   const [itemCost, setItemCost] = useState('');
   const [itemMarketPrice, setItemMarketPrice] = useState('');
   const [entryCores, setEntryCores] = useState('');
+  const [entryCorePrice, setEntryCorePrice] = useState('');
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
 
   const estimatedCost = useMemo(() => {
@@ -251,12 +252,26 @@ const MyTierProjectsPage = () => {
     setPendingItems(pendingItems.filter((_, i) => i !== index));
   };
 
+  const totalCoreCost = useMemo(() => {
+    const cores = Number(entryCores);
+    const price = Number(entryCorePrice);
+    if (cores > 0 && price > 0) return cores * price;
+    return null;
+  }, [entryCores, entryCorePrice]);
+
   const handleAddMethodCost = () => {
     if (estimatedCost === null || !entryMethod) return;
     const methodLabel = translate(entryMethod);
     const label = `${methodLabel} (${entryFrom}→${entryTo})`;
     setPendingItems([...pendingItems, { name: label, costGp: estimatedCost }]);
     toast.success(`${label}: ${formatGp(estimatedCost)} gp`);
+  };
+
+  const handleAddCoreCost = () => {
+    if (totalCoreCost === null) return;
+    const label = `${entryCores} Exalted Cores × ${formatGp(Number(entryCorePrice))} gp`;
+    setPendingItems([...pendingItems, { name: label, costGp: totalCoreCost }]);
+    toast.success(`Core cost: ${formatGp(totalCoreCost)} gp`);
   };
 
   const handleEditEntry = (entry: TierProjectEntry) => {
@@ -268,6 +283,7 @@ const MyTierProjectsPage = () => {
     setEntryNotes(entry.notes);
     setPendingItems(entry.items.map((i) => ({ ...i })));
     setEntryCores(entry.exaltedCores ? String(entry.exaltedCores) : '');
+    setEntryCorePrice(entry.exaltedCorePriceGp ? String(entry.exaltedCorePriceGp) : '');
   };
 
   const handleCancelEdit = () => {
@@ -289,6 +305,7 @@ const MyTierProjectsPage = () => {
       method: entryMethod || undefined,
       classification: entryClassification ? Number(entryClassification) : undefined,
       exaltedCores: entryCores ? Number(entryCores) : undefined,
+      exaltedCorePriceGp: entryCorePrice ? Number(entryCorePrice) : undefined,
     };
     if (editingEntryId) {
       const result = await dispatch(startUpdateEntry(selectedProject.id, editingEntryId, entryData));
@@ -318,6 +335,7 @@ const MyTierProjectsPage = () => {
     setEntryNotes('');
     setPendingItems([]);
     setEntryCores('');
+    setEntryCorePrice('');
   };
 
   const handleConfirmDeleteEntry = async () => {
@@ -410,7 +428,7 @@ const MyTierProjectsPage = () => {
                     {entry.method && (
                       <p className='text-xs text-muted-foreground'>
                         {translate(entry.method)}{entry.classification ? ` · ${translate('classification')} ${entry.classification}` : ''}
-                        {entry.exaltedCores ? ` · ${entry.exaltedCores} cores` : ''}
+                        {entry.exaltedCores ? ` · ${entry.exaltedCores} cores${entry.exaltedCorePriceGp ? ` @ ${formatGp(entry.exaltedCorePriceGp)} gp` : ''}` : ''}
                       </p>
                     )}
                     {entry.items.map((item, idx) => (
@@ -510,9 +528,19 @@ const MyTierProjectsPage = () => {
               </div>
               <div className='space-y-2'>
                 <Label>{translate('exaltedCores')}</Label>
-                <Input type='number' min={0} placeholder='0' value={entryCores} onChange={(e) => setEntryCores(e.target.value)} />
+                <Input type='number' min={0} placeholder='Count' value={entryCores} onChange={(e) => setEntryCores(e.target.value)} />
                 {estimatedCores !== null && !entryCores && (
                   <p className='text-xs text-muted-foreground'>{translate('estimatedCores')}: {estimatedCores}</p>
+                )}
+                <Input type='number' min={0} placeholder='Price per core (gp)' value={entryCorePrice} onChange={(e) => setEntryCorePrice(e.target.value)} className='mt-1' />
+                {totalCoreCost !== null && (
+                  <div className='flex items-center justify-between rounded-lg border p-2 mt-1'>
+                    <span className='text-sm'>Total: <span className='font-bold tabular-nums'>{formatGp(totalCoreCost)} gp</span></span>
+                    <Button type='button' variant='outline' size='sm' onClick={handleAddCoreCost} className='gap-1'>
+                      <Plus className='size-3.5' />
+                      {translate('addCostToItems')}
+                    </Button>
+                  </div>
                 )}
               </div>
             </div>
