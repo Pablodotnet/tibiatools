@@ -106,8 +106,8 @@ const MyTierProjectsPage = () => {
   const [newTarget, setNewTarget] = useState('');
   const [newIsPublic, setNewIsPublic] = useState(false);
 
-  const [entryFrom, setEntryFrom] = useState('');
-  const [entryTo, setEntryTo] = useState('');
+  const [entryFrom, setEntryFrom] = useState(-1);
+  const [entryTo, setEntryTo] = useState(-1);
   const [entryMethod, setEntryMethod] = useState('');
   const [entryClassification, setEntryClassification] = useState('4');
   const [entryNotes, setEntryNotes] = useState('');
@@ -120,17 +120,17 @@ const MyTierProjectsPage = () => {
   const [editingEntryId, setEditingEntryId] = useState<string | null>(null);
 
   const estimatedCost = useMemo(() => {
-    if (!entryFrom || !entryTo || !entryMethod || !entryClassification) return null;
-    const from = Number(entryFrom);
-    const to = Number(entryTo);
+    if (entryFrom < 0 || entryTo < 0 || !entryMethod || !entryClassification) return null;
+    const from = entryFrom;
+    const to = entryTo;
     const cls = Number(entryClassification);
     if (from >= to) return null;
     return computeMethodCost(entryMethod, cls, from, to);
   }, [entryFrom, entryTo, entryMethod, entryClassification]);
 
   const estimatedCores = useMemo(() => {
-    if (!entryMethod || !entryFrom || !entryClassification) return null;
-    const from = Number(entryFrom);
+    if (!entryMethod || entryFrom < 0 || !entryClassification) return null;
+    const from = entryFrom;
     const cls = Number(entryClassification);
     if (entryMethod === 'transfer') {
       const resultTier = from - 2;
@@ -151,10 +151,10 @@ const MyTierProjectsPage = () => {
     if (!entryMethod || !entryClassification) return null;
     const cls = Number(entryClassification);
     if (entryMethod === 'transfer' && cls === 1) return 'Transfer not available for class 1';
-    if (entryMethod === 'transfer' && Number(entryFrom) < 2) return 'Transfer requires source tier ≥ 2';
+    if (entryMethod === 'transfer' && entryFrom >= 0 && entryFrom < 2) return 'Transfer requires source tier ≥ 2';
     if ((entryMethod === 'convergenceFusion' || entryMethod === 'convergenceTransfer') && cls !== 4)
       return 'This method requires class 4';
-    if (estimatedCost === null && Number(entryFrom) < Number(entryTo))
+    if (estimatedCost === null && entryFrom < entryTo)
       return 'No cost data for this combination';
     return null;
   }, [entryMethod, entryClassification, entryFrom, entryTo, estimatedCost]);
@@ -276,8 +276,8 @@ const MyTierProjectsPage = () => {
 
   const handleEditEntry = (entry: TierProjectEntry) => {
     setEditingEntryId(entry.id);
-    setEntryFrom(String(entry.fromTier));
-    setEntryTo(String(entry.toTier));
+    setEntryFrom(entry.fromTier);
+    setEntryTo(entry.toTier);
     setEntryMethod(entry.method || '');
     setEntryClassification(entry.classification ? String(entry.classification) : '4');
     setEntryNotes(entry.notes);
@@ -292,14 +292,14 @@ const MyTierProjectsPage = () => {
   };
 
   const handleSaveEntry = async () => {
-    if (!entryFrom || !entryTo || pendingItems.length === 0) {
+    if (entryFrom < 0 || entryTo < 0 || pendingItems.length === 0) {
       toast.error(translate('fillAllFields'));
       return;
     }
     if (!selectedProject) return;
     const entryData = {
-      fromTier: Number(entryFrom),
-      toTier: Number(entryTo),
+      fromTier: entryFrom,
+      toTier: entryTo,
       items: pendingItems,
       notes: entryNotes.trim(),
       method: entryMethod || undefined,
@@ -328,8 +328,8 @@ const MyTierProjectsPage = () => {
   };
 
   const resetEntryForm = () => {
-    setEntryFrom('');
-    setEntryTo('');
+    setEntryFrom(-1);
+    setEntryTo(-1);
     setEntryMethod('');
     setEntryClassification('4');
     setEntryNotes('');
@@ -485,8 +485,8 @@ const MyTierProjectsPage = () => {
             <div className='grid grid-cols-2 gap-4'>
               <div className='space-y-2'>
                 <Label>{translate('fromTier')}</Label>
-                <Select value={entryFrom} onValueChange={setEntryFrom}>
-                  <SelectTrigger><SelectValue placeholder='0' /></SelectTrigger>
+                <Select value={String(entryFrom)} onValueChange={(v) => setEntryFrom(Number(v))}>
+                  <SelectTrigger><SelectValue placeholder='-' /></SelectTrigger>
                   <SelectContent>
                     {TIERS.map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
                   </SelectContent>
@@ -494,8 +494,8 @@ const MyTierProjectsPage = () => {
               </div>
               <div className='space-y-2'>
                 <Label>{translate('toTier')}</Label>
-                <Select value={entryTo} onValueChange={setEntryTo}>
-                  <SelectTrigger><SelectValue placeholder='1' /></SelectTrigger>
+                <Select value={String(entryTo)} onValueChange={(v) => setEntryTo(Number(v))}>
+                  <SelectTrigger><SelectValue placeholder='-' /></SelectTrigger>
                   <SelectContent>
                     {TIERS.slice(1).map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
                   </SelectContent>
