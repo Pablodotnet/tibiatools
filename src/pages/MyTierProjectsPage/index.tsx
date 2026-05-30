@@ -4,6 +4,18 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from '@/components/ui/alert-dialog';
+import { Progress } from '@/components/ui/progress';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { useAppDispatch, useAppSelector } from '@/hooks';
@@ -19,7 +31,7 @@ import {
   startDeleteEntry,
 } from '@/store/tierProjects';
 import type { TierProjectItem, TierProjectEntry } from '@/types/tierProject';
-import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil } from 'lucide-react';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown } from 'lucide-react';
 import {
   FUSION_GOLD_GP,
   TRANSFER_GOLD_GP,
@@ -146,6 +158,27 @@ const MyTierProjectsPage = () => {
     return null;
   }, [entryMethod, entryClassification, entryFrom, entryTo, estimatedCost]);
 
+  const [sortBy, setSortBy] = useState<'date' | 'cost' | 'tier'>('date');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+
+  const sortedEntries = useMemo(() => {
+    const sorted = [...currentEntries];
+    sorted.sort((a, b) => {
+      let cmp = 0;
+      if (sortBy === 'date') cmp = a.createdAt.getTime() - b.createdAt.getTime();
+      else if (sortBy === 'cost') {
+        const aTotal = a.items.reduce((s, i) => s + i.costGp, 0);
+        const bTotal = b.items.reduce((s, i) => s + i.costGp, 0);
+        cmp = aTotal - bTotal;
+      } else if (sortBy === 'tier') cmp = a.fromTier - b.fromTier;
+      return sortOrder === 'asc' ? cmp : -cmp;
+    });
+    return sorted;
+  }, [currentEntries, sortBy, sortOrder]);
+
+  const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
+  const [deleteEntryId, setDeleteEntryId] = useState<string | null>(null);
+
   useEffect(() => {
     dispatch(startFetchUserProjects());
   }, [dispatch]);
@@ -180,8 +213,10 @@ const MyTierProjectsPage = () => {
     }
   };
 
-  const handleDeleteProject = async (projectId: string) => {
-    const result = await dispatch(startDeleteProject(projectId));
+  const handleConfirmDeleteProject = async () => {
+    if (!deleteProjectId) return;
+    const result = await dispatch(startDeleteProject(deleteProjectId));
+    setDeleteProjectId(null);
     if (result.ok) {
       toast.success(translate('projectDeleted'));
     } else {
@@ -285,9 +320,10 @@ const MyTierProjectsPage = () => {
     setEntryCores('');
   };
 
-  const handleDeleteEntry = async (entryId: string) => {
-    if (!selectedProject) return;
-    const result = await dispatch(startDeleteEntry(selectedProject.id, entryId));
+  const handleConfirmDeleteEntry = async () => {
+    if (!deleteEntryId || !selectedProject) return;
+    const result = await dispatch(startDeleteEntry(selectedProject.id, deleteEntryId));
+    setDeleteEntryId(null);
     if (result.ok) {
       toast.success(translate('entryDeleted'));
     } else {
@@ -331,12 +367,32 @@ const MyTierProjectsPage = () => {
             <CardDescription>
               Target: Tier {selectedProject.targetTier} &middot; Current: Tier {selectedProject.currentTier}
             </CardDescription>
+            <div className='mt-2'>
+              <Progress value={Math.min(100, (selectedProject.currentTier / Math.max(1, selectedProject.targetTier)) * 100)} />
+            </div>
           </CardHeader>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className='text-lg'>{translate('entries')}</CardTitle>
+            <div className='flex items-center justify-between'>
+              <CardTitle className='text-lg'>{translate('entries')}</CardTitle>
+              <div className='flex items-center gap-2'>
+                <Select value={sortBy} onValueChange={(v) => setSortBy(v as 'date' | 'cost' | 'tier')}>
+                  <SelectTrigger className='w-28 h-8 text-xs'>
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value='date'>Date</SelectItem>
+                    <SelectItem value='cost'>Cost</SelectItem>
+                    <SelectItem value='tier'>Tier</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button variant='ghost' size='icon' className='size-8' onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                  <ArrowUpDown className='size-4' />
+                </Button>
+              </div>
+            </div>
           </CardHeader>
           <CardContent className='space-y-3'>
             {currentEntries.length === 0 && !entriesLoading && (
@@ -344,7 +400,7 @@ const MyTierProjectsPage = () => {
                 {translate('noEntries')}
               </p>
             )}
-            {currentEntries.map((entry) => (
+            {sortedEntries.map((entry) => (
               <div key={entry.id} className='rounded-lg border p-3'>
                 <div className='flex items-start justify-between'>
                   <div className='space-y-1 text-sm'>
@@ -372,9 +428,27 @@ const MyTierProjectsPage = () => {
                     <Button variant='ghost' size='icon' onClick={() => handleEditEntry(entry)} aria-label='Edit entry'>
                       <Pencil className='size-4' />
                     </Button>
-                    <Button variant='ghost' size='icon' onClick={() => handleDeleteEntry(entry.id)} aria-label='Delete entry'>
-                      <Trash2 className='size-4 text-destructive' />
-                    </Button>
+                    <AlertDialog open={deleteEntryId === entry.id} onOpenChange={(open) => !open && setDeleteEntryId(null)}>
+                      <AlertDialogTrigger asChild>
+                        <Button variant='ghost' size='icon' onClick={() => setDeleteEntryId(entry.id)} aria-label='Delete entry'>
+                          <Trash2 className='size-4 text-destructive' />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{translate('deleteEntryTitle') || 'Delete entry?'}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {translate('deleteEntryConfirm') || 'This will remove this entry and recalculate the total spent.'}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel onClick={() => setDeleteEntryId(null)}>{translate('cancel')}</AlertDialogCancel>
+                          <AlertDialogAction onClick={handleConfirmDeleteEntry} className='bg-destructive text-destructive-foreground hover:bg-destructive/90'>
+                            {translate('delete')}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               </div>
@@ -568,11 +642,32 @@ const MyTierProjectsPage = () => {
                     <p className='text-xs text-muted-foreground tabular-nums'>
                       Total spent: {project.totalSpentGp.toLocaleString()} gp
                     </p>
+                    <div className='mt-1.5 w-32'>
+                      <Progress value={Math.min(100, (project.currentTier / Math.max(1, project.targetTier)) * 100)} />
+                    </div>
                   </div>
                   <div className='flex items-center gap-2' onClick={(e) => e.stopPropagation()}>
-                    <Button variant='ghost' size='icon' onClick={() => handleDeleteProject(project.id)} aria-label='Delete project'>
-                      <Trash2 className='size-4 text-destructive' />
-                    </Button>
+                    <AlertDialog open={deleteProjectId === project.id} onOpenChange={(open) => !open && setDeleteProjectId(null)}>
+                      <AlertDialogTrigger asChild>
+                        <Button variant='ghost' size='icon' onClick={() => setDeleteProjectId(project.id)} aria-label='Delete project'>
+                          <Trash2 className='size-4 text-destructive' />
+                        </Button>
+                      </AlertDialogTrigger>
+                      <AlertDialogContent>
+                        <AlertDialogHeader>
+                          <AlertDialogTitle>{translate('deleteConfirm')}</AlertDialogTitle>
+                          <AlertDialogDescription>
+                            {translate('deleteProjectConfirm') || 'This will permanently delete this project and all its entries.'}
+                          </AlertDialogDescription>
+                        </AlertDialogHeader>
+                        <AlertDialogFooter>
+                          <AlertDialogCancel onClick={() => setDeleteProjectId(null)}>{translate('cancel')}</AlertDialogCancel>
+                          <AlertDialogAction onClick={handleConfirmDeleteProject} className='bg-destructive text-destructive-foreground hover:bg-destructive/90'>
+                            {translate('delete')}
+                          </AlertDialogAction>
+                        </AlertDialogFooter>
+                      </AlertDialogContent>
+                    </AlertDialog>
                   </div>
                 </div>
               </CardContent>

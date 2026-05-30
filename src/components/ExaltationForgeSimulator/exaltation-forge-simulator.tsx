@@ -10,6 +10,17 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogFooter,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogAction,
+  AlertDialogCancel,
+} from "@/components/ui/alert-dialog";
+import { toast } from "sonner";
+import {
   FUSION_GOLD_GP,
   TIER_LABELS,
   calculateForgeTotals,
@@ -21,6 +32,12 @@ import {
   type ScenarioSnapshot,
 } from "@/helpers/exaltationForge";
 import { cn } from "@/lib/utils";
+import { useAppDispatch, useAppSelector } from "@/hooks";
+import {
+  startFetchUserProjects,
+  startAddEntry,
+} from "@/store/tierProjects";
+import type { TierProject } from "@/types/tierProject";
 
 function ScenarioBlock({
   label,
@@ -162,6 +179,8 @@ function SimulationResultsDashboard({
 }
 
 export function ExaltationForgeSimulator() {
+  const dispatch = useAppDispatch();
+  const { projects } = useAppSelector((s) => s.tierProjects);
   const [desiredTier, setDesiredTier] = useState("1");
   const [classification, setClassification] = useState<"1" | "2" | "3" | "4">(
     "4",
@@ -191,6 +210,8 @@ export function ExaltationForgeSimulator() {
   const [simulationError, setSimulationError] = useState<string | null>(null);
   const [calculating, setCalculating] = useState(false);
   const workerRef = useRef<Worker | null>(null);
+  const [showImportDialog, setShowImportDialog] = useState(false);
+  const [importProjectId, setImportProjectId] = useState("");
 
   const classNum = Number(classification) as 1 | 2 | 3 | 4;
 
@@ -199,6 +220,38 @@ export function ExaltationForgeSimulator() {
       workerRef.current?.terminate();
     };
   }, []);
+
+  useEffect(() => {
+    if (showImportDialog) {
+      dispatch(startFetchUserProjects());
+    }
+  }, [showImportDialog, dispatch]);
+
+  const handleImportToProject = async () => {
+    if (!importProjectId || !result) return;
+    const dt = Math.min(Math.max(parseInt(desiredTier, 10) || 0, 0), 10);
+    const items = [
+      { name: `Forge gold (tier 0→${dt})`, costGp: result.forgeGoldGp },
+      { name: `Items purchased`, costGp: result.itemCostGp },
+    ];
+    const entryData = {
+      fromTier: 0,
+      toTier: dt,
+      items,
+      notes: `Imported from Forge Simulator. Classification: ${classification}, core value: ${exaltedCoreValue} gp`,
+      method: 'fusion',
+      classification: classNum,
+      exaltedCores: result.exaltedCoresUsed,
+    };
+    const res = await dispatch(startAddEntry(importProjectId, entryData));
+    if (res.ok) {
+      toast.success('Simulation imported to project');
+      setShowImportDialog(false);
+      setImportProjectId("");
+    } else {
+      toast.error(res.error);
+    }
+  };
 
   const handleCalculate = () => {
     const dt = Math.min(Math.max(parseInt(desiredTier, 10) || 0, 0), 10);
@@ -531,6 +584,53 @@ export function ExaltationForgeSimulator() {
               )}
             />
           )}
+
+          {result && (
+            <div className="flex justify-end">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => setShowImportDialog(true)}
+                className="gap-2"
+              >
+                Import to Project
+              </Button>
+            </div>
+          )}
+
+          <AlertDialog open={showImportDialog} onOpenChange={setShowImportDialog}>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Import to Tier Project</AlertDialogTitle>
+                <AlertDialogDescription>
+                  Select a project to add this simulation as a new entry.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <div className="py-4">
+                <Select value={importProjectId} onValueChange={setImportProjectId}>
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select a project..." />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {projects.length === 0 && (
+                      <SelectItem value="" disabled>No projects found</SelectItem>
+                    )}
+                    {projects.map((p: TierProject) => (
+                      <SelectItem key={p.id} value={p.id}>{p.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <AlertDialogFooter>
+                <AlertDialogCancel onClick={() => setImportProjectId("")}>
+                  Cancel
+                </AlertDialogCancel>
+                <AlertDialogAction onClick={handleImportToProject} disabled={!importProjectId}>
+                  Import
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
         </div>
       )}
     </div>

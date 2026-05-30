@@ -1,22 +1,34 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Progress } from '@/components/ui/progress';
 import { useTranslation } from 'react-i18next';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { startFetchPublicProjects } from '@/store/tierProjects';
-import { ArrowLeft, Globe } from 'lucide-react';
+import { ArrowLeft, Globe, Search } from 'lucide-react';
 import { getProjectEntries } from '@/firebase/tierProjects';
 import type { TierProject, TierProjectEntry } from '@/types/tierProject';
 
 const PublicTierProjectsPage = () => {
   const { t } = useTranslation();
   const translate = (entry: string) => t(`publicTierProjects.${entry}`);
+  const mt = (entry: string) => t(`myTierProjects.${entry}`);
   const dispatch = useAppDispatch();
   const { projects, projectsLoading } = useAppSelector((s) => s.tierProjects);
 
   const [selectedProject, setSelectedProject] = useState<TierProject | null>(null);
   const [entries, setEntries] = useState<TierProjectEntry[]>([]);
   const [entriesLoading, setEntriesLoading] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  const filteredProjects = useMemo(() => {
+    if (!searchQuery.trim()) return projects;
+    const q = searchQuery.toLowerCase();
+    return projects.filter(
+      (p) => p.name.toLowerCase().includes(q) || p.ownerDisplayName.toLowerCase().includes(q),
+    );
+  }, [projects, searchQuery]);
 
   useEffect(() => {
     dispatch(startFetchPublicProjects());
@@ -54,6 +66,9 @@ const PublicTierProjectsPage = () => {
             <CardDescription>
               {translate('target')}: Tier {selectedProject.targetTier} &middot; {translate('current')}: Tier {selectedProject.currentTier} &middot; {translate('by')} {selectedProject.ownerDisplayName}
             </CardDescription>
+            <div className='mt-2'>
+              <Progress value={Math.min(100, (selectedProject.currentTier / Math.max(1, selectedProject.targetTier)) * 100)} />
+            </div>
           </CardHeader>
         </Card>
 
@@ -75,7 +90,7 @@ const PublicTierProjectsPage = () => {
                     </p>
                     {entry.method && (
                       <p className='text-xs text-muted-foreground'>
-                        {translate(entry.method)}{entry.classification ? ` · ${translate('classification')} ${entry.classification}` : ''}
+                        {mt(entry.method)}{entry.classification ? ` · ${translate('classification')} ${entry.classification}` : ''}
                         {entry.exaltedCores ? ` · ${entry.exaltedCores} cores` : ''}
                       </p>
                     )}
@@ -106,21 +121,32 @@ const PublicTierProjectsPage = () => {
           <CardDescription>{translate('description')}</CardDescription>
         </CardHeader>
         <CardContent>
+          {!projectsLoading && (
+            <div className='relative mb-4'>
+              <Search className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground' />
+              <Input
+                placeholder='Search projects...'
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className='pl-10'
+              />
+            </div>
+          )}
           {projectsLoading ? (
             <p className='text-center text-muted-foreground py-8'>{translate('loading')}</p>
-          ) : projects.length === 0 ? (
+          ) : filteredProjects.length === 0 ? (
             <p className='text-center text-muted-foreground py-8'>{translate('empty')}</p>
           ) : (
             <div className='space-y-3'>
-              {projects.map((project) => (
+              {filteredProjects.map((project) => (
                 <div
                   key={project.id}
                   className='rounded-lg border p-4 cursor-pointer hover:shadow-md transition-shadow'
                   onClick={() => handleSelectProject(project)}
                 >
                   <div className='flex items-center justify-between'>
-                    <div>
-                      <h4 className='font-semibold'>{project.name}</h4>
+                    <div className='flex-1 min-w-0'>
+                      <h4 className='font-semibold truncate'>{project.name}</h4>
                       <p className='text-sm text-muted-foreground'>
                         {translate('target')}: Tier {project.targetTier} &middot; {translate('current')}: Tier {project.currentTier}
                       </p>
@@ -129,8 +155,11 @@ const PublicTierProjectsPage = () => {
                           Total spent: {project.totalSpentGp.toLocaleString()} gp
                         </p>
                       )}
+                      <div className='mt-1.5 w-32'>
+                        <Progress value={Math.min(100, (project.currentTier / Math.max(1, project.targetTier)) * 100)} />
+                      </div>
                     </div>
-                    <Globe className='size-4 text-muted-foreground shrink-0' />
+                    <Globe className='size-4 text-muted-foreground shrink-0 ml-2' />
                   </div>
                   <p className='text-xs text-muted-foreground mt-2'>
                     {translate('by')} {project.ownerDisplayName}
