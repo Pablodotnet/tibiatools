@@ -4,12 +4,8 @@ import { imbuableItems } from "@/helpers/ImbuingLists/imbuableItems";
 import { Card } from "@/components/ui/card";
 import { getImbuementIcon } from "@/helpers";
 import { Label } from "@/components/ui/label";
-import {
-  HoverCard,
-  HoverCardTrigger,
-  HoverCardContent,
-} from "@radix-ui/react-hover-card";
-import { Ban } from "lucide-react";
+import * as Collapsible from "@radix-ui/react-collapsible";
+import { Ban, ChevronDown, ChevronUp, Package } from "lucide-react";
 
 type ItemType = keyof typeof imbuingsAvailableByType;
 
@@ -56,64 +52,16 @@ const ItemImbuementsDisplay: React.FC<ItemImbuementsDisplayProps> = ({
       )}
       <Label>You can imbue:</Label>
       {availableImbuementsForItem && availableImbuementsForItem.length > 0 && (
-        <div>
+        <div className="mt-2 space-y-3">
           {availableImbuementsForItem.map(
             (imbuement: keyof typeof imbuements) => {
               const isBlocked = blockedImbuements.has(imbuement);
               return (
-                <HoverCard key={imbuement}>
-                  <HoverCardTrigger asChild>
-                    <Card className={`px-4 mb-4 py-2 ${isBlocked ? 'opacity-40 cursor-not-allowed' : ''}`}>
-                      <div className="w-full flex items-center">
-                        <img
-                          src={getImbuementIcon(imbuements[imbuement].icon)}
-                          alt={imbuements[imbuement].name}
-                          className="w-10 h-10 mr-4"
-                        />
-                        <div className="flex-1">
-                          <div className="flex items-center gap-2">
-                            <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
-                              {imbuements[imbuement].name}
-                            </h4>
-                            {isBlocked && <Ban className="size-4 text-destructive" />}
-                          </div>
-                          <small className="text-sm font-medium leading-none">
-                            {imbuements[imbuement].effect}
-                            {isBlocked && <span className="text-destructive ml-2">(conflicts with item element)</span>}
-                          </small>
-                        </div>
-                      </div>
-                    </Card>
-                  </HoverCardTrigger>
-                  {!isBlocked && (
-                    <HoverCardContent className="bg-card text-card-foreground flex flex-col gap-6 rounded-xl border shadow-sm px-4 mb-4 py-2 w-full">
-                      {(["basic", "intricate", "powerful"] as const).map((type) => (
-                        <div
-                          className="w-full"
-                          key={`type-${imbuements[imbuement].name}-${type}`}
-                        >
-                          <p className="text-sm">{type.toUpperCase()}</p>
-                          {imbuements[imbuement][type].map((item) => (
-                            <Card
-                              className="w-full flex px-4 mb-1 py-1 items-center"
-                              key={item.itemName}
-                            >
-                              {item.icon && (
-                                <img
-                                  src={item.icon}
-                                  alt={item.itemName}
-                                  className="w-10 h-10"
-                                />
-                              )}
-                              <p>{item.itemName}</p>
-                              <p>{item.quantity}</p>
-                            </Card>
-                          ))}
-                        </div>
-                      ))}
-                    </HoverCardContent>
-                  )}
-                </HoverCard>
+                <ImbuementCard
+                  key={imbuement}
+                  imbuement={imbuement}
+                  isBlocked={isBlocked}
+                />
               );
             }
           )}
@@ -124,6 +72,87 @@ const ItemImbuementsDisplay: React.FC<ItemImbuementsDisplayProps> = ({
     <h3 className="text-destructive font-medium" role="alert">
       Error, missing selected search.
     </h3>
+  );
+};
+
+interface ImbuementCardProps {
+  imbuement: keyof typeof imbuements;
+  isBlocked: boolean;
+}
+
+const ImbuementCard: React.FC<ImbuementCardProps> = ({ imbuement, isBlocked }) => {
+  const [open, setOpen] = React.useState(false);
+  const data = imbuements[imbuement];
+
+  return (
+    <Collapsible.Root open={open} onOpenChange={setOpen}>
+      <Collapsible.Trigger asChild>
+        <Card className={`px-4 py-3 ${isBlocked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:border-primary/50 transition-colors'}`}>
+          <div className="w-full flex items-center gap-4">
+            <img
+              src={getImbuementIcon(data.icon)}
+              alt={data.name}
+              className="w-10 h-10 shrink-0"
+            />
+            <div className="flex-1 min-w-0 text-left">
+              <div className="flex items-center gap-2">
+                <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
+                  {data.name}
+                </h4>
+                {isBlocked && <Ban className="size-4 text-destructive shrink-0" />}
+              </div>
+              <small className="text-sm font-medium leading-none text-muted-foreground">
+                {data.effect}
+                {isBlocked && (
+                  <span className="text-destructive ml-2">(conflicts with item element)</span>
+                )}
+              </small>
+            </div>
+            {!isBlocked && (
+              <div className="shrink-0 text-muted-foreground">
+                {open ? <ChevronUp className="size-5" /> : <ChevronDown className="size-5" />}
+              </div>
+            )}
+          </div>
+        </Card>
+      </Collapsible.Trigger>
+      {!isBlocked && (
+        <Collapsible.Content className="overflow-hidden data-[state=open]:animate-collapsible-down data-[state=closed]:animate-collapsible-up">
+          <Card className="mt-0.5 px-4 py-3 border-t-0 rounded-t-none">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+              {(["basic", "intricate", "powerful"] as const).map((type) => (
+                <div key={type}>
+                  <h5 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground mb-2 flex items-center gap-1.5">
+                    <Package className="size-3" />
+                    {type}
+                  </h5>
+                  <ul className="space-y-1.5">
+                    {data[type].map((item) => (
+                      <li
+                        key={item.itemName}
+                        className="flex items-center gap-2 text-sm"
+                      >
+                        {item.icon && (
+                          <img
+                            src={item.icon}
+                            alt={item.itemName}
+                            className="w-7 h-7 shrink-0"
+                          />
+                        )}
+                        <span className="flex-1 min-w-0 truncate">{item.itemName}</span>
+                        <span className="tabular-nums text-muted-foreground shrink-0">
+                          x{item.quantity}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </Card>
+        </Collapsible.Content>
+      )}
+    </Collapsible.Root>
   );
 };
 
