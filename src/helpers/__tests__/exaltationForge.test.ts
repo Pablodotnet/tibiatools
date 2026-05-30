@@ -6,6 +6,8 @@ import {
   parseGpInput,
   calculateForgeTotals,
   calculateTransfer,
+  calculateConvergenceFusion,
+  calculateConvergenceTransfer,
   runMonteCarloForge,
 } from '../exaltationForge';
 
@@ -103,6 +105,79 @@ describe('calculateTransfer', () => {
 
   it('fails for invalid source tier', () => {
     const result = calculateTransfer({
+      sourceTier: 0,
+      classification: 4,
+      sourceItemValueGp: 0,
+      targetItemValueGp: 0,
+      exaltedCoreValueGp: 0,
+      tcGp: 25000,
+      mxnPer250Tc: 210,
+    });
+    expect(result.isValid).toBe(false);
+    expect(result.errorMessage).toBeDefined();
+  });
+});
+
+describe('calculateConvergenceFusion', () => {
+  it('calculates convergence fusion for valid tier', () => {
+    const result = calculateConvergenceFusion({
+      currentTier: 3,
+      item1ValueGp: 100000000,
+      item2ValueGp: 50000000,
+      tcGp: 25000,
+      mxnPer250Tc: 210,
+    });
+    expect(result.isValid).toBe(true);
+    expect(result.totalGp!).toBeGreaterThan(0);
+    expect(result.goldFee!).toBeGreaterThan(0);
+    expect(result.item1CostGp).toBe(100000000);
+    expect(result.item2CostGp).toBe(50000000);
+  });
+
+  it('succeeds for tier 9 (last valid tier step)', () => {
+    const result = calculateConvergenceFusion({
+      currentTier: 9,
+      item1ValueGp: 100000000,
+      item2ValueGp: 100000000,
+      tcGp: 25000,
+      mxnPer250Tc: 210,
+    });
+    expect(result.isValid).toBe(true);
+    expect(result.currentTier).toBe(9);
+    expect(result.goldFee).toBeGreaterThan(0);
+  });
+
+  it('fails for tier below 0', () => {
+    const result = calculateConvergenceFusion({
+      currentTier: -1,
+      item1ValueGp: 0,
+      item2ValueGp: 0,
+      tcGp: 25000,
+      mxnPer250Tc: 210,
+    });
+    expect(result.isValid).toBe(false);
+    expect(result.errorMessage).toBeDefined();
+  });
+});
+
+describe('calculateConvergenceTransfer', () => {
+  it('calculates convergence transfer for valid inputs', () => {
+    const result = calculateConvergenceTransfer({
+      sourceTier: 5,
+      classification: 4,
+      sourceItemValueGp: 100000000,
+      targetItemValueGp: 50000000,
+      exaltedCoreValueGp: 1000000,
+      tcGp: 25000,
+      mxnPer250Tc: 210,
+    });
+    expect(result.isValid).toBe(true);
+    expect(result.resultingTier).toBe(5);
+    expect(result.totalGp!).toBeGreaterThan(0);
+  });
+
+  it('fails for tier 0 source', () => {
+    const result = calculateConvergenceTransfer({
       sourceTier: 0,
       classification: 4,
       sourceItemValueGp: 0,

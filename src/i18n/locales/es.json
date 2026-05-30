@@ -286,7 +286,8 @@
     "duplicateProjectTitle": "Duplicar proyecto",
     "duplicateProjectDesc": "Crea una copia de este proyecto con todas sus entradas como plantilla.",
     "projectDuplicated": "Proyecto duplicado",
-    "copyOf": "Copia de"
+    "copyOf": "Copia de",
+    "totalDust": "Polvo total"
   },
   "publicTierProjects": {
     "title": "Proyectos de Tier",

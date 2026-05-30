@@ -32,7 +32,7 @@ import {
   startDuplicateProject,
 } from '@/store/tierProjects';
 import type { TierProjectItem, TierProjectEntry } from '@/types/tierProject';
-import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown, BarChart3, Cpu, Diamond, TrendingUp, Search, Copy } from 'lucide-react';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown, BarChart3, Cpu, Diamond, TrendingUp, Search, Copy, Package } from 'lucide-react';
 import {
   FUSION_GOLD_GP,
   TRANSFER_GOLD_GP,
@@ -199,8 +199,9 @@ const MyTierProjectsPage = () => {
     const totalGp = currentEntries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
     const totalCores = currentEntries.reduce((sum, e) => sum + (e.exaltedCores ?? 0), 0);
     const totalCoreCost = currentEntries.reduce((sum, e) => sum + ((e.exaltedCores ?? 0) * (e.exaltedCorePriceGp ?? 0)), 0);
+    const totalDust = currentEntries.reduce((sum, e) => sum + (e.dust ?? 0), 0);
     const avgCost = count > 0 ? totalGp / count : 0;
-    return { count, totalGp, totalCores, totalCoreCost, avgCost };
+    return { count, totalGp, totalCores, totalCoreCost, totalDust, avgCost };
   }, [currentEntries]);
 
   const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
@@ -453,7 +454,7 @@ const MyTierProjectsPage = () => {
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <div className='grid grid-cols-2 sm:grid-cols-5 gap-3 text-sm'>
+            <div className='grid grid-cols-2 sm:grid-cols-6 gap-3 text-sm'>
               <div className='rounded-lg border p-3 space-y-1'>
                 <p className='text-xs text-muted-foreground flex items-center gap-1'><Diamond className='size-3' /> {translate('entries')}</p>
                 <p className='font-bold tabular-nums'>{stats.count}</p>
@@ -469,6 +470,10 @@ const MyTierProjectsPage = () => {
               <div className='rounded-lg border p-3 space-y-1'>
                 <p className='text-xs text-muted-foreground flex items-center gap-1'><Cpu className='size-3' /> {translate('totalCoreCost')}</p>
                 <p className='font-bold tabular-nums'>{stats.totalCoreCost.toLocaleString()} gp</p>
+              </div>
+              <div className='rounded-lg border p-3 space-y-1'>
+                <p className='text-xs text-muted-foreground flex items-center gap-1'><Package className='size-3' /> {translate('totalDust')}</p>
+                <p className='font-bold tabular-nums'>{stats.totalDust}</p>
               </div>
               <div className='rounded-lg border p-3 space-y-1'>
                 <p className='text-xs text-muted-foreground flex items-center gap-1'><TrendingUp className='size-3' /> {translate('avgCost')}</p>

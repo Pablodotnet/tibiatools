@@ -29,6 +29,7 @@ const mockEntry = (overrides: Partial<TierProjectEntry> = {}): TierProjectEntry 
   toTier: 1,
   items: [{ name: '2 items', costGp: 50000 }],
   notes: '',
+  dust: 100,
   createdAt: new Date('2025-01-01'),
   ...overrides,
 });
@@ -142,6 +143,14 @@ describe('tierProjectsSlice', () => {
       const e1 = mockEntry();
       const state = reducer(initial(), addEntry({ projectId: 'p1', entry: e1 }));
       expect(state.entries.p1).toHaveLength(1);
+    });
+
+    it('addEntry preserves dust field', () => {
+      const state = reducer(initial(), addEntry({
+        projectId: 'p1',
+        entry: mockEntry({ id: 'e1', dust: 250 }),
+      }));
+      expect(state.entries.p1![0].dust).toBe(250);
     });
 
     it('removeEntry filters entry from list', () => {

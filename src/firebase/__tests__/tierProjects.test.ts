@@ -174,14 +174,28 @@ describe('tierProjects', () => {
             createdAt: { toDate: mockToDate },
           }),
         },
+        {
+          id: 'e2',
+          data: () => ({
+            projectId: 'p1',
+            fromTier: 1,
+            toTier: 3,
+            items: [{ name: 'items', costGp: 100000 }],
+            notes: 'with dust',
+            dust: 150,
+            createdAt: { toDate: mockToDate },
+          }),
+        },
       ];
       mockGetDocs.mockResolvedValue({ docs: fakeDocs });
       const { getProjectEntries } = await reloadModule();
 
       const result = await getProjectEntries('p1');
-      expect(result).toHaveLength(1);
+      expect(result).toHaveLength(2);
       expect(result[0].fromTier).toBe(0);
       expect(result[0].items[0].name).toBe('10 items');
+      expect(result[1].dust).toBe(150);
+      expect(result[1].items[0].name).toBe('items');
     });
 
     it('addEntry creates doc in subcollection and updates project total', async () => {
@@ -193,6 +207,26 @@ describe('tierProjects', () => {
       expect(id).toBe('entry1');
       expect(mockUpdateDoc).toHaveBeenCalledOnce();
       expect(mockIncrement).toHaveBeenCalledWith(25000);
+    });
+
+    it('addEntry passes dust field to Firestore', async () => {
+      mockAddDoc.mockResolvedValue({ id: 'entry2' });
+      const { addEntry } = await reloadModule();
+
+      await addEntry('p1', { fromTier: 2, toTier: 4, items: [{ name: 'items', costGp: 100000 }], notes: '', dust: 150 });
+
+      const args = mockAddDoc.mock.calls[0][1];
+      expect(args.dust).toBe(150);
+      expect(args.projectId).toBe('p1');
+    });
+
+    it('updateEntry sends dust field', async () => {
+      const { updateEntry } = await reloadModule();
+      await updateEntry('p1', 'e1', { dust: 200 });
+
+      expect(mockUpdateDoc).toHaveBeenCalledOnce();
+      const args = mockUpdateDoc.mock.calls[0][1];
+      expect(args.dust).toBe(200);
     });
 
     it('deleteEntry fetches entry, updates total, and calls deleteDoc', async () => {

@@ -278,6 +278,7 @@
     "stats": "Statistics",
     "totalSpentGp": "Total spent",
     "totalCores": "Total cores",
+    "totalDust": "Total dust",
     "totalCoreCost": "Core cost",
     "avgCost": "Avg / entry",
     "searchItems": "Search items...",
