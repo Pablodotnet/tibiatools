@@ -165,7 +165,12 @@
     "totalSpentGp": "Total spent",
     "totalCores": "Total cores",
     "totalCoreCost": "Core cost",
-    "avgCost": "Avg / entry"
+    "avgCost": "Avg / entry",
+    "searchItems": "Search items...",
+    "allMethods": "All methods",
+    "minTier": "Min tier",
+    "maxTier": "Max tier",
+    "noMatches": "No entries match your filters."
   },
   "publicTierProjects": {
     "title": "Tier Projects",

@@ -31,7 +31,7 @@ import {
   startDeleteEntry,
 } from '@/store/tierProjects';
 import type { TierProjectItem, TierProjectEntry } from '@/types/tierProject';
-import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown, BarChart3, Cpu, Diamond, TrendingUp } from 'lucide-react';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown, BarChart3, Cpu, Diamond, TrendingUp, Search } from 'lucide-react';
 import {
   FUSION_GOLD_GP,
   TRANSFER_GOLD_GP,
@@ -161,6 +161,10 @@ const MyTierProjectsPage = () => {
 
   const [sortBy, setSortBy] = useState<'date' | 'cost' | 'tier'>('date');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('desc');
+  const [searchTerm, setSearchTerm] = useState('');
+  const [filterMethod, setFilterMethod] = useState('');
+  const [filterTierMin, setFilterTierMin] = useState(-1);
+  const [filterTierMax, setFilterTierMax] = useState(-1);
 
   const sortedEntries = useMemo(() => {
     const sorted = [...currentEntries];
@@ -176,6 +180,17 @@ const MyTierProjectsPage = () => {
     });
     return sorted;
   }, [currentEntries, sortBy, sortOrder]);
+
+  const filteredEntries = useMemo(() => {
+    const term = searchTerm.toLowerCase().trim();
+    return sortedEntries.filter((e) => {
+      if (term && !e.items.some((i) => i.name.toLowerCase().includes(term))) return false;
+      if (filterMethod && e.method !== filterMethod) return false;
+      if (filterTierMin >= 0 && e.fromTier < filterTierMin) return false;
+      if (filterTierMax >= 0 && e.toTier > filterTierMax) return false;
+      return true;
+    });
+  }, [sortedEntries, searchTerm, filterMethod, filterTierMin, filterTierMax]);
 
   const stats = useMemo(() => {
     const count = currentEntries.length;
@@ -455,12 +470,63 @@ const MyTierProjectsPage = () => {
             </div>
           </CardHeader>
           <CardContent className='space-y-3'>
+            <div className='flex flex-wrap items-center gap-2 pb-2'>
+              <div className='relative flex-1 min-w-[160px]'>
+                <Search className='absolute left-2 top-1/2 -translate-y-1/2 size-3.5 text-muted-foreground' />
+                <Input
+                  placeholder={translate('searchItems')}
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className='h-8 pl-7 text-xs'
+                />
+              </div>
+              <select
+                className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
+                value={filterMethod}
+                onChange={(e) => setFilterMethod(e.target.value)}
+              >
+                <option value=''>{translate('allMethods')}</option>
+                {METHODS.map((m) => <option key={m} value={m}>{translate(m)}</option>)}
+              </select>
+              <select
+                className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
+                value={filterTierMin}
+                onChange={(e) => setFilterTierMin(Number(e.target.value))}
+              >
+                <option value={-1}>{translate('minTier')}</option>
+                {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
+              </select>
+              <select
+                className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
+                value={filterTierMax}
+                onChange={(e) => setFilterTierMax(Number(e.target.value))}
+              >
+                <option value={-1}>{translate('maxTier')}</option>
+                {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
+              </select>
+              {(searchTerm || filterMethod || filterTierMin >= 0 || filterTierMax >= 0) && (
+                <X
+                  className='size-4 cursor-pointer text-muted-foreground hover:text-foreground'
+                  onClick={() => {
+                    setSearchTerm('');
+                    setFilterMethod('');
+                    setFilterTierMin(-1);
+                    setFilterTierMax(-1);
+                  }}
+                />
+              )}
+            </div>
             {currentEntries.length === 0 && !entriesLoading && (
               <p className='text-muted-foreground text-center py-4 text-sm'>
                 {translate('noEntries')}
               </p>
             )}
-            {sortedEntries.map((entry) => (
+            {currentEntries.length > 0 && filteredEntries.length === 0 && !entriesLoading && (
+              <p className='text-muted-foreground text-center py-4 text-sm'>
+                {translate('noMatches')}
+              </p>
+            )}
+            {filteredEntries.map((entry) => (
               <div key={entry.id} className='rounded-lg border p-3'>
                 <div className='flex items-start justify-between'>
                   <div className='space-y-1 text-sm'>

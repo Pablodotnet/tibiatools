@@ -162,7 +162,12 @@
     "totalSpentGp": "Gasto total",
     "totalCores": "Núcleos totais",
     "totalCoreCost": "Custo núcleos",
-    "avgCost": "Méd./entrada"
+    "avgCost": "Méd./entrada",
+    "searchItems": "Buscar items...",
+    "allMethods": "Todos os métodos",
+    "minTier": "Tier mín",
+    "maxTier": "Tier máx",
+    "noMatches": "Nenhuma entrada corresponde aos filtros."
   },
   "publicTierProjects": {
     "title": "Projetos de Tier",
