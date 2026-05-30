@@ -53,10 +53,14 @@ async function backfillTotalSpent(project: TierProject): Promise<void> {
   const total = entries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
   if (total > 0) {
     project.totalSpentGp = total;
-    await updateDoc(doc(FirebaseDB, 'tierProjects', project.id), {
-      totalSpentGp: total,
-      updatedAt: Timestamp.now(),
-    });
+    try {
+      await updateDoc(doc(FirebaseDB, 'tierProjects', project.id), {
+        totalSpentGp: total,
+        updatedAt: Timestamp.now(),
+      });
+    } catch {
+      // Not the owner — just set the value in memory without persisting
+    }
   }
 }
 
