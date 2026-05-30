@@ -49,18 +49,22 @@ function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntr
 
 async function backfillTotalSpent(project: TierProject): Promise<void> {
   if (project.totalSpentGp !== 0) return;
-  const entries = await getProjectEntries(project.id);
-  const total = entries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
-  if (total > 0) {
-    project.totalSpentGp = total;
-    try {
-      await updateDoc(doc(FirebaseDB, 'tierProjects', project.id), {
-        totalSpentGp: total,
-        updatedAt: Timestamp.now(),
-      });
-    } catch {
-      // Not the owner — just set the value in memory without persisting
+  try {
+    const entries = await getProjectEntries(project.id);
+    const total = entries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
+    if (total > 0) {
+      project.totalSpentGp = total;
+      try {
+        await updateDoc(doc(FirebaseDB, 'tierProjects', project.id), {
+          totalSpentGp: total,
+          updatedAt: Timestamp.now(),
+        });
+      } catch {
+        // Not the owner — just set the value in memory without persisting
+      }
     }
+  } catch {
+    // Can't read entries — skip backfill (e.g. unauthenticated, no permission)
   }
 }
 
