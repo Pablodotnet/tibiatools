@@ -162,6 +162,7 @@
     "by": "By",
     "backToProjects": "Back to projects",
     "entries": "Entries",
-    "total": "Total"
+    "total": "Total",
+    "noEntries": "No entries yet."
   }
 }

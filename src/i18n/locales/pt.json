@@ -159,7 +159,8 @@
     "by": "Por",
     "backToProjects": "Voltar aos projetos",
     "entries": "Entradas",
-    "total": "Total"
+    "total": "Total",
+    "noEntries": "Nenhuma entrada ainda."
   },
   "errors": {
     "invalidStringFormat": "Formato de string inválido"

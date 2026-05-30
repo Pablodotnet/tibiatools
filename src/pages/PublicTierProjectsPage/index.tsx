@@ -65,7 +65,7 @@ const PublicTierProjectsPage = () => {
             {entriesLoading ? (
               <p className='text-center text-sm text-muted-foreground py-4'>{translate('loading')}</p>
             ) : entries.length === 0 ? (
-              <p className='text-muted-foreground text-center py-4 text-sm'>{translate('empty')}</p>
+              <p className='text-muted-foreground text-center py-4 text-sm'>{translate('noEntries')}</p>
             ) : (
               entries.map((entry) => (
                 <div key={entry.id} className='rounded-lg border p-3'>

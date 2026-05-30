@@ -159,7 +159,8 @@
     "by": "Por",
     "backToProjects": "Volver a proyectos",
     "entries": "Entradas",
-    "total": "Total"
+    "total": "Total",
+    "noEntries": "Aún no hay entradas."
   },
   "errors": {
     "invalidStringFormat": "Formato de cadena inválido"
