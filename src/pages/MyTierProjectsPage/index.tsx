@@ -485,21 +485,25 @@ const MyTierProjectsPage = () => {
             <div className='grid grid-cols-2 gap-4'>
               <div className='space-y-2'>
                 <Label>{translate('fromTier')}</Label>
-                <Select value={String(entryFrom)} onValueChange={(v) => setEntryFrom(Number(v))}>
-                  <SelectTrigger><SelectValue placeholder='-' /></SelectTrigger>
-                  <SelectContent>
-                    {TIERS.map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+                <select
+                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
+                  value={entryFrom}
+                  onChange={(e) => setEntryFrom(Number(e.target.value))}
+                >
+                  <option value={-1}>-</option>
+                  {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
               </div>
               <div className='space-y-2'>
                 <Label>{translate('toTier')}</Label>
-                <Select value={String(entryTo)} onValueChange={(v) => setEntryTo(Number(v))}>
-                  <SelectTrigger><SelectValue placeholder='-' /></SelectTrigger>
-                  <SelectContent>
-                    {TIERS.slice(1).map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
-                  </SelectContent>
-                </Select>
+                <select
+                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
+                  value={entryTo}
+                  onChange={(e) => setEntryTo(Number(e.target.value))}
+                >
+                  <option value={-1}>-</option>
+                  {TIERS.slice(1).map((t) => <option key={t} value={t}>{t}</option>)}
+                </select>
               </div>
             </div>
 
