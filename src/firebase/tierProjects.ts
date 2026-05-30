@@ -18,7 +18,16 @@ import type { TierProject, TierProjectEntry } from '@/types/tierProject';
 function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(obj)) {
-    if (v !== undefined) out[k] = v;
+    if (v === undefined) continue;
+    if (Array.isArray(v)) {
+      out[k] = v.map((item) =>
+        item && typeof item === 'object' && !Array.isArray(item)
+          ? Object.fromEntries(Object.entries(item).filter(([, vi]) => vi !== undefined))
+          : item,
+      );
+    } else {
+      out[k] = v;
+    }
   }
   return out;
 }
