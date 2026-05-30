@@ -31,7 +31,7 @@ import {
   startDeleteEntry,
 } from '@/store/tierProjects';
 import type { TierProjectItem, TierProjectEntry } from '@/types/tierProject';
-import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown } from 'lucide-react';
+import { Trash2, Plus, ArrowLeft, Globe, Lock, X, Coins, Pencil, ArrowUpDown, BarChart3, Cpu, Diamond, TrendingUp } from 'lucide-react';
 import {
   FUSION_GOLD_GP,
   TRANSFER_GOLD_GP,
@@ -176,6 +176,15 @@ const MyTierProjectsPage = () => {
     });
     return sorted;
   }, [currentEntries, sortBy, sortOrder]);
+
+  const stats = useMemo(() => {
+    const count = currentEntries.length;
+    const totalGp = currentEntries.reduce((sum, e) => sum + e.items.reduce((s, i) => s + i.costGp, 0), 0);
+    const totalCores = currentEntries.reduce((sum, e) => sum + (e.exaltedCores ?? 0), 0);
+    const totalCoreCost = currentEntries.reduce((sum, e) => sum + ((e.exaltedCores ?? 0) * (e.exaltedCorePriceGp ?? 0)), 0);
+    const avgCost = count > 0 ? totalGp / count : 0;
+    return { count, totalGp, totalCores, totalCoreCost, avgCost };
+  }, [currentEntries]);
 
   const [deleteProjectId, setDeleteProjectId] = useState<string | null>(null);
   const [deleteEntryId, setDeleteEntryId] = useState<string | null>(null);
@@ -389,6 +398,39 @@ const MyTierProjectsPage = () => {
               <Progress value={Math.min(100, (selectedProject.currentTier / Math.max(1, selectedProject.targetTier)) * 100)} />
             </div>
           </CardHeader>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className='text-lg flex items-center gap-2'>
+              <BarChart3 className='size-4' />
+              {translate('stats')}
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className='grid grid-cols-2 sm:grid-cols-5 gap-3 text-sm'>
+              <div className='rounded-lg border p-3 space-y-1'>
+                <p className='text-xs text-muted-foreground flex items-center gap-1'><Diamond className='size-3' /> {translate('entries')}</p>
+                <p className='font-bold tabular-nums'>{stats.count}</p>
+              </div>
+              <div className='rounded-lg border p-3 space-y-1'>
+                <p className='text-xs text-muted-foreground flex items-center gap-1'><Coins className='size-3' /> {translate('totalSpentGp')}</p>
+                <p className='font-bold tabular-nums'>{stats.totalGp.toLocaleString()} gp</p>
+              </div>
+              <div className='rounded-lg border p-3 space-y-1'>
+                <p className='text-xs text-muted-foreground flex items-center gap-1'><Cpu className='size-3' /> {translate('totalCores')}</p>
+                <p className='font-bold tabular-nums'>{stats.totalCores}</p>
+              </div>
+              <div className='rounded-lg border p-3 space-y-1'>
+                <p className='text-xs text-muted-foreground flex items-center gap-1'><Cpu className='size-3' /> {translate('totalCoreCost')}</p>
+                <p className='font-bold tabular-nums'>{stats.totalCoreCost.toLocaleString()} gp</p>
+              </div>
+              <div className='rounded-lg border p-3 space-y-1'>
+                <p className='text-xs text-muted-foreground flex items-center gap-1'><TrendingUp className='size-3' /> {translate('avgCost')}</p>
+                <p className='font-bold tabular-nums'>{Math.round(stats.avgCost).toLocaleString()} gp</p>
+              </div>
+            </div>
+          </CardContent>
         </Card>
 
         <Card>

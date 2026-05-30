@@ -157,7 +157,12 @@
     "updateEntry": "Actualizar entrada",
     "cancel": "Cancelar",
     "marketPrice": "Precio de mercado (gp)",
-    "marketPriceShort": "Precio mkt"
+    "marketPriceShort": "Precio mkt",
+    "stats": "Estadísticas",
+    "totalSpentGp": "Gastado total",
+    "totalCores": "Núcleos totales",
+    "totalCoreCost": "Costo núcleos",
+    "avgCost": "Prom./entrada"
   },
   "publicTierProjects": {
     "title": "Proyectos de Tier",

@@ -160,7 +160,12 @@
     "updateEntry": "Update entry",
     "cancel": "Cancel",
     "marketPrice": "Market price (gp)",
-    "marketPriceShort": "Mkt price"
+    "marketPriceShort": "Mkt price",
+    "stats": "Statistics",
+    "totalSpentGp": "Total spent",
+    "totalCores": "Total cores",
+    "totalCoreCost": "Core cost",
+    "avgCost": "Avg / entry"
   },
   "publicTierProjects": {
     "title": "Tier Projects",
