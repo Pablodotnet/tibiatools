@@ -16,6 +16,7 @@ export type ImbuableItem = {
   name: string;
   icon: string;
   imbuingSlots: number;
+  elements?: string[];
 };
 
 export type ImbuablesListSection = {

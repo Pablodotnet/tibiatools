@@ -125,6 +125,16 @@ export const imbuingsAvailableByType = {
   backpacks: ["capacityIncrease"],
 };
 
+// Elemental imbuement IDs grouped by element for conflict detection
+export const elementBlockedImbuements: Record<string, string[]> = {
+  death: ['deathProtection', 'deathDamage'],
+  earth: ['earthProtection', 'earthDamage'],
+  energy: ['energyProtection', 'energyDamage'],
+  fire: ['fireProtection', 'fireDamage'],
+  ice: ['iceProtection', 'iceDamage'],
+  holy: ['holyProtection'],
+};
+
 export const imbuements = {
   deathProtection: {
     name: "Lich Shroud",
