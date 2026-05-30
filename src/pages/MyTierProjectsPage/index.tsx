@@ -29,7 +29,7 @@ import {
 
 const TIERS = Array.from({ length: 11 }, (_, i) => i);
 
-const METHODS = ['fusion', 'transfer', 'convergence-fusion', 'convergence-transfer'] as const;
+const METHODS = ['fusion', 'transfer', 'convergenceFusion', 'convergenceTransfer'] as const;
 const CLASSIFICATIONS = [1, 2, 3, 4] as const;
 
 function computeMethodCost(
@@ -56,7 +56,7 @@ function computeMethodCost(
         const cost = TRANSFER_GOLD_GP[cls][fromTier - 1];
         return cost ?? null;
       }
-      case 'convergence-fusion': {
+      case 'convergenceFusion': {
         let total = 0;
         for (let t = fromTier; t < toTier; t++) {
           const cost = CONVERGENCE_FUSION_GOLD_GP[t];
@@ -65,7 +65,7 @@ function computeMethodCost(
         }
         return total;
       }
-      case 'convergence-transfer': {
+      case 'convergenceTransfer': {
         const cls = classification as 3 | 4;
         if (cls !== 4 || toTier < 1) return null;
         const cost = CONVERGENCE_TRANSFER_GOLD_GP[cls][toTier - 1];
