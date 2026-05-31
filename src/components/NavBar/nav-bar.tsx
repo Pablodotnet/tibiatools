@@ -33,23 +33,24 @@ export function NavBar() {
   return (
     <nav className='fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90 dark:border-b dark:border-gray-800 dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)]'>
       <div className='w-full max-w-7xl mx-auto px-4'>
-        <div className='relative flex justify-between h-14 items-center'>
-          <Link to={'/'} className='flex items-center gap-2'>
+        <div className='flex h-14 items-center'>
+          <Link to={'/'} className='flex items-center gap-2 shrink-0'>
             <PandaIcon className='h-6 w-6' />
             <span className='hidden text-sm font-semibold md:inline'>
               TIBIA TOOLS
             </span>
           </Link>
 
-          <nav className='hidden md:flex absolute left-1/2 -translate-x-1/2 gap-1'>
+          <nav className='hidden md:flex items-center gap-1 ml-6'>
             {NAV_LINKS.map((link) => {
               const Icon = link.icon;
               return (
                 <NavLink
                   key={link.to}
                   to={link.to}
+                  title={link.label}
                   className={({ isActive }) =>
-                    `flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium transition-colors ${
+                    `flex items-center justify-center rounded-md p-2 text-sm font-medium transition-colors ${
                       isActive
                         ? 'bg-accent text-accent-foreground'
                         : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
@@ -57,13 +58,12 @@ export function NavBar() {
                   }
                 >
                   <Icon className='size-4 shrink-0' />
-                  <span className='hidden lg:inline'>{link.label}</span>
                 </NavLink>
               );
             })}
           </nav>
 
-          <div className='flex items-center gap-2 md:gap-4'>
+          <div className='flex items-center gap-2 md:gap-4 ml-auto'>
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
