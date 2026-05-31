@@ -5,3 +5,4 @@ export * from './vocations';
 export * from './vocations-icons';
 export * from './utils';
 export * from './huntingSpots';
+export * from './offlineTraining';

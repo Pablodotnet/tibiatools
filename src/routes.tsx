@@ -11,6 +11,7 @@ import CoinsToMoneyPage from '@/pages/CoinsToMoneyPage';
 import ImbueCostCalculatorPage from '@/pages/ImbueCostCalculatorPage';
 import ExerciseWeaponsCalculatorPage from '@/pages/ExerciseWeaponsCalculatorPage';
 import EquipmentReferencePage from '@/pages/EquipmentReferencePage';
+import OfflineTrainingCalculatorPage from '@/pages/OfflineTrainingCalculatorPage';
 import AuthPage from '@/pages/AuthPage';
 import AccountPage from '@/pages/AccountPage';
 import NotFoundPage from '@/pages/NotFoundPage';
@@ -28,6 +29,7 @@ const TITLE_KEYS: Record<string, string> = {
   '/imbue-cost-calculator': 'imbueCostCalculator',
   '/exercise-weapons': 'exerciseWeapons',
   '/equipment-reference': 'equipmentReference',
+  '/offline-training': 'offlineTraining',
   '/exaltation': 'exaltationForge',
   '/auth': 'auth',
   '/account': 'account',
@@ -54,6 +56,7 @@ const AppRouting = () => {
       <Route path='/imbue-cost-calculator' element={<ImbueCostCalculatorPage />} />
       <Route path='/exercise-weapons' element={<ExerciseWeaponsCalculatorPage />} />
       <Route path='/equipment-reference' element={<EquipmentReferencePage />} />
+      <Route path='/offline-training' element={<OfflineTrainingCalculatorPage />} />
       <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
       <Route
         path='/hunting-spots/:vocationId'
