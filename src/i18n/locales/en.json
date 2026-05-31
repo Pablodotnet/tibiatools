@@ -7,6 +7,7 @@
       "imbuings": "Imbuings",
       "imbueCostCalculator": "Imbue Cost",
       "exerciseWeapons": "Exercise Weapons",
+      "equipmentReference": "Equipment",
       "huntingSpots": "Hunting Spots",
       "exaltationForge": "Exaltation Forge",
       "tierProjects": "Tier Projects",
@@ -89,6 +90,7 @@
     "imbuings": "Imbuings",
     "imbueCostCalculator": "Imbue Cost Calculator",
     "exerciseWeapons": "Exercise Weapons Calculator",
+    "equipmentReference": "Equipment Reference",
     "huntingSpots": "Hunting Spots",
     "exaltationForge": "Exaltation Forge",
     "auth": "Auth",
@@ -156,6 +158,17 @@
     "clear": "Clear",
     "slot": "slot",
     "slots": "slots"
+  },
+  "equipmentReference": {
+    "title": "Vocation Equipment Reference",
+    "description": "Browse equipment by vocation and slot. Filter by elemental protection to find the right gear.",
+    "protectionFilter": "Protection filter",
+    "noMatch": "No items match the selected protection filters.",
+    "noItems": "No items found for this slot.",
+    "item": "Item",
+    "slots": "Imbue slots",
+    "protection": "Protection",
+    "availableImbuements": "Available imbuements"
   },
   "errorBoundary": {
     "somethingWentWrong": "Something went wrong",

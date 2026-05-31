@@ -7,6 +7,7 @@
       "imbuings": "Imbuings",
       "imbueCostCalculator": "Custo de Imbu",
       "exerciseWeapons": "Armas de Exercício",
+      "equipmentReference": "Equipamento",
       "huntingSpots": "Locais de caça",
       "exaltationForge": "Forja de Exaltação",
       "tierProjects": "Projetos de Tier",
@@ -89,6 +90,7 @@
     "imbuings": "Imbuings",
     "imbueCostCalculator": "Calculadora de custo de Imbu",
     "exerciseWeapons": "Calculadora de Armas de Exercício",
+    "equipmentReference": "Referência de Equipamento",
     "huntingSpots": "Locais de caça",
     "exaltationForge": "Forja de Exaltação",
     "auth": "Autenticação",
@@ -432,6 +434,17 @@
     "classification": "Classe",
     "searchPlaceholder": "Pesquisar projetos...",
     "totalSpent": "Gasto total"
+  },
+  "equipmentReference": {
+    "title": "Referência de Equipamento por Vocação",
+    "description": "Explore equipamentos por vocação e slot. Filtre por proteção elemental para encontrar o equipamento ideal.",
+    "protectionFilter": "Filtro de proteção",
+    "noMatch": "Nenhum item corresponde aos filtros de proteção selecionados.",
+    "noItems": "Nenhum item encontrado para este slot.",
+    "item": "Item",
+    "slots": "Slots de Imbu",
+    "protection": "Proteção",
+    "availableImbuements": "Imbus disponíveis"
   },
   "errors": {
     "invalidStringFormat": "Formato de string inválido"

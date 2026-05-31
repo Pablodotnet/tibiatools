@@ -7,6 +7,7 @@
       "imbuings": "Imbuings",
       "imbueCostCalculator": "Costo de Imbu",
       "exerciseWeapons": "Armas de Ejercicio",
+      "equipmentReference": "Equipo",
       "huntingSpots": "Lugares de caza",
       "exaltationForge": "Forja de Exaltación",
       "tierProjects": "Proyectos de Tier",
@@ -89,6 +90,7 @@
     "imbuings": "Imbuings",
     "imbueCostCalculator": "Calculadora de costo de Imbu",
     "exerciseWeapons": "Calculadora de Armas de Ejercicio",
+    "equipmentReference": "Referencia de Equipo",
     "huntingSpots": "Lugares de caza",
     "exaltationForge": "Forja de Exaltación",
     "auth": "Autenticación",
@@ -432,6 +434,17 @@
     "classification": "Clase",
     "searchPlaceholder": "Buscar proyectos...",
     "totalSpent": "Gastado total"
+  },
+  "equipmentReference": {
+    "title": "Referencia de Equipo por Vocación",
+    "description": "Explora el equipo por vocación y ranura. Filtra por protección elemental para encontrar el equipo adecuado.",
+    "protectionFilter": "Filtro de protección",
+    "noMatch": "Ningún ítem coincide con los filtros de protección seleccionados.",
+    "noItems": "No se encontraron ítems para esta ranura.",
+    "item": "Ítem",
+    "slots": "Ranuras de Imbu",
+    "protection": "Protección",
+    "availableImbuements": "Imbu disponibles"
   },
   "errors": {
     "invalidStringFormat": "Formato de cadena inválido"
