@@ -3,18 +3,57 @@ import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
 import { useParams } from "react-router-dom";
-import { vocations, huntingSpotsByVocation } from '@/helpers';
-import { type HuntingSpotData, formatRate, formatProfit, calculateHoursToNextLevel, formatHours } from '@/helpers/huntingSpots';
-import { useMemo, useState } from "react";
-import { ChevronDown, ChevronUp, Calculator } from 'lucide-react';
+import { vocations } from '@/helpers';
+import { type HuntingSpotData, formatRate, formatProfit, calculateHoursToNextLevel, formatHours, huntingSpotsByVocation } from '@/helpers/huntingSpots';
+import { getAllHuntingSpots, deleteHuntingSpot } from '@/firebase/huntingSpots';
+import { useAuth } from '@/hooks';
+import { toast } from 'sonner';
+import { useEffect, useMemo, useState } from "react";
+import { ChevronDown, ChevronUp, Calculator, Trash2, User } from 'lucide-react';
 
 const VocationHuntSpotsPage = () => {
   const { vocationId } = useParams();
   const { t } = useTranslation();
   const translate = (entry: string) => t(`huntingSpotsPage.${entry}`);
+  const { user } = useAuth();
 
   const vocation = vocations.find((v) => v.id === vocationId);
-  const spots = vocationId ? huntingSpotsByVocation[vocationId] : undefined;
+  const [userSpots, setUserSpots] = useState<HuntingSpotData[]>([]);
+  const [loadingSpots, setLoadingSpots] = useState(true);
+
+  const loadSpots = async () => {
+    setLoadingSpots(true);
+    try {
+      const spots = await getAllHuntingSpots();
+      setUserSpots(spots);
+    } catch {
+      // Silently fail — user spots are non-critical
+    } finally {
+      setLoadingSpots(false);
+    }
+  };
+
+  useEffect(() => {
+    loadSpots();
+  }, []);
+
+  const mergedSpots = useMemo(() => {
+    if (!vocationId) return [];
+    const builtIn = huntingSpotsByVocation[vocationId] ?? [];
+    const builtInIds = new Set(builtIn.map((s) => s.id));
+    const matchingUserSpots = userSpots.filter((s) => s.vocationId === vocationId && !builtInIds.has(s.id));
+    return [...builtIn, ...matchingUserSpots];
+  }, [vocationId, userSpots]);
+
+  const handleDelete = async (spotId: string) => {
+    try {
+      await deleteHuntingSpot(spotId);
+      setUserSpots((prev) => prev.filter((s) => s.id !== spotId));
+      toast.success(translate('spotDeleted'));
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  };
 
   return (
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
@@ -25,14 +64,22 @@ const VocationHuntSpotsPage = () => {
           </CardTitle>
         </CardHeader>
         <CardContent>
-          {!spots || spots.length === 0 ? (
+          {loadingSpots ? (
+            <p className="text-muted-foreground text-center py-8">{translate('loading')}</p>
+          ) : mergedSpots.length === 0 ? (
             <p className="text-muted-foreground text-center py-8">
               {translate('comingSoon')} {vocation?.name || vocationId}.
             </p>
           ) : (
             <div className="space-y-3">
-              {spots.map((spot) => (
-                <SpotCard key={spot.id} spot={spot} translate={translate} />
+              {mergedSpots.map((spot) => (
+                <SpotCard
+                  key={spot.id}
+                  spot={spot}
+                  translate={translate}
+                  isOwner={spot.ownerUid === user.uid}
+                  onDelete={handleDelete}
+                />
               ))}
             </div>
           )}
@@ -45,9 +92,13 @@ const VocationHuntSpotsPage = () => {
 function SpotCard({
   spot,
   translate,
+  isOwner,
+  onDelete,
 }: {
   spot: HuntingSpotData;
   translate: (key: string) => string;
+  isOwner: boolean;
+  onDelete: (id: string) => void;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [showCalc, setShowCalc] = useState(false);
@@ -72,16 +123,35 @@ function SpotCard({
         className="w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer hover:bg-muted/50 transition-colors rounded-lg"
       >
         <div className="min-w-0 flex-1">
-          <h4 className="font-semibold">{spot.name}</h4>
+          <div className="flex items-center gap-2">
+            <h4 className="font-semibold">{spot.name}</h4>
+            {spot.ownerDisplayName && (
+              <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm">
+                <User className="size-2.5" />
+                {spot.ownerDisplayName}
+              </span>
+            )}
+          </div>
           <p className="text-xs text-muted-foreground">
             {translate('level')} {spot.levelRange[0]}–{spot.levelRange[1]} &middot; {spot.location}
           </p>
         </div>
-        {expanded ? (
-          <ChevronUp className="size-4 shrink-0 text-muted-foreground" />
-        ) : (
-          <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
-        )}
+        <div className="flex items-center gap-1">
+          {isOwner && (
+            <button
+              onClick={(e) => { e.stopPropagation(); onDelete(spot.id); }}
+              className="p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+              title={translate('deleteSpot')}
+            >
+              <Trash2 className="size-3.5" />
+            </button>
+          )}
+          {expanded ? (
+            <ChevronUp className="size-4 shrink-0 text-muted-foreground" />
+          ) : (
+            <ChevronDown className="size-4 shrink-0 text-muted-foreground" />
+          )}
+        </div>
       </button>
 
       {expanded && (
