@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { Menu } from 'lucide-react';
+import { Menu, Wallet, Coins, Zap, Crosshair, Hammer, FolderKanban, Users } from 'lucide-react';
 import { ModeToggle } from './mode-toggle';
 import { PandaIcon } from './panda-icon';
 import { RepositoryButton } from './repository-button';
@@ -13,14 +13,20 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 
-const NAV_LINKS = [
-  { to: '/real-money-calculator', label: 'Real Money' },
-  { to: '/coins-to-money', label: 'Coins to Money' },
-  { to: '/imbuings', label: 'Imbuings' },
-  { to: '/hunting-spots', label: 'Hunting Spots' },
-  { to: '/exaltation', label: 'Exaltation Forge' },
-  { to: '/myTierProjects', label: 'Tier Projects' },
-  { to: '/public-projects', label: 'Community' },
+interface NavLink {
+  to: string;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}
+
+const NAV_LINKS: NavLink[] = [
+  { to: '/real-money-calculator', label: 'Real Money', icon: Wallet },
+  { to: '/coins-to-money', label: 'Coins to Money', icon: Coins },
+  { to: '/imbuings', label: 'Imbuings', icon: Zap },
+  { to: '/hunting-spots', label: 'Hunting Spots', icon: Crosshair },
+  { to: '/exaltation', label: 'Exaltation Forge', icon: Hammer },
+  { to: '/myTierProjects', label: 'Tier Projects', icon: FolderKanban },
+  { to: '/public-projects', label: 'Community', icon: Users },
 ];
 
 export function NavBar() {
@@ -59,14 +65,20 @@ export function NavBar() {
                   <Menu className='size-5' />
                 </Button>
               </DropdownMenuTrigger>
-              <DropdownMenuContent align='end' className='w-56'>
-                {NAV_LINKS.map((link) => (
-                  <DropdownMenuItem key={link.to} asChild>
-                    <Link to={link.to} className='cursor-pointer'>
-                      {link.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
+              <DropdownMenuContent align='end' className='w-72'>
+                <div className='grid grid-cols-2 gap-1 p-1'>
+                  {NAV_LINKS.map((link) => {
+                    const Icon = link.icon;
+                    return (
+                      <DropdownMenuItem key={link.to} asChild className='flex-col items-center justify-center p-3 gap-1.5 text-center'>
+                        <Link to={link.to} className='cursor-pointer'>
+                          <Icon className='size-6' />
+                          <span className='text-xs'>{link.label}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    );
+                  })}
+                </div>
               </DropdownMenuContent>
             </DropdownMenu>
 
