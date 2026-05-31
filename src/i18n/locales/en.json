@@ -246,11 +246,20 @@
     "comingSoon": "Data coming soon for",
     "expRaw": "Raw exp",
     "expBonus": "With bonus",
-    "loot": "Loot",
+    "profit": "Profit",
     "set": "Set",
     "imbuements": "Imbuements",
     "level": "Level",
-    "location": "Location"
+    "location": "Location",
+    "showCalc": "Show calculator",
+    "hideCalc": "Hide calculator",
+    "calculator": "Hunting calculator",
+    "yourLevel": "Your level",
+    "percent": "% to next",
+    "supplyCost": "Supply cost",
+    "netProfit": "Net profit",
+    "timeToNext": "Time to next level",
+    "invalidLevel": "Enter a valid level within the spot's range."
   },
   "exaltationForge": {
     "title": "Exaltation Forge Simulator",

@@ -179,11 +179,20 @@
     "comingSoon": "Dados em breve para",
     "expRaw": "Exp base",
     "expBonus": "Com bônus",
-    "loot": "Loot",
+    "profit": "Lucro",
     "set": "Equipamento",
     "imbuements": "Imbuements",
     "level": "Nível",
-    "location": "Localização"
+    "location": "Localização",
+    "showCalc": "Mostrar calculadora",
+    "hideCalc": "Ocultar calculadora",
+    "calculator": "Calculadora de caça",
+    "yourLevel": "Seu nível",
+    "percent": "% ao próx.",
+    "supplyCost": "Custo de suprimentos",
+    "netProfit": "Lucro líquido",
+    "timeToNext": "Tempo ao próximo nível",
+    "invalidLevel": "Insira um nível válido dentro da faixa do local."
   },
   "exaltationForge": {
     "title": "Simulador de Exaltation Forge",

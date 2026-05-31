@@ -11,13 +11,13 @@ vi.mock('react-i18next', () => ({
         'huntingSpotsPage.comingSoon': 'Data coming soon for',
         'huntingSpotsPage.expRaw': 'Raw exp',
         'huntingSpotsPage.expBonus': 'With bonus',
-        'huntingSpotsPage.loot': 'Loot',
+        'huntingSpotsPage.profit': 'Profit',
         'huntingSpotsPage.set': 'Set',
         'huntingSpotsPage.imbuements': 'Imbuements',
         'huntingSpotsPage.level': 'Level',
         'huntingSpotsPage.location': 'Location',
-        'huntingSpotsPage.showDetails': 'Show details',
-        'huntingSpotsPage.hideDetails': 'Hide details',
+        'huntingSpotsPage.showCalc': 'Show calculator',
+        'huntingSpotsPage.hideCalc': 'Hide calculator',
       };
       return map[key] ?? key;
     },

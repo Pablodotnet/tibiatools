@@ -1,9 +1,12 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
 import { useParams } from "react-router-dom";
 import { vocations, huntingSpotsByVocation } from '@/helpers';
-import { useState } from "react";
-import { ChevronDown, ChevronUp } from 'lucide-react';
+import { type HuntingSpotData, formatRate, formatProfit, calculateHoursToNextLevel, formatHours } from '@/helpers/huntingSpots';
+import { useMemo, useState } from "react";
+import { ChevronDown, ChevronUp, Calculator } from 'lucide-react';
 
 const VocationHuntSpotsPage = () => {
   const { vocationId } = useParams();
@@ -43,10 +46,24 @@ function SpotCard({
   spot,
   translate,
 }: {
-  spot: { id: string; name: string; levelRange: [number, number]; location: string; expRaw: string; expBonus: string; loot: string; set: string; imbuements: string[]; notes: string };
+  spot: HuntingSpotData;
   translate: (key: string) => string;
 }) {
   const [expanded, setExpanded] = useState(false);
+  const [showCalc, setShowCalc] = useState(false);
+  const [calcLevel, setCalcLevel] = useState('');
+  const [calcPercent, setCalcPercent] = useState('0');
+  const [customSupplyCost, setCustomSupplyCost] = useState('');
+
+  const supplyCost = customSupplyCost !== '' ? (parseInt(customSupplyCost, 10) || 0) : spot.supplyCost;
+  const netProfit = spot.profit - (supplyCost - spot.supplyCost);
+
+  const timeToNext = useMemo(() => {
+    const lvl = parseInt(calcLevel, 10);
+    const pct = Math.min(Math.max(parseFloat(calcPercent) || 0, 0), 99);
+    if (isNaN(lvl) || lvl < 1) return null;
+    return calculateHoursToNextLevel(lvl, pct, spot.expBonus);
+  }, [calcLevel, calcPercent, spot.expBonus]);
 
   return (
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
@@ -72,15 +89,17 @@ function SpotCard({
           <div className="grid grid-cols-2 gap-2">
             <div>
               <span className="text-muted-foreground">{translate('expRaw')}:</span>{' '}
-              <span className="tabular-nums">{spot.expRaw}</span>
+              <span className="tabular-nums font-medium">{formatRate(spot.expRaw)}</span>
             </div>
             <div>
               <span className="text-muted-foreground">{translate('expBonus')}:</span>{' '}
-              <span className="tabular-nums">{spot.expBonus}</span>
+              <span className="tabular-nums font-medium">{formatRate(spot.expBonus)}</span>
             </div>
             <div>
-              <span className="text-muted-foreground">{translate('loot')}:</span>{' '}
-              <span className="tabular-nums">{spot.loot}</span>
+              <span className="text-muted-foreground">{translate('profit')}:</span>{' '}
+              <span className={`tabular-nums font-medium ${spot.profit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
+                {formatProfit(spot.profit)}
+              </span>
             </div>
             <div>
               <span className="text-muted-foreground">{translate('location')}:</span>{' '}
@@ -97,6 +116,81 @@ function SpotCard({
             <span className="text-muted-foreground">{translate('imbuements')}:</span>{' '}
             {spot.imbuements.join(', ')}
           </div>
+
+          <button
+            onClick={(e) => { e.stopPropagation(); setShowCalc(!showCalc); }}
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+          >
+            <Calculator className="size-3.5" />
+            {showCalc ? translate('hideCalc') : translate('showCalc')}
+          </button>
+
+          {showCalc && (
+            <div className="rounded-md border bg-muted/30 p-3 space-y-3">
+              <p className="text-xs font-medium text-muted-foreground">{translate('calculator')}</p>
+
+              <div className="grid grid-cols-3 gap-2">
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground">{translate('yourLevel')}</label>
+                  <Input
+                    type="number"
+                    value={calcLevel}
+                    onChange={(e) => setCalcLevel(e.target.value)}
+                    min={1}
+                    placeholder={String(spot.levelRange[0])}
+                    className="h-7 text-xs"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground">{translate('percent')}</label>
+                  <Input
+                    type="number"
+                    value={calcPercent}
+                    onChange={(e) => setCalcPercent(e.target.value)}
+                    min={0}
+                    max={99}
+                    className="h-7 text-xs"
+                  />
+                </div>
+                <div className="space-y-1">
+                  <label className="text-xs text-muted-foreground">{translate('supplyCost')}</label>
+                  <Input
+                    type="number"
+                    value={customSupplyCost}
+                    onChange={(e) => setCustomSupplyCost(e.target.value)}
+                    min={0}
+                    placeholder={String(spot.supplyCost)}
+                    className="h-7 text-xs"
+                  />
+                </div>
+              </div>
+
+              <Separator />
+
+              <div className="grid grid-cols-2 gap-2 text-xs">
+                <div>
+                  <span className="text-muted-foreground">{translate('netProfit')}:</span>{' '}
+                  <span className={netProfit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}>
+                    {formatProfit(netProfit)}
+                  </span>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">{translate('supplyCost')}:</span>{' '}
+                  <span className="tabular-nums">{formatProfit(supplyCost)}</span>
+                </div>
+                {timeToNext !== null && (
+                  <div className="col-span-2">
+                    <span className="text-muted-foreground">{translate('timeToNext')}:</span>{' '}
+                    <span className="font-medium">{formatHours(timeToNext)}</span>
+                  </div>
+                )}
+              </div>
+
+              {calcLevel && isNaN(parseInt(calcLevel, 10)) === false && timeToNext === null && (
+                <p className="text-xs text-destructive">{translate('invalidLevel')}</p>
+              )}
+            </div>
+          )}
 
           {spot.notes && (
             <p className="text-xs text-muted-foreground italic pt-1 border-t">
