@@ -49,15 +49,15 @@ export function NavBar() {
                   key={link.to}
                   to={link.to}
                   className={({ isActive }) =>
-                    `flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                    `flex items-center justify-center gap-1.5 rounded-md px-2 py-1.5 text-sm font-medium transition-colors ${
                       isActive
                         ? 'bg-accent text-accent-foreground'
                         : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
                     }`
                   }
                 >
-                  <Icon className='size-4' />
-                  {link.label}
+                  <Icon className='size-4 shrink-0' />
+                  <span className='hidden lg:inline'>{link.label}</span>
                 </NavLink>
               );
             })}
