@@ -105,7 +105,7 @@ function SpotCard({
   translate: (key: string) => string;
   isOwner: boolean;
   onDelete: (id: string) => void;
-  userId: string;
+  userId: string | null;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [showCalc, setShowCalc] = useState(false);
@@ -346,7 +346,7 @@ function SpotCard({
                 <HuntSessionCard
                   key={session.id}
                   session={session}
-                  isOwner={session.ownerUid === userId}
+                  isOwner={!!userId && session.ownerUid === userId}
                   onDelete={handleSessionDelete}
                 />
               ))}
