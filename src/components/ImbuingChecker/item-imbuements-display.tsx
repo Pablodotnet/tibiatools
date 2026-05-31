@@ -1,3 +1,4 @@
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 import { imbuements, imbuingsAvailableByType, elementBlockedImbuements } from "./imbuements";
 import { imbuableItems } from "@/helpers/ImbuingLists/imbuableItems";
@@ -16,22 +17,22 @@ interface ItemImbuementsDisplayProps {
   } | null;
 }
 
-const ItemImbuementsDisplay: React.FC<ItemImbuementsDisplayProps> = ({
+const ItemImbuementsDisplay = ({
   selectedSearch,
-}) => {
+}: ItemImbuementsDisplayProps) => {
   const { t } = useTranslation();
   const ti = (key: string) => t(`imbuingChecker.${key}`);
   const itemType = (selectedSearch?.type || "") as ItemType;
   const itemName = selectedSearch?.item || '';
 
-  const itemElements = React.useMemo(() => {
+  const itemElements = useMemo(() => {
     if (!itemType || !itemName) return undefined;
     const section = imbuableItems[itemType];
     if (!section) return undefined;
     return section.items.find((i) => i.name === itemName)?.elements;
   }, [itemType, itemName]);
 
-  const blockedImbuements = React.useMemo(() => {
+  const blockedImbuements = useMemo(() => {
     if (!itemElements) return new Set<string>();
     const set = new Set<string>();
     for (const el of itemElements) {
@@ -82,10 +83,10 @@ interface ImbuementCardProps {
   isBlocked: boolean;
 }
 
-const ImbuementCard: React.FC<ImbuementCardProps> = ({ imbuement, isBlocked }) => {
+const ImbuementCard = ({ imbuement, isBlocked }: ImbuementCardProps) => {
   const { t } = useTranslation();
   const ti = (key: string) => t(`imbuingChecker.${key}`);
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
   const data = imbuements[imbuement];
 
   return (
@@ -136,7 +137,7 @@ const ImbuementCard: React.FC<ImbuementCardProps> = ({ imbuement, isBlocked }) =
                         key={item.itemName}
                         className="flex items-center gap-2 text-sm"
                       >
-                        {item.icon && (
+                        {"icon" in item && item.icon && (
                           <img
                             src={item.icon}
                             alt={item.itemName}
