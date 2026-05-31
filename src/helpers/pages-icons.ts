@@ -4,6 +4,10 @@ import guzzlemawGif from "@/assets/pages-icons/guzzlemaw.gif";
 import forgeGif from "@/assets/pages-icons/exaltedcore.gif";
 import crystalWolfGif from '@/assets/pages-icons/crystal_wolf_mount.gif';
 import tierGif from '@/assets/pages-icons/tier.gif';
+import manaLeechPng from '@/assets/imbuements/manaLeech.png';
+import swordSkillPng from '@/assets/imbuements/swordSkill.png';
+import shieldingSkillPng from '@/assets/imbuements/shieldingSkill.png';
+import distanceSkillPng from '@/assets/imbuements/distanceSkill.png';
 
 export const PagesIcons = {
   goldcoinGif,
@@ -12,4 +16,8 @@ export const PagesIcons = {
   forgeGif,
   crystalWolfGif,
   tierGif,
+  manaLeechPng,
+  swordSkillPng,
+  shieldingSkillPng,
+  distanceSkillPng,
 };

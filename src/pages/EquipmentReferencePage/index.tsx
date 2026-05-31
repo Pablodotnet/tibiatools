@@ -1,5 +1,5 @@
 import { EquipmentReference } from '@/components/EquipmentReference';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 
 const EquipmentReferencePage = () => {
@@ -11,7 +11,9 @@ const EquipmentReferencePage = () => {
         <CardTitle>{translate('title')}</CardTitle>
         <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>
-      <EquipmentReference />
+      <CardContent>
+        <EquipmentReference />
+      </CardContent>
     </Card>
   );
 };

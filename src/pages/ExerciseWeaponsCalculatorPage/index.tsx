@@ -1,5 +1,5 @@
 import { ExerciseWeaponsCalculator } from '@/components/ExerciseWeaponsCalculator';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 
 const ExerciseWeaponsCalculatorPage = () => {
@@ -11,7 +11,9 @@ const ExerciseWeaponsCalculatorPage = () => {
         <CardTitle>{translate('title')}</CardTitle>
         <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>
-      <ExerciseWeaponsCalculator />
+      <CardContent>
+        <ExerciseWeaponsCalculator />
+      </CardContent>
     </Card>
   );
 };

@@ -1,5 +1,5 @@
 import { OfflineTrainingCalculator } from '@/components/OfflineTrainingCalculator';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 
 const OfflineTrainingCalculatorPage = () => {
@@ -11,7 +11,9 @@ const OfflineTrainingCalculatorPage = () => {
         <CardTitle>{translate('title')}</CardTitle>
         <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>
-      <OfflineTrainingCalculator />
+      <CardContent>
+        <OfflineTrainingCalculator />
+      </CardContent>
     </Card>
   );
 };

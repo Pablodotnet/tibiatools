@@ -27,6 +27,30 @@ export const pagesList: PageListItem[] = [
     icon: PagesIcons.imbuingshrineGif,
   },
   {
+    title: 'titleImbueCost',
+    url: '/imbue-cost-calculator',
+    description: 'descriptionImbueCost',
+    icon: PagesIcons.manaLeechPng,
+  },
+  {
+    title: 'titleExerciseWeapons',
+    url: '/exercise-weapons',
+    description: 'descriptionExerciseWeapons',
+    icon: PagesIcons.swordSkillPng,
+  },
+  {
+    title: 'titleEquipment',
+    url: '/equipment-reference',
+    description: 'descriptionEquipment',
+    icon: PagesIcons.shieldingSkillPng,
+  },
+  {
+    title: 'titleOfflineTraining',
+    url: '/offline-training',
+    description: 'descriptionOfflineTraining',
+    icon: PagesIcons.distanceSkillPng,
+  },
+  {
     title: 'titleHuntSpots',
     url: '/hunting-spots',
     description: 'descriptionHuntSpots',

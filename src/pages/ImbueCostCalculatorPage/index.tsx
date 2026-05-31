@@ -1,5 +1,5 @@
 import { ImbueCostCalculator } from '@/components/ImbueCostCalculator';
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useTranslation } from 'react-i18next';
 
 const ImbueCostCalculatorPage = () => {
@@ -11,7 +11,9 @@ const ImbueCostCalculatorPage = () => {
         <CardTitle>{translate('title')}</CardTitle>
         <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>
-      <ImbueCostCalculator />
+      <CardContent>
+        <ImbueCostCalculator />
+      </CardContent>
     </Card>
   );
 };

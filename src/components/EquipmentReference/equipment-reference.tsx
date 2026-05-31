@@ -83,6 +83,10 @@ export function EquipmentReference() {
     });
   }, [activeSlotDef]);
 
+  const hasProtections = useMemo(() => {
+    return allItems.some((item) => item.elements && item.elements.length > 0);
+  }, [allItems]);
+
   const filteredItems = useMemo(() => {
     if (filterElements.length === 0) return allItems;
     return allItems.filter((item) => {
@@ -121,13 +125,13 @@ export function EquipmentReference() {
 
       <Separator />
 
-      <div className='flex flex-wrap gap-1 border-b'>
+      <div className='grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-1 border-b'>
         {slots.map((slot) => {
           const active = slot.key === activeSlot;
           return (
             <button
               key={slot.key}
-              onClick={() => setActiveSlot(slot.key)}
+              onClick={() => { setActiveSlot(slot.key); setFilterElements([]); }}
               className={`px-3 py-2 text-sm font-medium border-b-2 transition-colors cursor-pointer ${
                 active
                   ? 'border-primary text-primary'
@@ -140,27 +144,29 @@ export function EquipmentReference() {
         })}
       </div>
 
-      <div className='flex flex-wrap gap-1.5'>
-        <span className='text-xs text-muted-foreground self-center mr-1'>
-          {te('protectionFilter')}:
-        </span>
-        {ALL_ELEMENTS.map((el) => {
-          const active = filterElements.includes(el);
-          return (
-            <button
-              key={el}
-              onClick={() => toggleElement(el)}
-              className={`px-2 py-0.5 rounded text-xs font-medium border cursor-pointer transition-colors ${
-                active
-                  ? 'bg-primary text-primary-foreground border-primary'
-                  : 'bg-background text-muted-foreground border-border hover:bg-accent'
-              }`}
-            >
-              {ELEMENT_LABELS[el]}
-            </button>
-          );
-        })}
-      </div>
+      {hasProtections && (
+        <div className='flex flex-wrap gap-1.5'>
+          <span className='text-xs text-muted-foreground self-center mr-1'>
+            {te('protectionFilter')}:
+          </span>
+          {ALL_ELEMENTS.map((el) => {
+            const active = filterElements.includes(el);
+            return (
+              <button
+                key={el}
+                onClick={() => toggleElement(el)}
+                className={`px-2 py-0.5 rounded text-xs font-medium border cursor-pointer transition-colors ${
+                  active
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-background text-muted-foreground border-border hover:bg-accent'
+                }`}
+              >
+                {ELEMENT_LABELS[el]}
+              </button>
+            );
+          })}
+        </div>
+      )}
 
       {filteredItems.length === 0 ? (
         <p className='text-sm text-muted-foreground py-4 text-center'>
