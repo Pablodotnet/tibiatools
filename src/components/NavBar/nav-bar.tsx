@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { Menu, Wallet, Coins, Zap, Crosshair, Hammer, FolderKanban, Users } from 'lucide-react';
 import { ModeToggle } from './mode-toggle';
 import { PandaIcon } from './panda-icon';
@@ -41,16 +41,26 @@ export function NavBar() {
             </span>
           </Link>
 
-          <nav className='hidden md:flex absolute left-1/2 -translate-x-1/2 gap-4'>
-            {NAV_LINKS.map((link) => (
-              <Link
-                key={link.to}
-                to={link.to}
-                className='text-sm font-medium transition-colors hover:text-blue-600 dark:hover:text-blue-400'
-              >
-                {link.label}
-              </Link>
-            ))}
+          <nav className='hidden md:flex absolute left-1/2 -translate-x-1/2 gap-1'>
+            {NAV_LINKS.map((link) => {
+              const Icon = link.icon;
+              return (
+                <NavLink
+                  key={link.to}
+                  to={link.to}
+                  className={({ isActive }) =>
+                    `flex items-center gap-1.5 rounded-md px-3 py-1.5 text-sm font-medium transition-colors ${
+                      isActive
+                        ? 'bg-accent text-accent-foreground'
+                        : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                    }`
+                  }
+                >
+                  <Icon className='size-4' />
+                  {link.label}
+                </NavLink>
+              );
+            })}
           </nav>
 
           <div className='flex items-center gap-2 md:gap-4'>
