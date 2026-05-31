@@ -8,6 +8,7 @@ import ImbuingsPage from '@/pages/ImbuingsPage';
 import RealMoneyPage from '@/pages/RealMoneyPage';
 import VocationHuntSpotsPage from '@/pages/VocationHuntSpotsPage';
 import CoinsToMoneyPage from '@/pages/CoinsToMoneyPage';
+import ImbueCostCalculatorPage from '@/pages/ImbueCostCalculatorPage';
 import AuthPage from '@/pages/AuthPage';
 import AccountPage from '@/pages/AccountPage';
 import NotFoundPage from '@/pages/NotFoundPage';
@@ -22,6 +23,7 @@ const TITLE_KEYS: Record<string, string> = {
   '/coins-to-money': 'coinsToMoney',
   '/imbuings': 'imbuings',
   '/hunting-spots': 'huntingSpots',
+  '/imbue-cost-calculator': 'imbueCostCalculator',
   '/exaltation': 'exaltationForge',
   '/auth': 'auth',
   '/account': 'account',
@@ -45,6 +47,7 @@ const AppRouting = () => {
       <Route path='/real-money-calculator' element={<RealMoneyPage />} />
       <Route path='/coins-to-money' element={<CoinsToMoneyPage />} />
       <Route path='/imbuings' element={<ImbuingsPage />} />
+      <Route path='/imbue-cost-calculator' element={<ImbueCostCalculatorPage />} />
       <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
       <Route
         path='/hunting-spots/:vocationId'

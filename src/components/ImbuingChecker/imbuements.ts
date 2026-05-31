@@ -4,7 +4,7 @@ export const imbuementsTypes = {
   basic: {
     price: 5000,
     successRate: 90,
-    priceForFullSucess: 10000,
+    priceForFullSuccess: 10000,
     premium: false,
   },
   intricate: {
