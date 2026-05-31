@@ -6,10 +6,14 @@ import { useParams } from "react-router-dom";
 import { vocations } from '@/helpers';
 import { type HuntingSpotData, formatRate, formatProfit, calculateHoursToNextLevel, formatHours, huntingSpotsByVocation } from '@/helpers/huntingSpots';
 import { getAllHuntingSpots, deleteHuntingSpot } from '@/firebase/huntingSpots';
+import { getSessionsForSpot, deleteHuntSession } from '@/firebase/huntSessions';
 import { useAuth } from '@/hooks';
 import { toast } from 'sonner';
-import { useEffect, useMemo, useState } from "react";
-import { ChevronDown, ChevronUp, Calculator, Trash2, User } from 'lucide-react';
+import { useEffect, useMemo, useState, useCallback } from "react";
+import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks } from 'lucide-react';
+import { HuntSessionUploadDialog } from '@/components/HuntSessionUploadDialog';
+import { HuntSessionCard } from '@/components/HuntSessionDisplay';
+import type { HuntSession } from '@/types/huntSession';
 
 const VocationHuntSpotsPage = () => {
   const { vocationId } = useParams();
@@ -21,21 +25,21 @@ const VocationHuntSpotsPage = () => {
   const [userSpots, setUserSpots] = useState<HuntingSpotData[]>([]);
   const [loadingSpots, setLoadingSpots] = useState(true);
 
-  const loadSpots = async () => {
+  const loadSpots = useCallback(async () => {
     setLoadingSpots(true);
     try {
       const spots = await getAllHuntingSpots();
       setUserSpots(spots);
     } catch {
-      // Silently fail — user spots are non-critical
+      void 0;
     } finally {
       setLoadingSpots(false);
     }
-  };
+  }, []);
 
   useEffect(() => {
     loadSpots();
-  }, []);
+  }, [loadSpots]);
 
   const mergedSpots = useMemo(() => {
     if (!vocationId) return [];
@@ -45,7 +49,7 @@ const VocationHuntSpotsPage = () => {
     return [...builtIn, ...matchingUserSpots];
   }, [vocationId, userSpots]);
 
-  const handleDelete = async (spotId: string) => {
+  const handleDelete = useCallback(async (spotId: string) => {
     try {
       await deleteHuntingSpot(spotId);
       setUserSpots((prev) => prev.filter((s) => s.id !== spotId));
@@ -53,7 +57,7 @@ const VocationHuntSpotsPage = () => {
     } catch (e) {
       toast.error((e as Error).message);
     }
-  };
+  }, [translate]);
 
   return (
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
@@ -79,6 +83,7 @@ const VocationHuntSpotsPage = () => {
                   translate={translate}
                   isOwner={spot.ownerUid === user.uid}
                   onDelete={handleDelete}
+                  userId={user.uid}
                 />
               ))}
             </div>
@@ -94,17 +99,59 @@ function SpotCard({
   translate,
   isOwner,
   onDelete,
+  userId,
 }: {
   spot: HuntingSpotData;
   translate: (key: string) => string;
   isOwner: boolean;
   onDelete: (id: string) => void;
+  userId: string;
 }) {
   const [expanded, setExpanded] = useState(false);
   const [showCalc, setShowCalc] = useState(false);
   const [calcLevel, setCalcLevel] = useState('');
   const [calcPercent, setCalcPercent] = useState('0');
   const [customSupplyCost, setCustomSupplyCost] = useState('');
+
+  const [sessions, setSessions] = useState<HuntSession[]>([]);
+  const [sessionsLoaded, setSessionsLoaded] = useState(false);
+  const [sessionsLoading, setSessionsLoading] = useState(false);
+
+  const loadSessions = useCallback(async () => {
+    if (sessionsLoaded || sessionsLoading) return;
+    setSessionsLoading(true);
+    try {
+      const data = await getSessionsForSpot(spot.id);
+      setSessions(data);
+      setSessionsLoaded(true);
+    } catch {
+      void 0;
+    } finally {
+      setSessionsLoading(false);
+    }
+  }, [spot.id, sessionsLoaded, sessionsLoading]);
+
+  useEffect(() => {
+    if (expanded && !sessionsLoaded && !sessionsLoading) {
+      loadSessions();
+    }
+  }, [expanded, sessionsLoaded, sessionsLoading, loadSessions]);
+
+  const handleSessionDelete = useCallback(async (sessionId: string) => {
+    try {
+      await deleteHuntSession(sessionId);
+      setSessions((prev) => prev.filter((s) => s.id !== sessionId));
+      toast.success(translate('sessionDeleted'));
+    } catch (e) {
+      toast.error((e as Error).message);
+    }
+  }, [translate]);
+
+  const handleSessionAdded = useCallback(() => {
+    setSessionsLoaded(false);
+    setSessionsLoading(false);
+    loadSessions();
+  }, [loadSessions]);
 
   const supplyCost = customSupplyCost !== '' ? (parseInt(customSupplyCost, 10) || 0) : spot.supplyCost;
   const netProfit = spot.profit - (supplyCost - spot.supplyCost);
@@ -267,6 +314,44 @@ function SpotCard({
               {spot.notes}
             </p>
           )}
+
+          <Separator />
+
+          <div className="space-y-2">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-medium text-muted-foreground flex items-center gap-1">
+                <ListChecks className="size-3" />
+                {translate('huntSessions')}
+                {sessions.length > 0 && (
+                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-sm">{sessions.length}</span>
+                )}
+              </p>
+              <HuntSessionUploadDialog
+                spotId={spot.id}
+                spotName={spot.name}
+                onSubmit={handleSessionAdded}
+              />
+            </div>
+
+            {sessionsLoading && (
+              <p className="text-xs text-muted-foreground text-center py-2">{translate('loadingSessions')}</p>
+            )}
+
+            {!sessionsLoading && sessions.length === 0 && (
+              <p className="text-xs text-muted-foreground text-center py-2">{translate('noSessions')}</p>
+            )}
+
+            <div className="space-y-1.5">
+              {sessions.map((session) => (
+                <HuntSessionCard
+                  key={session.id}
+                  session={session}
+                  isOwner={session.ownerUid === userId}
+                  onDelete={handleSessionDelete}
+                />
+              ))}
+            </div>
+          </div>
         </div>
       )}
     </div>
