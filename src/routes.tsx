@@ -1,26 +1,27 @@
-import { useEffect } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import ExaltationPage from '@/pages/ExaltationPage';
 import HomePage from '@/pages/HomePage';
-import HuntingSpotsPage from '@/pages/HuntingSpotsPage';
-import ImbuingsPage from '@/pages/ImbuingsPage';
-import RealMoneyPage from '@/pages/RealMoneyPage';
-import VocationHuntSpotsPage from '@/pages/VocationHuntSpotsPage';
-import CoinsToMoneyPage from '@/pages/CoinsToMoneyPage';
-import ImbueCostCalculatorPage from '@/pages/ImbueCostCalculatorPage';
-import ExerciseWeaponsCalculatorPage from '@/pages/ExerciseWeaponsCalculatorPage';
-import EquipmentReferencePage from '@/pages/EquipmentReferencePage';
-import OfflineTrainingCalculatorPage from '@/pages/OfflineTrainingCalculatorPage';
-import LevelCalculatorPage from '@/pages/LevelCalculatorPage';
-import BlessCalculatorPage from '@/pages/BlessCalculatorPage';
-import AuthPage from '@/pages/AuthPage';
-import AccountPage from '@/pages/AccountPage';
-import NotFoundPage from '@/pages/NotFoundPage';
-import PublicTierProjectsPage from '@/pages/PublicTierProjectsPage';
 import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
-import MyTierProjectsPage from './pages/MyTierProjectsPage';
+
+const ExaltationPage = lazy(() => import('@/pages/ExaltationPage'));
+const HuntingSpotsPage = lazy(() => import('@/pages/HuntingSpotsPage'));
+const ImbuingsPage = lazy(() => import('@/pages/ImbuingsPage'));
+const RealMoneyPage = lazy(() => import('@/pages/RealMoneyPage'));
+const VocationHuntSpotsPage = lazy(() => import('@/pages/VocationHuntSpotsPage'));
+const CoinsToMoneyPage = lazy(() => import('@/pages/CoinsToMoneyPage'));
+const ImbueCostCalculatorPage = lazy(() => import('@/pages/ImbueCostCalculatorPage'));
+const ExerciseWeaponsCalculatorPage = lazy(() => import('@/pages/ExerciseWeaponsCalculatorPage'));
+const EquipmentReferencePage = lazy(() => import('@/pages/EquipmentReferencePage'));
+const OfflineTrainingCalculatorPage = lazy(() => import('@/pages/OfflineTrainingCalculatorPage'));
+const LevelCalculatorPage = lazy(() => import('@/pages/LevelCalculatorPage'));
+const BlessCalculatorPage = lazy(() => import('@/pages/BlessCalculatorPage'));
+const AuthPage = lazy(() => import('@/pages/AuthPage'));
+const AccountPage = lazy(() => import('@/pages/AccountPage'));
+const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
+const PublicTierProjectsPage = lazy(() => import('@/pages/PublicTierProjectsPage'));
+const MyTierProjectsPage = lazy(() => import('@/pages/MyTierProjectsPage'));
 
 const TITLE_KEYS: Record<string, string> = {
   '/': 'home',
@@ -52,50 +53,52 @@ const AppRouting = () => {
   }, [location, t]);
 
   return (
-    <Routes>
-      <Route path='/' element={<HomePage />} />
-      <Route path='/real-money-calculator' element={<RealMoneyPage />} />
-      <Route path='/coins-to-money' element={<CoinsToMoneyPage />} />
-      <Route path='/imbuings' element={<ImbuingsPage />} />
-      <Route path='/imbue-cost-calculator' element={<ImbueCostCalculatorPage />} />
-      <Route path='/exercise-weapons' element={<ExerciseWeaponsCalculatorPage />} />
-      <Route path='/equipment-reference' element={<EquipmentReferencePage />} />
-      <Route path='/offline-training' element={<OfflineTrainingCalculatorPage />} />
-      <Route path='/level-calculator' element={<LevelCalculatorPage />} />
-      <Route path='/bless-calculator' element={<BlessCalculatorPage />} />
-      <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
-      <Route
-        path='/hunting-spots/:vocationId'
-        element={<VocationHuntSpotsPage />}
-      />
-      <Route path='/exaltation' element={<ExaltationPage />} />
-      <Route
-        path='/auth'
-        element={
-          <PublicRoute>
-            <AuthPage />
-          </PublicRoute>
-        }
-      />
-      <Route
-        path='/account'
-        element={
-          <PrivateRoute>
-            <AccountPage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path='/myTierProjects'
-        element={
-          <PrivateRoute>
-            <MyTierProjectsPage />
-          </PrivateRoute>
-        }
-      />
-      <Route path='/public-projects' element={<PublicTierProjectsPage />} />
-      <Route path='*' element={<NotFoundPage />} />
-    </Routes>
+    <Suspense fallback={null}>
+      <Routes>
+        <Route path='/' element={<HomePage />} />
+        <Route path='/real-money-calculator' element={<RealMoneyPage />} />
+        <Route path='/coins-to-money' element={<CoinsToMoneyPage />} />
+        <Route path='/imbuings' element={<ImbuingsPage />} />
+        <Route path='/imbue-cost-calculator' element={<ImbueCostCalculatorPage />} />
+        <Route path='/exercise-weapons' element={<ExerciseWeaponsCalculatorPage />} />
+        <Route path='/equipment-reference' element={<EquipmentReferencePage />} />
+        <Route path='/offline-training' element={<OfflineTrainingCalculatorPage />} />
+        <Route path='/level-calculator' element={<LevelCalculatorPage />} />
+        <Route path='/bless-calculator' element={<BlessCalculatorPage />} />
+        <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
+        <Route
+          path='/hunting-spots/:vocationId'
+          element={<VocationHuntSpotsPage />}
+        />
+        <Route path='/exaltation' element={<ExaltationPage />} />
+        <Route
+          path='/auth'
+          element={
+            <PublicRoute>
+              <AuthPage />
+            </PublicRoute>
+          }
+        />
+        <Route
+          path='/account'
+          element={
+            <PrivateRoute>
+              <AccountPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/myTierProjects'
+          element={
+            <PrivateRoute>
+              <MyTierProjectsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route path='/public-projects' element={<PublicTierProjectsPage />} />
+        <Route path='*' element={<NotFoundPage />} />
+      </Routes>
+    </Suspense>
   );
 };
 

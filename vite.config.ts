@@ -11,4 +11,20 @@ export default defineConfig({
       "@": path.resolve(__dirname, "./src"),
     },
   },
+  build: {
+    cssMinify: 'lightningcss',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          vendor: ['react', 'react-dom'],
+          router: ['react-router-dom'],
+          state: ['@reduxjs/toolkit', 'react-redux'],
+          i18n: ['i18next', 'react-i18next'],
+          icons: ['lucide-react'],
+          firebase: ['firebase/app', 'firebase/auth', 'firebase/firestore'],
+          ui: ['radix-ui', 'class-variance-authority', 'clsx', 'tailwind-merge'],
+        },
+      },
+    },
+  },
 });
