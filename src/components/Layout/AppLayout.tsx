@@ -94,7 +94,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         className={`
           fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border
           transform transition-transform duration-200 ease-in-out
-          lg:translate-x-0 lg:static lg:z-auto
+          lg:translate-x-0
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
           flex flex-col
         `}

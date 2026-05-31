@@ -1,125 +1,75 @@
-# TibiaTools — Project Conventions
+## Goal
+Expand hunting spots with user-submitted spots stored in Firestore, per-spot hunting calculator, and Tibia analyser session uploads with parsing for both solo and party hunts.
+Then redesign the layout with a sidebar + dashboard homepage.
 
-## Tech Stack
-- **Framework**: React 19, TypeScript 5.7
-- **Build**: Vite 6 (`tsc -b && vite build`)
-- **Styling**: Tailwind CSS 4 + `tailwindcss-animate`
-- **UI Components**: shadcn/ui (Radix primitives) from `@/components/ui/`
-- **State**: Redux Toolkit (`@/store/`)
-- **Routing**: React Router 7 (HashRouter in App.tsx)
-- **i18n**: react-i18next + i18next (`@/i18n/`)
-- **Forms**: react-hook-form + zod
-- **Backend**: Firebase (Auth + Firestore)
-- **Testing**: Vitest + @testing-library/react + jsdom
-- **Linting**: ESLint flat config (`eslint .`)
+## Constraints & Preferences
+- New features follow existing Firebase CRUD patterns (tierProjects as reference)
+- Use sonner toasts for notifications, alert-dialog for delete confirmations
+- Hunting spots types extend existing `HuntingSpotData` with optional `ownerUid`/`ownerDisplayName`/`vocationId`
+- User spots merge with built-in spots on vocation pages; only the spot owner can delete
+- Sessions stored in Firestore `huntSessions` collection with `spotId` index
+- Tibia analyser parser uses regex to handle individual and party hunt formats flexibly
+- Sessions load lazily per-spot when expanded
+- Requires authentication to add spots or upload sessions
+- i18n for all 3 locales (en, es, pt)
+- Sidebar groups nav links by category, collapsible groups, mobile hamburger toggle
+- Dashboard shows hunting spots, OT server banner, tier projects, and quick tools widgets
 
-## Project Structure
-```
-src/
-├── main.tsx              # Entry point
-├── App.tsx               # Root: Provider, HashRouter, NavBar, AppRouting
-├── routes.tsx            # Route definitions + page titles
-├── index.css             # Tailwind + CSS variables
-├── components/
-│   ├── NavBar/           # Navigation (named exports, no default)
-│   ├── Layout/           # PrivateRoute, PublicRoute
-│   ├── ui/               # shadcn/ui primitives
-│   ├── LanguageSwitcher/
-│   └── <Feature>/        # Feature-specific components
-├── pages/
-│   └── <FeaturePage>/    # Page components, default export
-├── store/
-│   ├── store.ts          # configureStore, RootState, AppDispatch
-│   ├── <slice>/          # Redux slice + thunks + tests
-├── firebase/
-│   ├── config.ts         # Firebase init
-│   ├── tierProjects.ts   # Firestore CRUD
-│   └── __tests__/
-├── types/
-│   ├── index.ts          # Re-exports
-│   ├── tierProject.ts    # TierProject, TierProjectEntry, etc.
-│   └── auth.ts
-├── helpers/
-│   ├── index.ts          # Re-exports
-│   ├── exaltationForge.ts
-│   └── ...
-├── hooks/
-│   ├── index.ts          # useAppDispatch, useAppSelector, useAuth
-│   └── useAuth.ts
-├── i18n/
-│   ├── index.ts          # i18next config
-│   └── locales/          # en.json, es.json, pt.json
-├── workers/
-└── lib/
-    └── utils.ts          # cn() helper
-```
+## Progress
+### Done
+- (all previous features: imbue calculator, exercise weapons, equipment reference, offline training, level calculator, bless calculator, 10 spots/vocation, build warnings fixed, lockfile cleanup, user spots + sessions per-spot, session parser)
+- **AppLayout** (`src/components/Layout/AppLayout.tsx`): fixed `w-64` sidebar with grouped navigation (Finance, Combat & Skills, Calculators, Hunting & Forging, Community), collapsible groups, mobile overlay + hamburger, sticky mobile header, bottom controls (lang, theme, repo, auth)
+- **Dashboard page** (`src/pages/DashboardPage/index.tsx`): replaces old HomePage
+- **HuntingSpotsWidget**: grid of vocation links → per-vocation spot pages
+- **GangrenaBanner**: gradient hero card linking to gangrenaot.com server
+- **TierProjectsWidget**: fetches and displays 4 recent public projects from Firestore
+- **QuickToolsWidget**: 2x2 grid of Imbuings, Level Calc, Exercise Weapons, Bless Calc
+- **i18n**: `sidebar.*` and `dashboard.*` keys in en/es/pt with full translations
+- `PrivateRoute`/`PublicRoute` — `min-h-screen` → `min-h-[50vh]` to prevent overflow inside AppLayout
+- All 98 tests pass, TypeScript clean, production build zero errors
+- Committed: `feat: add sidebar layout and dashboard homepage with widgets`
 
-## Conventions
+### In Progress
+- (none)
 
-### Path Aliases
-Use `@/` alias for all imports from `src/`. Base URL set in `tsconfig.json`:
-```
-import { Button } from '@/components/ui/button';
-import { useAuth } from '@/hooks';
-import type { TierProject } from '@/types/tierProject';
-```
+### Blocked
+- (none)
 
-### Naming & Exports
-- **Pages**: `src/pages/<Name>Page/index.tsx`, **default export**
-- **Components**: `src/components/<Name>/`, named exports, **no default export**
-- **Types**: PascalCase interfaces, exported from `@/types/` barrel
-- **Helpers**: camelCase functions, exported from `@/helpers/` barrel
-- **Hooks**: `use` prefix, exported from `@/hooks/` barrel
-- **Firebase functions**: camelCase
+## Key Decisions
+- CSS minifier switched from esbuild to lightningcss to avoid Tailwind v4 `:has(:is())` esbuild warning
+- Route pages lazy-loaded with `React.lazy()` + `<Suspense fallback={null}>` — reduces initial bundle size
+- User hunting spots use direct Firebase API calls with local state (no Redux slice) — simpler, no offline caching needed
+- Sessions loaded per-spot on expand rather than all at once — avoids unnecessary Firestore reads
+- Parser designed to be flexible with regex — handles multiple Tibia analyser format variations
+- Sidebar uses `w-64` fixed width, collapsible groups via local state, mobile toggle via useState
+- Dashboard widgets are self-contained with their own data fetching; TierProjectsWidget reuses the existing Redux thunk
 
-### Styling
-- **Tailwind CSS 4** with `@apply` in `index.css` for base layer
-- Use `cn()` from `@/lib/utils` for conditional class merging
-- `size-*` utility for icon sizing (e.g., `size-4`)
-- `tabular-nums` on numeric displays
-- Use `text-muted-foreground` for secondary text
-- Use `text-destructive` for destructive actions
-- Dark mode via `.dark` class
+## Next Steps
+- Push commits to remote
+- Remove old HomePage directory (dead code)
+- Consider adding user avatar/display name to sidebar top
 
-### Component Patterns
-- Functional components with explicit return type (JSX)
-- Props typed with `interface` or inline
-- Use `useTranslation()` hook from `react-i18next`
-- Helper function: `const translate = (key: string) => t(`namespace.${key}`)`
-- Use `useAppDispatch` and `useAppSelector` from `@/hooks`, not raw Redux hooks
-- State with `useState`, derived values with `useMemo`
-- Async thunks return `{ ok: true } | { ok: false; error: string }`
-- Toast notifications via `sonner` (`toast.success` / `toast.error`)
-- Forms: simple forms use controlled inputs + state; complex forms use react-hook-form + zod
+## Critical Context
+- AppLayout wraps entire app content; sidebar is `lg:fixed`, mobile uses `translate-x` slide
+- Dashboard widgets in `src/components/Dashboard/` — each is a named export
+- NavBar subcomponents (`ModeToggle`, `PandaIcon`, etc.) still imported from `@/components/NavBar/` by AppLayout
+- All 98 tests pass, TypeScript clean, production build has zero warnings
 
-### Redux
-- **Slice**: `createSlice` with typed state interface and `PayloadAction`
-- **Thunks**: in separate `thunks.ts`, use `AppDispatch` from `@/store`
-- **State access**: `useAppSelector((s) => s.<sliceName>.<field>)`
-- **Dispatch**: `useAppDispatch()`
-- Thunks access state via `getState: () => RootState`
-
-### Firebase
-- Firestore rules in `firestore.rules`
-- Indexes in `firestore.indexes.json`
-- Entries stored in subcollection: `tierProjects/{projectId}/entries/{entryId}`
-- CRUD functions in `src/firebase/<feature>.ts`
-- Use `Timestamp.now()` for created/updated dates
-- Document fields match TypeScript interfaces closely
-
-### i18n
-- Translation files: `en.json`, `es.json`, `pt.json`
-- Keys organized by feature namespace (e.g., `myTierProjects`, `publicTierProjects`)
-- Use camelCase for keys
-- `t(`namespace.${key}`)` to access translations
-
-### Testing
-- Tests co-located in `__tests__/` directories
-- Test runner: `vitest run`
-- Stack: vitest + @testing-library/react + jsdom
-- Firebase functions: mock `firebase/firestore` exports directly
-
-### Git
-- Commit messages: conventional commits (`feat:`, `fix:`, `chore:`)
-- Commit after every logical task (do NOT ask for permission — just commit)
-- No force push, no amend unless directed
+## Relevant Files
+- `src/components/Layout/AppLayout.tsx`: sidebar + content layout
+- `src/components/Layout/index.ts`: barrel export (AppLayout, PrivateRoute, PublicRoute)
+- `src/components/Dashboard/*`: 4 widget components + barrel
+- `src/pages/DashboardPage/index.tsx`: dashboard page with 2-column grid layout
+- `src/App.tsx`: uses `<AppLayout>` wrapper
+- `src/routes.tsx`: lazy loads DashboardPage at `/`
+- `src/i18n/locales/en.json`, `es.json`, `pt.json`: `sidebar` and `dashboard` namespaces
+- `src/firebase/huntingSpots.ts`: Firebase CRUD for user-submitted hunting spots
+- `src/firebase/huntSessions.ts`: Firebase CRUD for hunt sessions
+- `src/helpers/huntingSpots/index.ts`: hunting spot types, static data, formatting helpers
+- `src/helpers/huntSessionParser.ts`: Tibia analyser text parser (solo + party)
+- `src/types/huntSession.ts`: HuntSession, HuntSessionPlayer, KilledMonster, LootItem types
+- `src/components/HuntingSpotsAddDialog/hunting-spots-add-dialog.tsx`: add spot form
+- `src/components/HuntSessionUploadDialog/hunt-session-upload-dialog.tsx`: paste/parse/save session dialog
+- `src/components/HuntSessionDisplay/hunt-session-card.tsx`: session display card
+- `src/pages/VocationHuntSpotsPage/index.tsx`: page merging built-in + user spots + sessions
+- `src/pages/HuntingSpotsPage/index.tsx`: main hunting spots page with Add Spot button
