@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp, Crosshair, Hammer, FolderKanban, Users } from 'lucide-react';
+import { Menu, Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp, Crosshair, Hammer, FolderKanban, Users, Church } from 'lucide-react';
 import { ModeToggle } from './mode-toggle';
 import { PandaIcon } from './panda-icon';
 import { RepositoryButton } from './repository-button';
@@ -29,6 +29,7 @@ const NAV_LINKS: NavLink[] = [
   { to: '/equipment-reference', labelKey: 'equipmentReference', icon: Shirt },
   { to: '/offline-training', labelKey: 'offlineTraining', icon: Timer },
   { to: '/level-calculator', labelKey: 'levelCalculator', icon: TrendingUp },
+  { to: '/bless-calculator', labelKey: 'blessCalculator', icon: Church },
   { to: '/hunting-spots', labelKey: 'huntingSpots', icon: Crosshair },
   { to: '/exaltation', labelKey: 'exaltationForge', icon: Hammer },
   { to: '/myTierProjects', labelKey: 'tierProjects', icon: FolderKanban },

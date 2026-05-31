@@ -7,3 +7,4 @@ export * from './utils';
 export * from './huntingSpots';
 export * from './offlineTraining';
 export * from './levelCalculator';
+export * from './blessCalculator';

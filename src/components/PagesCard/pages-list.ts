@@ -57,6 +57,12 @@ export const pagesList: PageListItem[] = [
     icon: PagesIcons.magicLevelPng,
   },
   {
+    title: 'titleBlessCalculator',
+    url: '/bless-calculator',
+    description: 'descriptionBlessCalculator',
+    icon: PagesIcons.holyProtectionPng,
+  },
+  {
     title: 'titleHuntSpots',
     url: '/hunting-spots',
     description: 'descriptionHuntSpots',

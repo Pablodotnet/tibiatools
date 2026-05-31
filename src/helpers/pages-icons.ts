@@ -9,6 +9,7 @@ import swordSkillPng from '@/assets/imbuements/swordSkill.png';
 import shieldingSkillPng from '@/assets/imbuements/shieldingSkill.png';
 import distanceSkillPng from '@/assets/imbuements/distanceSkill.png';
 import magicLevelPng from '@/assets/imbuements/magicLevel.png';
+import holyProtectionPng from '@/assets/imbuements/holyProtection.png';
 
 export const PagesIcons = {
   goldcoinGif,
@@ -22,4 +23,5 @@ export const PagesIcons = {
   shieldingSkillPng,
   distanceSkillPng,
   magicLevelPng,
+  holyProtectionPng,
 };
