@@ -11,9 +11,12 @@ import {
 } from "@/components/ui/select";
 import { useMemo, useState } from "react";
 import { CardContent, CardFooter } from "@/components/ui/card";
+import { useTranslation } from "react-i18next";
 import ItemImbuementsDisplay from "./item-imbuements-display";
 
 export const ImbuingChecker = () => {
+  const { t } = useTranslation();
+  const ti = (key: string) => t(`imbuingChecker.${key}`);
   const itemsTypes = Object.keys(imbuableItems);
   const [selectedItemType, setSelectedItemType] = useState<string | null>(null);
   const [selectedItem, setSelectedItem] = useState<string | null>(null);
@@ -58,13 +61,13 @@ export const ImbuingChecker = () => {
         <div className="grid w-full items-center gap-4">
           <div className="flex flex-col space-y-3">
             <div className="flex flex-col space-y-2">
-              <Label htmlFor="item_type">Item type</Label>
+              <Label htmlFor="item_type">{ti('itemType')}</Label>
               <Select
                 onValueChange={handleSelectItemType}
                 value={selectedItemType || ""}
               >
                 <SelectTrigger id="item_type">
-                  <SelectValue placeholder="Select the type" />
+                  <SelectValue placeholder={ti('selectType')} />
                 </SelectTrigger>
                 <SelectContent position="popper">
                   {itemsTypes.map((type) => (
@@ -77,14 +80,14 @@ export const ImbuingChecker = () => {
             </div>
             {selectedItemType && (
               <div className="flex flex-col space-y-2">
-                <Label htmlFor="item_search">Search item</Label>
+                <Label htmlFor="item_search">{ti('searchItem')}</Label>
                 <Input
                   id="item_search"
-                  placeholder="Type to filter items..."
+                  placeholder={ti('filterPlaceholder')}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <Label htmlFor="type_options">Item</Label>
+                <Label htmlFor="type_options">{ti('item')}</Label>
                 <Select
                   onValueChange={handleSelectItem}
                   value={selectedItem || ""}
@@ -94,8 +97,8 @@ export const ImbuingChecker = () => {
                     <SelectValue
                       placeholder={
                         filteredItems.length === 0
-                          ? "No items match your search"
-                          : "Select the item"
+                          ? ti('noMatch')
+                          : ti('selectItem')
                       }
                     />
                   </SelectTrigger>
@@ -117,7 +120,7 @@ export const ImbuingChecker = () => {
       </CardContent>
       <CardFooter className="flex justify-between">
         <Button variant="outline" onClick={handleCancel}>
-          Clear
+          {ti('clear')}
         </Button>
       </CardFooter>
     </>

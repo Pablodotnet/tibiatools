@@ -18,17 +18,19 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const formSchema = z.object({
-  email: z.string().email('Email must have correct format.'),
-  password: z.string().min(6, 'Password must be at least 6 characters.'),
-});
-
-type FormData = z.infer<typeof formSchema>;
+type FormData = {
+  email: string;
+  password: string;
+};
 
 export const LoginForm = () => {
   const dispatch = useAppDispatch();
   const { t } = useTranslation();
   const { status, errorMessage } = useAppSelector((state: RootState) => state.auth);
+  const formSchema = useMemo(() => z.object({
+    email: z.string().email(t('auth.emailFormat')),
+    password: z.string().min(6, t('auth.passwordMin')),
+  }), [t]);
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
   });

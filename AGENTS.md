@@ -121,5 +121,5 @@ import type { TierProject } from '@/types/tierProject';
 
 ### Git
 - Commit messages: conventional commits (`feat:`, `fix:`, `chore:`)
-- Commit after every logical task
+- Commit after every logical task (do NOT ask for permission — just commit)
 - No force push, no amend unless directed

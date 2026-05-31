@@ -1,6 +1,15 @@
 {
   "nav": {
-    "title": "Herramientas de Tibia"
+    "title": "Herramientas de Tibia",
+    "links": {
+      "realMoney": "Dinero real",
+      "coinsToMoney": "Coins a dinero",
+      "imbuings": "Imbuings",
+      "huntingSpots": "Lugares de caza",
+      "exaltationForge": "Forja de Exaltación",
+      "tierProjects": "Proyectos de Tier",
+      "community": "Comunidad"
+    }
   },
   "auth": {
     "login": "Iniciar sesión",
@@ -16,7 +25,11 @@
     "googleButton": "Google",
     "namePlaceholder": "Ingresa tu nombre...",
     "password": "Contraseña",
-    "name": "Nombre"
+    "name": "Nombre",
+    "creatingAccount": "Creando cuenta...",
+    "emailFormat": "El correo debe tener un formato válido.",
+    "passwordMin": "La contraseña debe tener al menos 6 caracteres.",
+    "nameMin": "El nombre debe tener al menos 2 caracteres."
   },
   "account": {
     "title": "Mi cuenta",
@@ -53,6 +66,38 @@
   "imbuings": {
     "title": "¿Qué imbuements puedo ponerle a mi objeto?",
     "description": "Selecciona tu objeto de la lista y descubre qué imbuements puede tener."
+  },
+  "imbuingChecker": {
+    "itemType": "Tipo de objeto",
+    "selectType": "Selecciona el tipo",
+    "searchItem": "Buscar objeto",
+    "filterPlaceholder": "Escribe para filtrar objetos...",
+    "item": "Objeto",
+    "selectItem": "Selecciona el objeto",
+    "noMatch": "Ningún objeto coincide con tu búsqueda",
+    "clear": "Limpiar",
+    "youCanImbue": "Puedes imbuir:",
+    "conflictMsg": "Este objeto tiene {{elements}} — los imbuements conflictivos están bloqueados.",
+    "conflictsWithElement": "(conflicto con el elemento del objeto)",
+    "errorNoSearch": "Error, falta la búsqueda seleccionada."
+  },
+  "pageTitles": {
+    "home": "Inicio",
+    "realMoneyCalculator": "Calculadora de dinero real",
+    "coinsToMoney": "Coins a dinero",
+    "imbuings": "Imbuings",
+    "huntingSpots": "Lugares de caza",
+    "exaltationForge": "Forja de Exaltación",
+    "auth": "Autenticación",
+    "account": "Cuenta",
+    "myTierProjects": "Mis Proyectos de Tier",
+    "publicProjects": "Proyectos de Tier",
+    "notFound": "No encontrada"
+  },
+  "errorBoundary": {
+    "somethingWentWrong": "Algo salió mal",
+    "unexpectedError": "Ocurrió un error inesperado",
+    "reloadPage": "Recargar página"
   },
   "huntingSpots": {
     "title": "¿Dónde puedo cazar a cierto nivel? ¿Qué set debería usar?",

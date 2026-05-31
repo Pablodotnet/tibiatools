@@ -17,8 +17,8 @@ const mockProject = (overrides: Partial<TierProject> = {}): TierProject => ({
   isPublic: false,
   ownerUid: 'u1',
   ownerDisplayName: 'User',
-  createdAt: new Date('2025-01-01'),
-  updatedAt: new Date('2025-01-01'),
+  createdAt: new Date('2025-01-01').getTime(),
+  updatedAt: new Date('2025-01-01').getTime(),
   ...overrides,
 });
 
@@ -27,10 +27,9 @@ const mockEntry = (overrides: Partial<TierProjectEntry> = {}): TierProjectEntry 
   projectId: 'p1',
   fromTier: 0,
   toTier: 1,
-  items: [{ name: '2 items', costGp: 50000 }],
+  items: [{ name: 'Item', costGp: 1000 }],
   notes: '',
-  dust: 100,
-  createdAt: new Date('2025-01-01'),
+  createdAt: Date.now(),
   ...overrides,
 });
 

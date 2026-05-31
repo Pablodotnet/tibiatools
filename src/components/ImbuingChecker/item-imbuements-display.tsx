@@ -1,4 +1,5 @@
 import React from "react";
+import { useTranslation } from "react-i18next";
 import { imbuements, imbuingsAvailableByType, elementBlockedImbuements } from "./imbuements";
 import { imbuableItems } from "@/helpers/ImbuingLists/imbuableItems";
 import { Card } from "@/components/ui/card";
@@ -19,6 +20,8 @@ interface ItemImbuementsDisplayProps {
 const ItemImbuementsDisplay: React.FC<ItemImbuementsDisplayProps> = ({
   selectedSearch,
 }) => {
+  const { t } = useTranslation();
+  const ti = (key: string) => t(`imbuingChecker.${key}`);
   const itemType = (selectedSearch?.type || "") as ItemType;
   const itemName = selectedSearch?.item || '';
 
@@ -47,10 +50,10 @@ const ItemImbuementsDisplay: React.FC<ItemImbuementsDisplayProps> = ({
     <>
       {itemElements && itemElements.length > 0 && (
         <p className="text-xs text-muted-foreground mb-2">
-          This item has <span className="font-medium">{itemElements.join(', ')}</span> — conflicting imbuements are blocked.
+          {t('imbuingChecker.conflictMsg', { elements: itemElements.join(', ') })}
         </p>
       )}
-      <Label>You can imbue:</Label>
+      <Label>{ti('youCanImbue')}</Label>
       {availableImbuementsForItem && availableImbuementsForItem.length > 0 && (
         <div className="mt-2 space-y-3">
           {availableImbuementsForItem.map(
@@ -70,7 +73,7 @@ const ItemImbuementsDisplay: React.FC<ItemImbuementsDisplayProps> = ({
     </>
   ) : (
     <h3 className="text-destructive font-medium" role="alert">
-      Error, missing selected search.
+      {ti('errorNoSearch')}
     </h3>
   );
 };
@@ -81,6 +84,8 @@ interface ImbuementCardProps {
 }
 
 const ImbuementCard: React.FC<ImbuementCardProps> = ({ imbuement, isBlocked }) => {
+  const { t } = useTranslation();
+  const ti = (key: string) => t(`imbuingChecker.${key}`);
   const [open, setOpen] = React.useState(false);
   const data = imbuements[imbuement];
 
@@ -104,7 +109,7 @@ const ImbuementCard: React.FC<ImbuementCardProps> = ({ imbuement, isBlocked }) =
               <small className="text-sm font-medium leading-none text-muted-foreground">
                 {data.effect}
                 {isBlocked && (
-                  <span className="text-destructive ml-2">(conflicts with item element)</span>
+                  <span className="text-destructive ml-2">{ti('conflictsWithElement')}</span>
                 )}
               </small>
             </div>

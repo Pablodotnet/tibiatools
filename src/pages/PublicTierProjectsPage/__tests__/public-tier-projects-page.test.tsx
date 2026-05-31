@@ -65,8 +65,8 @@ describe('PublicTierProjectsPage', () => {
         isPublic: true,
         ownerUid: 'u1',
         ownerDisplayName: 'TestUser',
-        createdAt: new Date('2025-01-01'),
-        updatedAt: new Date('2025-01-01'),
+        createdAt: new Date('2025-01-01').getTime(),
+        updatedAt: new Date('2025-01-01').getTime(),
       },
     ]);
     const store = createStore();

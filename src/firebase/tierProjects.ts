@@ -42,8 +42,8 @@ function mapProjectDoc(id: string, data: Record<string, unknown>): TierProject {
     ownerUid: data.ownerUid as string,
     ownerDisplayName: data.ownerDisplayName as string,
     totalSpentGp: (data.totalSpentGp as number) ?? 0,
-    createdAt: (data.createdAt as Timestamp).toDate(),
-    updatedAt: (data.updatedAt as Timestamp).toDate(),
+    createdAt: (data.createdAt as Timestamp).toDate().getTime(),
+    updatedAt: (data.updatedAt as Timestamp).toDate().getTime(),
   };
 }
 
@@ -63,7 +63,7 @@ function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntr
     exaltedCores: data.exaltedCores as number | undefined,
     exaltedCorePriceGp: data.exaltedCorePriceGp as number | undefined,
     dust: data.dust as number | undefined,
-    createdAt: (data.createdAt as Timestamp).toDate(),
+    createdAt: (data.createdAt as Timestamp).toDate().getTime(),
   };
 }
 
@@ -275,8 +275,8 @@ export async function duplicateProject(
       isPublic: false,
       ownerUid: user.uid,
       ownerDisplayName: user.displayName || user.email || 'Unknown',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     },
     entryCount: entries.length,
   };

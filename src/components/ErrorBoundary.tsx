@@ -1,5 +1,6 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
+import i18n from '@/i18n';
 
 interface ErrorBoundaryProps {
   children: React.ReactNode;
@@ -24,9 +25,9 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
     if (this.state.hasError) {
       return (
         <div className="flex flex-col items-center justify-center min-h-[60vh] gap-4">
-          <h2 className="text-2xl font-bold text-destructive">Something went wrong</h2>
+          <h2 className="text-2xl font-bold text-destructive">{i18n.t('errorBoundary.somethingWentWrong')}</h2>
           <p className="text-muted-foreground text-center max-w-md">
-            {this.state.error?.message || 'An unexpected error occurred'}
+            {this.state.error?.message || i18n.t('errorBoundary.unexpectedError')}
           </p>
           <Button
             onClick={() => {
@@ -34,7 +35,7 @@ export class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoun
               window.location.reload();
             }}
           >
-            Reload page
+            {i18n.t('errorBoundary.reloadPage')}
           </Button>
         </div>
       );

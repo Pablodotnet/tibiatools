@@ -1,5 +1,6 @@
 import { useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import ExaltationPage from '@/pages/ExaltationPage';
 import HomePage from '@/pages/HomePage';
 import HuntingSpotsPage from '@/pages/HuntingSpotsPage';
@@ -15,27 +16,28 @@ import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
 import MyTierProjectsPage from './pages/MyTierProjectsPage';
 
-const TITLES: Record<string, string> = {
-  '/': 'Home',
-  '/real-money-calculator': 'Real Money Calculator',
-  '/coins-to-money': 'Coins to Money',
-  '/imbuings': 'Imbuings',
-  '/hunting-spots': 'Hunting Spots',
-  '/exaltation': 'Exaltation Forge',
-  '/auth': 'Auth',
-  '/account': 'Account',
-  '/myTierProjects': 'My Tier Projects',
-  '/public-projects': 'Tier Projects',
+const TITLE_KEYS: Record<string, string> = {
+  '/': 'home',
+  '/real-money-calculator': 'realMoneyCalculator',
+  '/coins-to-money': 'coinsToMoney',
+  '/imbuings': 'imbuings',
+  '/hunting-spots': 'huntingSpots',
+  '/exaltation': 'exaltationForge',
+  '/auth': 'auth',
+  '/account': 'account',
+  '/myTierProjects': 'myTierProjects',
+  '/public-projects': 'publicProjects',
 };
 
 const AppRouting = () => {
+  const { t } = useTranslation();
   const location = useLocation();
 
   useEffect(() => {
     const base = location.pathname.split('/').slice(0, 2).join('/') || '/';
-    const title = TITLES[base] || 'Not Found';
-    document.title = `${title} — Tibia Tools`;
-  }, [location]);
+    const key = TITLE_KEYS[base] || 'notFound';
+    document.title = `${t(`pageTitles.${key}`)} — ${t('nav.title')}`;
+  }, [location, t]);
 
   return (
     <Routes>

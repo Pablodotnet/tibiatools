@@ -1,6 +1,15 @@
 {
   "nav": {
-    "title": "Tibia Tools"
+    "title": "Tibia Tools",
+    "links": {
+      "realMoney": "Real Money",
+      "coinsToMoney": "Coins to Money",
+      "imbuings": "Imbuings",
+      "huntingSpots": "Hunting Spots",
+      "exaltationForge": "Exaltation Forge",
+      "tierProjects": "Tier Projects",
+      "community": "Community"
+    }
   },
   "auth": {
     "login": "Log In",
@@ -16,7 +25,11 @@
     "googleButton": "Google",
     "namePlaceholder": "Enter your name...",
     "password": "Password",
-    "name": "Name"
+    "name": "Name",
+    "creatingAccount": "Creating account...",
+    "emailFormat": "Email must have correct format.",
+    "passwordMin": "Password must be at least 6 characters.",
+    "nameMin": "Name must be at least 2 characters."
   },
   "account": {
     "title": "My Account",
@@ -53,6 +66,38 @@
   "imbuings": {
     "title": "What imbuements can I set to my item?",
     "description": "Select your item from list and learn which imbuements it can have."
+  },
+  "imbuingChecker": {
+    "itemType": "Item type",
+    "selectType": "Select the type",
+    "searchItem": "Search item",
+    "filterPlaceholder": "Type to filter items...",
+    "item": "Item",
+    "selectItem": "Select the item",
+    "noMatch": "No items match your search",
+    "clear": "Clear",
+    "youCanImbue": "You can imbue:",
+    "conflictMsg": "This item has {{elements}} — conflicting imbuements are blocked.",
+    "conflictsWithElement": "(conflicts with item element)",
+    "errorNoSearch": "Error, missing selected search."
+  },
+  "pageTitles": {
+    "home": "Home",
+    "realMoneyCalculator": "Real Money Calculator",
+    "coinsToMoney": "Coins to Money",
+    "imbuings": "Imbuings",
+    "huntingSpots": "Hunting Spots",
+    "exaltationForge": "Exaltation Forge",
+    "auth": "Auth",
+    "account": "Account",
+    "myTierProjects": "My Tier Projects",
+    "publicProjects": "Tier Projects",
+    "notFound": "Not Found"
+  },
+  "errorBoundary": {
+    "somethingWentWrong": "Something went wrong",
+    "unexpectedError": "An unexpected error occurred",
+    "reloadPage": "Reload page"
   },
   "huntingSpots": {
     "title": "Where can I hunt at certain level? What set should I use?",

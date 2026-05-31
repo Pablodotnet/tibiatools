@@ -12,24 +12,27 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
 
 interface NavLink {
   to: string;
-  label: string;
+  labelKey: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
 const NAV_LINKS: NavLink[] = [
-  { to: '/real-money-calculator', label: 'Real Money', icon: Wallet },
-  { to: '/coins-to-money', label: 'Coins to Money', icon: Coins },
-  { to: '/imbuings', label: 'Imbuings', icon: Zap },
-  { to: '/hunting-spots', label: 'Hunting Spots', icon: Crosshair },
-  { to: '/exaltation', label: 'Exaltation Forge', icon: Hammer },
-  { to: '/myTierProjects', label: 'Tier Projects', icon: FolderKanban },
-  { to: '/public-projects', label: 'Community', icon: Users },
+  { to: '/real-money-calculator', labelKey: 'realMoney', icon: Wallet },
+  { to: '/coins-to-money', labelKey: 'coinsToMoney', icon: Coins },
+  { to: '/imbuings', labelKey: 'imbuings', icon: Zap },
+  { to: '/hunting-spots', labelKey: 'huntingSpots', icon: Crosshair },
+  { to: '/exaltation', labelKey: 'exaltationForge', icon: Hammer },
+  { to: '/myTierProjects', labelKey: 'tierProjects', icon: FolderKanban },
+  { to: '/public-projects', labelKey: 'community', icon: Users },
 ];
 
 export function NavBar() {
+  const { t } = useTranslation();
+  const tl = (key: string) => t(`nav.links.${key}`);
   return (
     <nav className='fixed inset-x-0 top-0 z-50 bg-white shadow-sm dark:bg-gray-950/90 dark:border-b dark:border-gray-800 dark:shadow-[0_2px_8px_rgba(0,0,0,0.4)]'>
       <div className='w-full max-w-7xl mx-auto px-4'>
@@ -48,7 +51,7 @@ export function NavBar() {
                 <NavLink
                   key={link.to}
                   to={link.to}
-                  title={link.label}
+                  title={tl(link.labelKey)}
                   className={({ isActive }) =>
                     `flex items-center justify-center rounded-md p-2 text-sm font-medium transition-colors ${
                       isActive
@@ -83,7 +86,7 @@ export function NavBar() {
                       <DropdownMenuItem key={link.to} asChild className='flex-col items-center justify-center p-3 gap-1.5 text-center'>
                         <Link to={link.to} className='cursor-pointer'>
                           <Icon className='size-6' />
-                          <span className='text-xs'>{link.label}</span>
+                          <span className='text-xs'>{tl(link.labelKey)}</span>
                         </Link>
                       </DropdownMenuItem>
                     );

@@ -7,8 +7,8 @@ export interface TierProject {
   ownerUid: string;
   ownerDisplayName: string;
   totalSpentGp: number;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: number;
+  updatedAt: number;
 }
 
 export interface TierProjectItem {
@@ -29,7 +29,7 @@ export interface TierProjectEntry {
   exaltedCores?: number;
   exaltedCorePriceGp?: number;
   dust?: number;
-  createdAt: Date;
+  createdAt: number;
 }
 
 export interface TierProjectFormData {

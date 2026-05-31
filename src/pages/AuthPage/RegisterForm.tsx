@@ -18,13 +18,11 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const formSchema = z.object({
-  name: z.string().min(2, 'Name must be at least 2 characters.'),
-  email: z.string().email('Email must have correct format.'),
-  password: z.string().min(6, 'Password must be at least 6 characters.'),
-});
-
-type FormData = z.infer<typeof formSchema>;
+type FormData = {
+  name: string;
+  email: string;
+  password: string;
+};
 
 export const RegisterForm = () => {
   const dispatch = useAppDispatch();
@@ -32,6 +30,11 @@ export const RegisterForm = () => {
   const { status, errorMessage } = useAppSelector(
     (state: RootState) => state.auth,
   );
+  const formSchema = useMemo(() => z.object({
+    name: z.string().min(2, t('auth.nameMin')),
+    email: z.string().email(t('auth.emailFormat')),
+    password: z.string().min(6, t('auth.passwordMin')),
+  }), [t]);
   const isAuthenticating = useMemo(() => status === 'checking', [status]);
 
   const form = useForm<FormData>({
@@ -108,7 +111,7 @@ export const RegisterForm = () => {
 
         <div className='flex justify-end space-x-4'>
           <Button type='submit' disabled={isAuthenticating}>
-            {isAuthenticating ? 'Creating account...' : 'Register'}
+            {isAuthenticating ? t('auth.creatingAccount') : translate('register')}
           </Button>
         </div>
       </form>

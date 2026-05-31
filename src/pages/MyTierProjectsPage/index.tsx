@@ -172,7 +172,7 @@ const MyTierProjectsPage = () => {
     const sorted = [...currentEntries];
     sorted.sort((a, b) => {
       let cmp = 0;
-      if (sortBy === 'date') cmp = a.createdAt.getTime() - b.createdAt.getTime();
+      if (sortBy === 'date') cmp = a.createdAt - b.createdAt;
       else if (sortBy === 'cost') {
         const aTotal = a.items.reduce((s, i) => s + i.costGp, 0);
         const bTotal = b.items.reduce((s, i) => s + i.costGp, 0);

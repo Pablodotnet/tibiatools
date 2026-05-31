@@ -42,8 +42,8 @@ export const startCreateProject = (data: { name: string; targetTier: number; isP
       isPublic: data.isPublic,
       ownerUid: '',
       ownerDisplayName: '',
-      createdAt: new Date(),
-      updatedAt: new Date(),
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     };
     dispatch(addProject(newProject));
     return { ok: true };
@@ -103,7 +103,7 @@ export const startAddEntry = (projectId: string, data: { fromTier: number; toTie
     const entryTotal = data.items.reduce((sum, i) => sum + i.costGp, 0);
     dispatch(addEntry({
       projectId,
-      entry: { id: entryId, projectId, ...data, createdAt: new Date() },
+      entry: { id: entryId, projectId, ...data, createdAt: Date.now() },
     }));
     const state = getState();
     const project = state.tierProjects.projects.find((p) => p.id === projectId);
