@@ -738,7 +738,7 @@ const MyTierProjectsPage = () => {
                     <span>
                       {item.name} — <span className='tabular-nums'>{item.costGp.toLocaleString()} gp</span>
                     </span>
-                    <Button variant='ghost' size='icon' className='size-6' onClick={() => handleRemoveItem(idx)}>
+                    <Button variant='ghost' size='icon' className='size-6' onClick={() => handleRemoveItem(idx)} aria-label='Remove item'>
                       <X className='size-3' />
                     </Button>
                   </div>

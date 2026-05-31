@@ -36,7 +36,9 @@
     "email": "Email",
     "userId": "ID do usuário",
     "displayName": "Nome de exibição",
-    "logout": "Sair"
+    "logout": "Sair",
+    "loggedOut": "Sessão encerrada com sucesso",
+    "logoutFailed": "Falha ao encerrar sessão"
   },
   "vocationsHuntSpots": {
     "title": "Encontre os melhores locais de caça para"

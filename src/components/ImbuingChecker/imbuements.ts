@@ -426,15 +426,15 @@ export const imbuements = {
   fistSkill: {
     name: "Punch",
     effect: "Fist Fighting Skill",
-    basic: [{ itemName: "Ghostly Tissue", quantity: 20, icon: "" }],
+    basic: [{ itemName: "Ghostly Tissue", quantity: 20 }],
     intricate: [
-      { itemName: "Ghostly Tissue", quantity: 20, icon: "" },
-      { itemName: "Mantassin Tail", quantity: 25, icon: "" },
+      { itemName: "Ghostly Tissue", quantity: 20 },
+      { itemName: "Mantassin Tail", quantity: 25 },
     ],
     powerful: [
-      { itemName: "Ghostly Tissue", quantity: 20, icon: "" },
-      { itemName: "Mantassin Tail", quantity: 25, icon: "" },
-      { itemName: "Gold-Brocaded Cloth", quantity: 10, icon: "" },
+      { itemName: "Ghostly Tissue", quantity: 20 },
+      { itemName: "Mantassin Tail", quantity: 25 },
+      { itemName: "Gold-Brocaded Cloth", quantity: 10 },
     ],
     icon: "fistSkill",
   },

@@ -473,6 +473,7 @@ export function ExaltationForgeSimulator() {
                   <td className="border border-blue-200 px-1 py-1 dark:border-slate-700">
                     <input
                       type="checkbox"
+                      aria-label={t('exaltationForge.useCore1')}
                       className="size-4 accent-blue-900"
                       checked={useCore1[rowIndex]}
                       onChange={(e) => {
@@ -488,6 +489,7 @@ export function ExaltationForgeSimulator() {
                   <td className="border border-blue-200 px-1 py-1 dark:border-slate-700">
                     <input
                       type="checkbox"
+                      aria-label={t('exaltationForge.useCore2')}
                       className="size-4 accent-blue-900"
                       checked={useCore2[rowIndex]}
                       onChange={(e) => {

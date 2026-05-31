@@ -1,4 +1,3 @@
-import React from "react";
 import { useTranslation } from "react-i18next";
 import { imbuements, imbuingsAvailableByType, elementBlockedImbuements } from "./imbuements";
 import { imbuableItems } from "@/helpers/ImbuingLists/imbuableItems";

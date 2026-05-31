@@ -51,7 +51,6 @@ export const getUserById = async (uid: string) => {
       createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : null,
     };
   } else {
-    console.error(`Usuario con ID ${uid} no está registrado en Firestore.`);
     return null;
   }
 };
@@ -71,9 +70,6 @@ export const registerUserInFirestore = async () => {
       photoURL: user.photoURL || '',
       createdAt: new Date(),
     });
-    console.log(`Nuevo usuario creado: ${user.uid}`);
-  } else {
-    console.log(`El usuario ya existe en Firestore: ${user.uid}`);
   }
 };
 
@@ -88,12 +84,10 @@ export const signInWithGoogle = async () => {
       photoURL,
       uid,
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    const errorMessage = error.message;
+  } catch (error: unknown) {
     return {
       ok: false,
-      errorMessage,
+      errorMessage: (error as Error).message,
     };
   }
 };
@@ -121,9 +115,8 @@ export const registerUserWithEmailPassword = async ({
       email,
       displayName,
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    return { ok: false, errorMessage: error.message };
+  } catch (error: unknown) {
+    return { ok: false, errorMessage: (error as Error).message };
   }
 };
 
@@ -154,9 +147,8 @@ export const loginWithEmailAndPassword = async ({
       email,
       displayName,
     };
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } catch (error: any) {
-    return { ok: false, errorMessage: error.message };
+  } catch (error: unknown) {
+    return { ok: false, errorMessage: (error as Error).message };
   }
 };
 

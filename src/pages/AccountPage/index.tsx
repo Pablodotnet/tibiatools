@@ -34,9 +34,9 @@ const AccountPage = () => {
   const handleLogout = async () => {
     try {
       await dispatch(startLogout());
-      toast.success('Logged out successfully');
+      toast.success(t('account.loggedOut'));
     } catch {
-      toast.error('Failed to log out');
+      toast.error(t('account.logoutFailed'));
     }
   };
 
