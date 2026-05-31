@@ -51,6 +51,12 @@ export const pagesList: PageListItem[] = [
     icon: PagesIcons.distanceSkillPng,
   },
   {
+    title: 'titleLevel',
+    url: '/level-calculator',
+    description: 'descriptionLevel',
+    icon: PagesIcons.magicLevelPng,
+  },
+  {
     title: 'titleHuntSpots',
     url: '/hunting-spots',
     description: 'descriptionHuntSpots',

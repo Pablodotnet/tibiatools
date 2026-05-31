@@ -8,6 +8,7 @@ import manaLeechPng from '@/assets/imbuements/manaLeech.png';
 import swordSkillPng from '@/assets/imbuements/swordSkill.png';
 import shieldingSkillPng from '@/assets/imbuements/shieldingSkill.png';
 import distanceSkillPng from '@/assets/imbuements/distanceSkill.png';
+import magicLevelPng from '@/assets/imbuements/magicLevel.png';
 
 export const PagesIcons = {
   goldcoinGif,
@@ -20,4 +21,5 @@ export const PagesIcons = {
   swordSkillPng,
   shieldingSkillPng,
   distanceSkillPng,
+  magicLevelPng,
 };
