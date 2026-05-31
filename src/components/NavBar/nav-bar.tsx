@@ -1,5 +1,5 @@
 import { Link, NavLink } from 'react-router-dom';
-import { Menu, Wallet, Coins, Zap, Calculator, Crosshair, Hammer, FolderKanban, Users } from 'lucide-react';
+import { Menu, Wallet, Coins, Zap, Calculator, Sword, Crosshair, Hammer, FolderKanban, Users } from 'lucide-react';
 import { ModeToggle } from './mode-toggle';
 import { PandaIcon } from './panda-icon';
 import { RepositoryButton } from './repository-button';
@@ -25,6 +25,7 @@ const NAV_LINKS: NavLink[] = [
   { to: '/coins-to-money', labelKey: 'coinsToMoney', icon: Coins },
   { to: '/imbuings', labelKey: 'imbuings', icon: Zap },
   { to: '/imbue-cost-calculator', labelKey: 'imbueCostCalculator', icon: Calculator },
+  { to: '/exercise-weapons', labelKey: 'exerciseWeapons', icon: Sword },
   { to: '/hunting-spots', labelKey: 'huntingSpots', icon: Crosshair },
   { to: '/exaltation', labelKey: 'exaltationForge', icon: Hammer },
   { to: '/myTierProjects', labelKey: 'tierProjects', icon: FolderKanban },
