@@ -1,5 +1,5 @@
 import { ThemeProvider } from '@/components/theme-provider';
-import { NavBar } from '@/components/NavBar';
+import { AppLayout } from '@/components/Layout';
 import { HashRouter } from 'react-router-dom';
 import AppRouting from './routes';
 import { Provider } from 'react-redux';
@@ -41,14 +41,11 @@ function App() {
       <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
         <HashRouter>
           <AuthStateListener />
-          <NavBar />
-          <div className='min-h-screen pt-14 w-full flex justify-center'>
-            <div className='w-full max-w-6xl px-4'>
-              <ErrorBoundary>
-                <AppRouting />
-              </ErrorBoundary>
-            </div>
-          </div>
+          <AppLayout>
+            <ErrorBoundary>
+              <AppRouting />
+            </ErrorBoundary>
+          </AppLayout>
           <Toaster richColors position='top-right' />
         </HashRouter>
       </ThemeProvider>

@@ -11,7 +11,7 @@ export const PrivateRoute = ({ children }: PrivateRouteProps) => {
 
   if (status === 'checking') {
     return (
-      <div className="flex items-center justify-center min-h-screen" role="status">
+      <div className="flex items-center justify-center min-h-[50vh]" role="status">
         <svg
           className="size-8 animate-spin text-muted-foreground"
           xmlns="http://www.w3.org/2000/svg"

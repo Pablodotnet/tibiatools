@@ -1,10 +1,10 @@
 import { lazy, Suspense, useEffect } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import HomePage from '@/pages/HomePage';
 import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
 
+const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const ExaltationPage = lazy(() => import('@/pages/ExaltationPage'));
 const HuntingSpotsPage = lazy(() => import('@/pages/HuntingSpotsPage'));
 const ImbuingsPage = lazy(() => import('@/pages/ImbuingsPage'));
@@ -55,7 +55,7 @@ const AppRouting = () => {
   return (
     <Suspense fallback={null}>
       <Routes>
-        <Route path='/' element={<HomePage />} />
+        <Route path='/' element={<DashboardPage />} />
         <Route path='/real-money-calculator' element={<RealMoneyPage />} />
         <Route path='/coins-to-money' element={<CoinsToMoneyPage />} />
         <Route path='/imbuings' element={<ImbuingsPage />} />
