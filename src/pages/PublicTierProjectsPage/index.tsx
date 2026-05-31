@@ -125,10 +125,11 @@ const PublicTierProjectsPage = () => {
             <div className='relative mb-4'>
               <Search className='absolute left-3 top-1/2 -translate-y-1/2 size-4 text-muted-foreground' />
               <Input
-                placeholder='Search projects...'
+                placeholder={translate('searchPlaceholder')}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className='pl-10'
+                aria-label={translate('searchPlaceholder')}
               />
             </div>
           )}
@@ -152,7 +153,7 @@ const PublicTierProjectsPage = () => {
                       </p>
                       {project.totalSpentGp > 0 && (
                         <p className='text-xs text-muted-foreground tabular-nums mt-0.5'>
-                          Total spent: {project.totalSpentGp.toLocaleString()} gp
+                          {translate('totalSpent')}: {project.totalSpentGp.toLocaleString()} gp
                         </p>
                       )}
                       <div className='mt-1.5 w-32'>

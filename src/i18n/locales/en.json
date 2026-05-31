@@ -40,9 +40,6 @@
     "loggedOut": "Logged out successfully",
     "logoutFailed": "Failed to log out"
   },
-  "vocationsHuntSpots": {
-    "title": "Find the best hunting spots for"
-  },
   "realMoney": {
     "title": "Real Money Spend Calculator",
     "description": "Here you can calculate how much real money and Tibia Coins you would spend to get certain quantity of Tibia Gold",
@@ -114,9 +111,7 @@
     "set": "Set",
     "imbuements": "Imbuements",
     "level": "Level",
-    "location": "Location",
-    "showDetails": "Show details",
-    "hideDetails": "Hide details"
+    "location": "Location"
   },
   "exaltationForge": {
     "title": "Exaltation Forge Simulator",
@@ -225,7 +220,6 @@
     "exaltedCoresRequired": "Exalted Cores required",
     "sourceItemCost": "Source item cost",
     "targetItemCost": "Target item cost",
-    "coresUsed": "Exalted Cores used",
     "resultingTierNoLoss": "Resulting tier on target: Tier {{tier}} (no tier loss!)",
     "class4ForgeGoldLabel": "Class 4 forge gold for {{label}}",
     "forgeGoldNote": "Forge gold values follow Tibia Wiki (Equipment Upgrade to Fusion). Class 4 amounts are editable if you want to model other costs. Totals use the column that matches your classification.",
@@ -320,7 +314,30 @@
     "editEntry": "Edit entry",
     "updateEntry": "Update entry",
     "cancel": "Cancel",
-    "marketPrice": "Market price (gp)",
+    "estimatedCores": "Est. cores",
+    "loadEntriesFailed": "Failed to load entries",
+    "loadingEntries": "Loading entries...",
+    "selectMethod": "Select method",
+    "count": "Count",
+    "pricePerCore": "Price per core (gp)",
+    "optional": "Optional",
+    "transferNotForClass1": "Transfer not available for class 1",
+    "transferMinTier": "Transfer requires source tier ≥ 2",
+    "requiresClass4": "This method requires class 4",
+    "noCostData": "No cost data for this combination",
+    "methodCostAdded": "{{method}} ({{cost}})",
+    "coreCostAdded": "Core cost: {{cost}} gp",
+    "targetCurrentTier": "Target: Tier {{target}} · Current: Tier {{current}}",
+    "tierRange": "Tier {{from}} → Tier {{to}}",
+    "totalSpent": "Total spent",
+    "projectNamePlaceholder": "e.g. Falcon Greaves",
+    "targetTierPlaceholder": "e.g. 10",
+    "sortByDate": "Date",
+    "sortByCost": "Cost",
+    "sortByTier": "Tier",
+    "itemName": "Item name",
+    "costGp": "Cost (gp)",
+    "totalLabel": "Total",
     "marketPriceShort": "Mkt price",
     "stats": "Statistics",
     "totalSpentGp": "Total spent",
@@ -351,6 +368,8 @@
     "entries": "Entries",
     "total": "Total",
     "noEntries": "No entries yet.",
-    "classification": "Class"
+    "classification": "Class",
+    "searchPlaceholder": "Search projects...",
+    "totalSpent": "Total spent"
   }
 }

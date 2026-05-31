@@ -519,7 +519,7 @@ export function ExaltationForgeSimulator() {
                       onChange={(e) =>
                         updateClass4Row(rowIndex, e.target.value)
                       }
-                      aria-label={`Class 4 forge gold for ${label}`}
+                      aria-label={t('exaltationForge.class4ForgeGoldLabel').replace('{{label}}', label)}
                     />
                   </td>
                 </tr>

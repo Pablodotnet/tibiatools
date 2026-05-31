@@ -40,7 +40,7 @@ export function NavBar() {
           <Link to={'/'} className='flex items-center gap-2 shrink-0'>
             <PandaIcon className='h-6 w-6' />
             <span className='hidden text-sm font-semibold md:inline'>
-              TIBIA TOOLS
+              {t('nav.title')}
             </span>
           </Link>
 

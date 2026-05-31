@@ -40,9 +40,6 @@
     "loggedOut": "Sessão encerrada com sucesso",
     "logoutFailed": "Falha ao encerrar sessão"
   },
-  "vocationsHuntSpots": {
-    "title": "Encontre os melhores locais de caça para"
-  },
   "realMoney": {
     "title": "Calculadora de gasto em dinheiro real",
     "description": "Aqui você pode calcular quanto dinheiro real e Tibia Coins você gastaria para obter certa quantidade de Tibia Gold",
@@ -114,9 +111,7 @@
     "set": "Equipamento",
     "imbuements": "Imbuements",
     "level": "Nível",
-    "location": "Localização",
-    "showDetails": "Mostrar detalhes",
-    "hideDetails": "Ocultar detalhes"
+    "location": "Localização"
   },
   "exaltationForge": {
     "title": "Simulador de Exaltation Forge",
@@ -225,7 +220,6 @@
     "exaltedCoresRequired": "Exalted Cores necessários",
     "sourceItemCost": "Custo do item fonte",
     "targetItemCost": "Custo do item alvo",
-    "coresUsed": "Exalted Cores usados",
     "resultingTierNoLoss": "Tier resultante no alvo: Tier {{tier}} (sem perda!)",
     "class4ForgeGoldLabel": "Ouro de forja Classe 4 para {{label}}",
     "forgeGoldNote": "Os valores de ouro de forja seguem Tibia Wiki (Equipment Upgrade para Fusão). Os valores Classe 4 são editáveis. Os totais usam a coluna que corresponde à sua classificação.",
@@ -317,7 +311,30 @@
     "editEntry": "Editar entrada",
     "updateEntry": "Atualizar entrada",
     "cancel": "Cancelar",
-    "marketPrice": "Preço de mercado (gp)",
+    "estimatedCores": "Est. cores",
+    "loadEntriesFailed": "Falha ao carregar entradas",
+    "loadingEntries": "Carregando entradas...",
+    "selectMethod": "Selecionar método",
+    "count": "Quantidade",
+    "pricePerCore": "Preço por core (gp)",
+    "optional": "Opcional",
+    "transferNotForClass1": "Transferência não disponível para classe 1",
+    "transferMinTier": "Transferência requer fonte tier ≥ 2",
+    "requiresClass4": "Este método requer classe 4",
+    "noCostData": "Sem dados de custo para esta combinação",
+    "methodCostAdded": "{{method}} ({{cost}})",
+    "coreCostAdded": "Custo de cores: {{cost}} gp",
+    "targetCurrentTier": "Alvo: Tier {{target}} · Atual: Tier {{current}}",
+    "tierRange": "Tier {{from}} → Tier {{to}}",
+    "totalSpent": "Gasto total",
+    "projectNamePlaceholder": "Ex: Falcon Greaves",
+    "targetTierPlaceholder": "Ex: 10",
+    "sortByDate": "Data",
+    "sortByCost": "Custo",
+    "sortByTier": "Tier",
+    "itemName": "Nome do item",
+    "costGp": "Custo (gp)",
+    "totalLabel": "Total",
     "marketPriceShort": "Preço mkt",
     "stats": "Estatísticas",
     "totalSpentGp": "Gasto total",
@@ -348,7 +365,9 @@
     "entries": "Entradas",
     "total": "Total",
     "noEntries": "Nenhuma entrada ainda.",
-    "classification": "Classe"
+    "classification": "Classe",
+    "searchPlaceholder": "Pesquisar projetos...",
+    "totalSpent": "Gasto total"
   },
   "errors": {
     "invalidStringFormat": "Formato de string inválido"

@@ -152,12 +152,12 @@ const MyTierProjectsPage = () => {
   const methodWarning = useMemo(() => {
     if (!entryMethod || !entryClassification) return null;
     const cls = Number(entryClassification);
-    if (entryMethod === 'transfer' && cls === 1) return 'Transfer not available for class 1';
-    if (entryMethod === 'transfer' && entryFrom >= 0 && entryFrom < 2) return 'Transfer requires source tier ≥ 2';
+    if (entryMethod === 'transfer' && cls === 1) return translate('transferNotForClass1');
+    if (entryMethod === 'transfer' && entryFrom >= 0 && entryFrom < 2) return translate('transferMinTier');
     if ((entryMethod === 'convergenceFusion' || entryMethod === 'convergenceTransfer') && cls !== 4)
-      return 'This method requires class 4';
+      return translate('requiresClass4');
     if (estimatedCost === null && entryFrom < entryTo)
-      return 'No cost data for this combination';
+      return translate('noCostData');
     return null;
   }, [entryMethod, entryClassification, entryFrom, entryTo, estimatedCost]);
 
@@ -276,7 +276,7 @@ const MyTierProjectsPage = () => {
     try {
       await dispatch(startFetchEntries(projectId));
     } catch {
-      toast.error('Failed to load entries');
+      toast.error(translate('loadEntriesFailed'));
     }
   };
 
@@ -310,14 +310,14 @@ const MyTierProjectsPage = () => {
     const methodLabel = translate(entryMethod);
     const label = `${methodLabel} (${entryFrom}→${entryTo})`;
     setPendingItems([...pendingItems, { name: label, costGp: estimatedCost }]);
-    toast.success(`${label}: ${formatGp(estimatedCost)} gp`);
+    toast.success(t('myTierProjects.methodCostAdded', { method: label, cost: formatGp(estimatedCost) }));
   };
 
   const handleAddCoreCost = () => {
     if (totalCoreCost === null) return;
     const label = `${entryCores} Exalted Cores × ${formatGp(Number(entryCorePrice))} gp`;
     setPendingItems([...pendingItems, { name: label, costGp: totalCoreCost }]);
-    toast.success(`Core cost: ${formatGp(totalCoreCost)} gp`);
+    toast.success(t('myTierProjects.coreCostAdded', { cost: formatGp(totalCoreCost) }));
   };
 
   const handleEditEntry = (entry: TierProjectEntry) => {
@@ -438,7 +438,7 @@ const MyTierProjectsPage = () => {
               </div>
             </div>
             <CardDescription>
-              Target: Tier {selectedProject.targetTier} &middot; Current: Tier {selectedProject.currentTier}
+              {t('myTierProjects.targetCurrentTier', { target: selectedProject.targetTier, current: selectedProject.currentTier })}
             </CardDescription>
             <div className='mt-2'>
               <Progress value={Math.min(100, (selectedProject.currentTier / Math.max(1, selectedProject.targetTier)) * 100)} />
@@ -493,9 +493,9 @@ const MyTierProjectsPage = () => {
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
-                    <SelectItem value='date'>Date</SelectItem>
-                    <SelectItem value='cost'>Cost</SelectItem>
-                    <SelectItem value='tier'>Tier</SelectItem>
+                    <SelectItem value='date'>{translate('sortByDate')}</SelectItem>
+                    <SelectItem value='cost'>{translate('sortByCost')}</SelectItem>
+                    <SelectItem value='tier'>{translate('sortByTier')}</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button variant='ghost' size='icon' className='size-8' onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
@@ -519,6 +519,7 @@ const MyTierProjectsPage = () => {
                 className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
                 value={filterMethod}
                 onChange={(e) => setFilterMethod(e.target.value)}
+                aria-label={translate('method')}
               >
                 <option value=''>{translate('allMethods')}</option>
                 {METHODS.map((m) => <option key={m} value={m}>{translate(m)}</option>)}
@@ -527,6 +528,7 @@ const MyTierProjectsPage = () => {
                 className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
                 value={filterTierMin}
                 onChange={(e) => setFilterTierMin(Number(e.target.value))}
+                aria-label={translate('minTier')}
               >
                 <option value={-1}>{translate('minTier')}</option>
                 {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -535,6 +537,7 @@ const MyTierProjectsPage = () => {
                 className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
                 value={filterTierMax}
                 onChange={(e) => setFilterTierMax(Number(e.target.value))}
+                aria-label={translate('maxTier')}
               >
                 <option value={-1}>{translate('maxTier')}</option>
                 {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -566,7 +569,7 @@ const MyTierProjectsPage = () => {
                 <div className='flex items-start justify-between'>
                   <div className='space-y-1 text-sm'>
                     <p className='font-medium'>
-                      Tier {entry.fromTier} → Tier {entry.toTier}
+                      {t('myTierProjects.tierRange', { from: entry.fromTier, to: entry.toTier })}
                     </p>
                     {entry.method && (
                       <p className='text-xs text-muted-foreground'>
@@ -581,17 +584,17 @@ const MyTierProjectsPage = () => {
                       </p>
                     ))}
                     <p className='text-sm font-medium tabular-nums'>
-                      Total: {entryTotalCost(entry).toLocaleString()} gp
+                      {translate('totalLabel')}: {entryTotalCost(entry).toLocaleString()} gp
                     </p>
                     {entry.notes && <p className='text-xs text-muted-foreground italic'>{entry.notes}</p>}
                   </div>
                   <div className='flex items-center gap-1'>
-                    <Button variant='ghost' size='icon' onClick={() => handleEditEntry(entry)} aria-label='Edit entry'>
+                    <Button variant='ghost' size='icon' onClick={() => handleEditEntry(entry)} aria-label={translate('editEntry')}>
                       <Pencil className='size-4' />
                     </Button>
                     <AlertDialog open={deleteEntryId === entry.id} onOpenChange={(open) => !open && setDeleteEntryId(null)}>
                       <AlertDialogTrigger asChild>
-                        <Button variant='ghost' size='icon' onClick={() => setDeleteEntryId(entry.id)} aria-label='Delete entry'>
+                        <Button variant='ghost' size='icon' onClick={() => setDeleteEntryId(entry.id)} aria-label={translate('delete')}>
                           <Trash2 className='size-4 text-destructive' />
                         </Button>
                       </AlertDialogTrigger>
@@ -615,7 +618,7 @@ const MyTierProjectsPage = () => {
               </div>
             ))}
             {entriesLoading && (
-              <p className='text-center text-sm text-muted-foreground py-2'>Loading entries...</p>
+              <p className='text-center text-sm text-muted-foreground py-2'>{translate('loadingEntries')}</p>
             )}
           </CardContent>
         </Card>
@@ -632,6 +635,7 @@ const MyTierProjectsPage = () => {
                   className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
                   value={entryFrom}
                   onChange={(e) => setEntryFrom(Number(e.target.value))}
+                  aria-label={translate('fromTier')}
                 >
                   <option value={-1}>-</option>
                   {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
@@ -643,6 +647,7 @@ const MyTierProjectsPage = () => {
                   className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
                   value={entryTo}
                   onChange={(e) => setEntryTo(Number(e.target.value))}
+                  aria-label={translate('toTier')}
                 >
                   <option value={-1}>-</option>
                   {TIERS.slice(1).map((t) => <option key={t} value={t}>{t}</option>)}
@@ -654,7 +659,7 @@ const MyTierProjectsPage = () => {
               <div className='space-y-2'>
                 <Label>{translate('method')}</Label>
                 <Select value={entryMethod} onValueChange={setEntryMethod}>
-                  <SelectTrigger><SelectValue placeholder='Select method' /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={translate('selectMethod')} /></SelectTrigger>
                   <SelectContent>
                     {METHODS.map((m) => (
                       <SelectItem key={m} value={m}>{translate(m)}</SelectItem>
@@ -665,7 +670,7 @@ const MyTierProjectsPage = () => {
               <div className='space-y-2'>
                 <Label>{translate('classification')}</Label>
                 <Select value={entryClassification} onValueChange={setEntryClassification}>
-                  <SelectTrigger><SelectValue placeholder='4' /></SelectTrigger>
+                  <SelectTrigger><SelectValue placeholder={translate('classification')} /></SelectTrigger>
                   <SelectContent>
                     {CLASSIFICATIONS.map((c) => (
                       <SelectItem key={c} value={String(c)}>{c}</SelectItem>
@@ -675,14 +680,14 @@ const MyTierProjectsPage = () => {
               </div>
               <div className='space-y-2'>
                 <Label>{translate('exaltedCores')}</Label>
-                <Input type='number' min={0} placeholder='Count' value={entryCores} onChange={(e) => setEntryCores(e.target.value)} />
+                <Input type='number' min={0} placeholder={translate('count')} value={entryCores} onChange={(e) => setEntryCores(e.target.value)} />
                 {estimatedCores !== null && !entryCores && (
                   <p className='text-xs text-muted-foreground'>{translate('estimatedCores')}: {estimatedCores}</p>
                 )}
-                <Input type='number' min={0} placeholder='Price per core (gp)' value={entryCorePrice} onChange={(e) => setEntryCorePrice(e.target.value)} className='mt-1' />
+                <Input type='number' min={0} placeholder={translate('pricePerCore')} value={entryCorePrice} onChange={(e) => setEntryCorePrice(e.target.value)} className='mt-1' />
                 {totalCoreCost !== null && (
                   <div className='flex items-center justify-between rounded-lg border p-2 mt-1'>
-                    <span className='text-sm'>Total: <span className='font-bold tabular-nums'>{formatGp(totalCoreCost)} gp</span></span>
+                    <span className='text-sm'>{translate('totalLabel')}: <span className='font-bold tabular-nums'>{formatGp(totalCoreCost)} gp</span></span>
                     <Button type='button' variant='outline' size='sm' onClick={handleAddCoreCost} className='gap-1'>
                       <Plus className='size-3.5' />
                       {translate('addCostToItems')}
@@ -692,7 +697,7 @@ const MyTierProjectsPage = () => {
               </div>
               <div className='space-y-2'>
                 <Label>{translate('dustRequired')}</Label>
-                <Input type='number' min={0} placeholder='Count' value={entryDust} onChange={(e) => setEntryDust(e.target.value)} />
+                <Input type='number' min={0} placeholder={translate('count')} value={entryDust} onChange={(e) => setEntryDust(e.target.value)} />
               </div>
             </div>
 
@@ -719,9 +724,9 @@ const MyTierProjectsPage = () => {
             <div className='space-y-2'>
               <Label>{translate('items')}</Label>
               <div className='flex gap-2'>
-                <Input placeholder='Item name' value={itemName} onChange={(e) => setItemName(e.target.value)} className='flex-1' />
-                <Input type='number' placeholder='Cost (gp)' value={itemCost} onChange={(e) => setItemCost(e.target.value)} className='w-28' />
-                <Input type='number' placeholder='Mkt price' value={itemMarketPrice} onChange={(e) => setItemMarketPrice(e.target.value)} className='w-28' />
+                <Input placeholder={translate('itemName')} value={itemName} onChange={(e) => setItemName(e.target.value)} className='flex-1' />
+                <Input type='number' placeholder={translate('costGp')} value={itemCost} onChange={(e) => setItemCost(e.target.value)} className='w-28' />
+                <Input type='number' placeholder={translate('marketPriceShort')} value={itemMarketPrice} onChange={(e) => setItemMarketPrice(e.target.value)} className='w-28' />
                 <Button type='button' variant='outline' size='icon' onClick={handleAddItem} disabled={!itemName.trim() || !itemCost}>
                   <Plus className='size-4' />
                 </Button>
@@ -738,20 +743,20 @@ const MyTierProjectsPage = () => {
                     <span>
                       {item.name} — <span className='tabular-nums'>{item.costGp.toLocaleString()} gp</span>
                     </span>
-                    <Button variant='ghost' size='icon' className='size-6' onClick={() => handleRemoveItem(idx)} aria-label='Remove item'>
+                    <Button variant='ghost' size='icon' className='size-6' onClick={() => handleRemoveItem(idx)} aria-label={translate('delete')}>
                       <X className='size-3' />
                     </Button>
                   </div>
                 ))}
                 <div className='border-t pt-1.5 text-sm font-medium tabular-nums'>
-                  Total: {pendingTotal.toLocaleString()} gp
+                  {translate('totalLabel')}: {pendingTotal.toLocaleString()} gp
                 </div>
               </div>
             )}
 
             <div className='space-y-2'>
               <Label>{translate('notes')}</Label>
-              <Input placeholder='Optional' value={entryNotes} onChange={(e) => setEntryNotes(e.target.value)} />
+              <Input placeholder={translate('optional')} value={entryNotes} onChange={(e) => setEntryNotes(e.target.value)} />
             </div>
             <div className='flex gap-2'>
               {editingEntryId && (
@@ -804,11 +809,11 @@ const MyTierProjectsPage = () => {
             <h3 className='font-semibold text-sm'>{translate('createNew')}</h3>
             <div className='space-y-2'>
               <Label>{translate('projectName')}</Label>
-              <Input placeholder='e.g. Falcon Greaves' value={newName} onChange={(e) => setNewName(e.target.value)} />
+              <Input placeholder={translate('projectNamePlaceholder')} value={newName} onChange={(e) => setNewName(e.target.value)} />
             </div>
             <div className='space-y-2'>
               <Label>{translate('targetTier')}</Label>
-              <Input type='number' min={1} max={10} placeholder='e.g. 10' value={newTarget} onChange={(e) => setNewTarget(e.target.value)} />
+              <Input type='number' min={1} max={10} placeholder={translate('targetTierPlaceholder')} value={newTarget} onChange={(e) => setNewTarget(e.target.value)} />
             </div>
             <label className='flex items-center gap-2 text-sm'>
               <input type='checkbox' className='size-4 accent-blue-900' checked={newIsPublic} onChange={(e) => setNewIsPublic(e.target.checked)} />
@@ -837,10 +842,10 @@ const MyTierProjectsPage = () => {
                   <div>
                     <h4 className='font-semibold'>{project.name}</h4>
                     <p className='text-sm text-muted-foreground'>
-                      Target: Tier {project.targetTier} &middot; Current: Tier {project.currentTier}
+                      {t('myTierProjects.targetCurrentTier', { target: project.targetTier, current: project.currentTier })}
                     </p>
                     <p className='text-xs text-muted-foreground tabular-nums'>
-                      Total spent: {project.totalSpentGp.toLocaleString()} gp
+                      {translate('totalSpent')}: {project.totalSpentGp.toLocaleString()} gp
                     </p>
                     <div className='mt-1.5 w-32'>
                       <Progress value={Math.min(100, (project.currentTier / Math.max(1, project.targetTier)) * 100)} />
@@ -849,7 +854,7 @@ const MyTierProjectsPage = () => {
                   <div className='flex items-center gap-2' onClick={(e) => e.stopPropagation()}>
                     <AlertDialog open={deleteProjectId === project.id} onOpenChange={(open) => !open && setDeleteProjectId(null)}>
                       <AlertDialogTrigger asChild>
-                        <Button variant='ghost' size='icon' onClick={() => setDeleteProjectId(project.id)} aria-label='Delete project'>
+                        <Button variant='ghost' size='icon' onClick={() => setDeleteProjectId(project.id)} aria-label={translate('delete')}>
                           <Trash2 className='size-4 text-destructive' />
                         </Button>
                       </AlertDialogTrigger>
