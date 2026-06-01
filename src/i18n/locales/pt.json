@@ -18,6 +18,7 @@
     }
   },
   "sidebar": {
+    "home": "Início",
     "groupFinance": "Finanças",
     "groupCombat": "Combate e Habilidades",
     "groupCalculators": "Calculadoras",

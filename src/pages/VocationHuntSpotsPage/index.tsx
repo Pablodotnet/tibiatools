@@ -7,7 +7,7 @@ import { vocations } from '@/helpers';
 import { type HuntingSpotData, formatRate, formatProfit, calculateHoursToNextLevel, formatHours, huntingSpotsByVocation } from '@/helpers/huntingSpots';
 import { getAllHuntingSpots, deleteHuntingSpot } from '@/firebase/huntingSpots';
 import { getSessionsForSpot, deleteHuntSession } from '@/firebase/huntSessions';
-import { useAuth } from '@/hooks';
+import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks } from 'lucide-react';

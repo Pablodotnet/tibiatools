@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
-  Crosshair, Hammer, FolderKanban, Users, Church, Menu, X,
+  Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
   ChevronDown, ChevronRight,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
@@ -11,6 +11,8 @@ import { PandaIcon } from '@/components/NavBar/panda-icon';
 import { RepositoryButton } from '@/components/NavBar/repository-button';
 import { AuthButton } from '@/components/NavBar/auth-button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
+import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
+import { useAuth } from '@/hooks/useAuth';
 
 interface NavItem {
   to: string;
@@ -69,6 +71,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     return initial;
   });
   const location = useLocation();
+  const { user, isAuthenticated } = useAuth();
 
   const toggleGroup = (key: string) => {
     setExpandedGroups((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -113,8 +116,62 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </button>
         </div>
 
+        {/* User info */}
+        {isAuthenticated ? (
+          <Link
+            to='/account'
+            onClick={() => setSidebarOpen(false)}
+            className='flex items-center gap-2.5 px-4 py-2.5 border-b border-border hover:bg-accent transition-colors shrink-0'
+          >
+            <Avatar className='size-7'>
+              {user.photoURL ? (
+                <AvatarImage src={user.photoURL} alt={user.displayName ?? ''} />
+              ) : (
+                <AvatarFallback className='text-xs'>
+                  {(user.displayName ?? '?').charAt(0).toUpperCase()}
+                </AvatarFallback>
+              )}
+            </Avatar>
+            <div className='min-w-0'>
+              <p className='text-sm font-medium truncate'>{user.displayName ?? 'Player'}</p>
+              <p className='text-[10px] text-muted-foreground truncate'>{t('account.title')}</p>
+            </div>
+          </Link>
+        ) : (
+          <Link
+            to='/auth'
+            onClick={() => setSidebarOpen(false)}
+            className='flex items-center gap-2 px-4 py-2.5 border-b border-border text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0'
+          >
+            <Avatar className='size-7'>
+              <AvatarFallback className='text-xs text-muted-foreground bg-muted'>
+                ?
+              </AvatarFallback>
+            </Avatar>
+            <span>{t('auth.login')}</span>
+          </Link>
+        )}
+
         {/* Nav links */}
         <nav className='flex-1 overflow-y-auto py-2 px-2 space-y-1'>
+          {/* Home link */}
+          <NavLink
+            to='/'
+            onClick={() => setSidebarOpen(false)}
+            className={({ isActive }) =>
+              `flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors ${
+                isActive
+                  ? 'bg-accent text-accent-foreground font-medium'
+                  : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+              }`
+            }
+          >
+            <Home className='size-4 shrink-0' />
+            <span>{tl('home')}</span>
+          </NavLink>
+
+          <div className='border-t border-border my-1' />
+
           {NAV_GROUPS.map((group) => {
             const isExpanded = expandedGroups[group.labelKey];
             return (

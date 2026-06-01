@@ -18,6 +18,7 @@
     }
   },
   "sidebar": {
+    "home": "Home",
     "groupFinance": "Finance",
     "groupCombat": "Combat & Skills",
     "groupCalculators": "Calculators",
