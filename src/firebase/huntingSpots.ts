@@ -99,11 +99,13 @@ export async function getUserHuntingSpots(): Promise<HuntingSpotData[]> {
 }
 
 export async function getAllHuntingSpots(vocationId?: string): Promise<HuntingSpotData[]> {
-  const constraints = [orderBy('createdAt', 'desc')];
-  if (vocationId) {
-    constraints.unshift(where('vocationId', '==', vocationId));
-  }
-  const q = query(collection(FirebaseDB, 'huntingSpots'), ...constraints);
+  const q = vocationId
+    ? query(
+        collection(FirebaseDB, 'huntingSpots'),
+        where('vocationId', '==', vocationId),
+        orderBy('createdAt', 'desc'),
+      )
+    : query(collection(FirebaseDB, 'huntingSpots'), orderBy('createdAt', 'desc'));
   const snapshot = await getDocs(q);
   return snapshot.docs.map((d) => mapSpotDoc(d.id, d.data() as Record<string, unknown>));
 }
