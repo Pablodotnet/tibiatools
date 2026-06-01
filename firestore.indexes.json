@@ -31,6 +31,14 @@
         { "fieldPath": "spotId", "order": "ASCENDING" },
         { "fieldPath": "createdAt", "order": "DESCENDING" }
       ]
+    },
+    {
+      "collectionGroup": "huntingSpots",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "vocationId", "order": "ASCENDING" },
+        { "fieldPath": "createdAt", "order": "DESCENDING" }
+      ]
     }
   ]
 }

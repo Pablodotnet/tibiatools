@@ -81,11 +81,12 @@ export async function getUserHuntingSpots(): Promise<HuntingSpotData[]> {
   return snapshot.docs.map((d) => mapSpotDoc(d.id, d.data() as Record<string, unknown>));
 }
 
-export async function getAllHuntingSpots(): Promise<HuntingSpotData[]> {
-  const q = query(
-    collection(FirebaseDB, 'huntingSpots'),
-    orderBy('createdAt', 'desc'),
-  );
+export async function getAllHuntingSpots(vocationId?: string): Promise<HuntingSpotData[]> {
+  const constraints = [orderBy('createdAt', 'desc')];
+  if (vocationId) {
+    constraints.unshift(where('vocationId', '==', vocationId));
+  }
+  const q = query(collection(FirebaseDB, 'huntingSpots'), ...constraints);
   const snapshot = await getDocs(q);
   return snapshot.docs.map((d) => mapSpotDoc(d.id, d.data() as Record<string, unknown>));
 }

@@ -30,14 +30,14 @@ const VocationHuntSpotsPage = () => {
   const loadSpots = useCallback(async () => {
     setLoadingSpots(true);
     try {
-      const spots = await getAllHuntingSpots();
+      const spots = await getAllHuntingSpots(vocationId);
       setUserSpots(spots);
     } catch {
       void 0;
     } finally {
       setLoadingSpots(false);
     }
-  }, []);
+  }, [vocationId]);
 
   useEffect(() => {
     loadSpots();
