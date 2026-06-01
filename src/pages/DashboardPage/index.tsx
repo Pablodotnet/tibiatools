@@ -20,19 +20,19 @@ export default function DashboardPage() {
       <GangrenaBanner />
 
       <div className='grid gap-4 md:grid-cols-2'>
-        <WidgetErrorBoundary title={tw('huntingSpotsTitle')}>
+        <WidgetErrorBoundary title={tw('huntingSpotsTitle')} retryLabel={tw('retry')}>
           <HuntingSpotsWidget />
         </WidgetErrorBoundary>
-        <WidgetErrorBoundary title={tw('quickToolsTitle')}>
+        <WidgetErrorBoundary title={tw('quickToolsTitle')} retryLabel={tw('retry')}>
           <QuickToolsWidget />
         </WidgetErrorBoundary>
       </div>
 
       <div className='grid gap-4 md:grid-cols-2'>
-        <WidgetErrorBoundary title={tw('tierProjectsTitle')}>
+        <WidgetErrorBoundary title={tw('tierProjectsTitle')} retryLabel={tw('retry')}>
           <TierProjectsWidget />
         </WidgetErrorBoundary>
-        <WidgetErrorBoundary title={tw('recentSessionsTitle')}>
+        <WidgetErrorBoundary title={tw('recentSessionsTitle')} retryLabel={tw('retry')}>
           <RecentSessionsWidget />
         </WidgetErrorBoundary>
       </div>

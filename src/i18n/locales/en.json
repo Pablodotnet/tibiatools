@@ -48,6 +48,7 @@
     "blessDesc": "Blessing costs",
     "recentSessionsTitle": "Recent Sessions",
     "noRecentSessions": "No sessions uploaded yet.",
+    "retry": "Retry",
     "level": "Lv."
   },
   "auth": {
@@ -274,7 +275,8 @@
   "huntingSpots": {
     "title": "Where can I hunt at certain level? What set should I use?",
     "description": "Here you can find hunting spots as well as equipment recommendations and which imbuements to use.",
-    "searchVocation": "Search vocation..."
+    "searchVocation": "Search vocation...",
+    "noVocationsMatch": "No vocations match your search."
   },
   "common": {
     "loading": "Loading..."
@@ -317,6 +319,8 @@
     "avgXpPerHour": "Avg XP/h",
     "avgProfit": "Avg profit",
     "avgDuration": "Avg duration",
+    "loadSpotsError": "Failed to load spots.",
+    "loadSessionsError": "Failed to load sessions.",
     "deleteSpotError": "Failed to delete spot.",
     "deleteSessionError": "Failed to delete session.",
     "minProfit": "Min profit (gp)",

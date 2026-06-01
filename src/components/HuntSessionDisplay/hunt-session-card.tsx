@@ -159,8 +159,8 @@ export function HuntSessionCard({
                 <Users className='size-3' /> {te('partyMembers')} ({session.players.length})
               </p>
               <div className='space-y-1'>
-                {session.players.map((p, i) => (
-                  <div key={i} className='text-[11px] bg-muted/30 rounded px-2 py-1 flex items-center justify-between'>
+                {session.players.map((p) => (
+                  <div key={p.name} className='text-[11px] bg-muted/30 rounded px-2 py-1 flex items-center justify-between'>
                     <span className='font-medium'>{p.name}</span>
                     <span className='text-muted-foreground'>
                       {p.vocation} &middot; {te('lvl')} {p.level}
@@ -180,8 +180,8 @@ export function HuntSessionCard({
             <div className='border-t pt-2'>
               <p className='text-xs font-medium text-muted-foreground mb-1'>{te('killedMonsters')}</p>
               <div className='flex flex-wrap gap-1'>
-                {session.killedMonsters.slice(0, 15).map((m, i) => (
-                  <span key={i} className='text-[10px] bg-muted/30 rounded px-1.5 py-0.5'>
+                {session.killedMonsters.slice(0, 15).map((m) => (
+                  <span key={`${m.name}-${m.count}`} className='text-[10px] bg-muted/30 rounded px-1.5 py-0.5'>
                     {m.name}: {m.count}
                   </span>
                 ))}

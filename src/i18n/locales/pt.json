@@ -48,6 +48,7 @@
     "blessDesc": "Custos de bênçãos",
     "recentSessionsTitle": "Sessões recentes",
     "noRecentSessions": "Nenhuma sessão enviada ainda.",
+    "retry": "Tentar novamente",
     "level": "Nv."
   },
   "auth": {
@@ -207,7 +208,8 @@
   "huntingSpots": {
     "title": "Onde posso caçar em determinado nível? Qual set devo usar?",
     "description": "Aqui você pode encontrar locais de caça, recomendações de equipamentos e quais imbuements usar.",
-    "searchVocation": "Buscar vocação..."
+    "searchVocation": "Buscar vocação...",
+    "noVocationsMatch": "Nenhuma vocação corresponde à sua pesquisa."
   },
   "common": {
     "loading": "Carregando..."
@@ -250,6 +252,8 @@
     "avgXpPerHour": "XP/h média",
     "avgProfit": "Lucro médio",
     "avgDuration": "Duração média",
+    "loadSpotsError": "Falha ao carregar locais.",
+    "loadSessionsError": "Falha ao carregar sessões.",
     "deleteSpotError": "Falha ao excluir local.",
     "deleteSessionError": "Falha ao excluir sessão.",
     "minProfit": "Lucro mín.",

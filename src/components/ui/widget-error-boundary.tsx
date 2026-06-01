@@ -5,6 +5,7 @@ import { AlertTriangle, RefreshCw } from 'lucide-react';
 interface Props {
   children: ReactNode;
   title?: string;
+  retryLabel?: string;
 }
 
 interface State {
@@ -36,7 +37,7 @@ export class WidgetErrorBoundary extends Component<Props, State> {
             className="inline-flex items-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
           >
             <RefreshCw className="size-3" />
-            Retry
+            {this.props.retryLabel ?? 'Retry'}
           </button>
         </div>
       );

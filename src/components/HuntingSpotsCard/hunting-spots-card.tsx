@@ -1,6 +1,7 @@
 import { CardContent } from "@/components/ui/card";
 import { vocations, VocationsListItem } from "@/helpers";
 import { Link } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 
 function highlightMatch(text: string, query: string) {
   if (!query) return text;
@@ -20,6 +21,7 @@ function highlightMatch(text: string, query: string) {
 }
 
 export const HuntingSpotsCard = ({ searchTerm = '' }: { searchTerm?: string }) => {
+  const { t } = useTranslation();
   const filtered = searchTerm
     ? vocations.filter((v) =>
         v.name.toLowerCase().includes(searchTerm.toLowerCase()),
@@ -30,7 +32,7 @@ export const HuntingSpotsCard = ({ searchTerm = '' }: { searchTerm?: string }) =
     <CardContent>
       {filtered.length === 0 ? (
         <p className="text-sm text-muted-foreground text-center py-8">
-          No vocations match your search.
+          {t('huntingSpots.noVocationsMatch')}
         </p>
       ) : (
         filtered.map((vocation: VocationsListItem) => (

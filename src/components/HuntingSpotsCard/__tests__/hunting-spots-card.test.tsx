@@ -1,7 +1,14 @@
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import { HuntingSpotsCard } from '../hunting-spots-card';
+
+vi.mock('react-i18next', () => ({
+  useTranslation: () => ({
+    t: (key: string) => key,
+    i18n: { language: 'en', changeLanguage: vi.fn() },
+  }),
+}));
 
 describe('HuntingSpotsCard', () => {
   it('renders all vocation links', () => {

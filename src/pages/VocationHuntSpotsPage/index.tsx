@@ -37,8 +37,9 @@ const VocationHuntSpotsPage = () => {
     try {
       const spots = await getAllHuntingSpots(vocationId);
       setUserSpots(spots);
-    } catch {
-      void 0;
+    } catch (e) {
+      captureError(e, { context: 'loadSpots', vocationId });
+      toast.error(translate('loadSpotsError'));
     } finally {
       setLoadingSpots(false);
     }
@@ -205,8 +206,9 @@ function SpotCard({
       const data = await getSessionsForSpot(spot.id);
       setSessions(data);
       setSessionsLoaded(true);
-    } catch {
-      void 0;
+    } catch (e) {
+      captureError(e, { context: 'loadSessions', spotId: spot.id });
+      toast.error(translate('loadSessionsError'));
     } finally {
       setSessionsLoading(false);
       loadingRef.current = false;

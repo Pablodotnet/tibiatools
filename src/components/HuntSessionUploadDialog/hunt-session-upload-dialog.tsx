@@ -209,8 +209,8 @@ export function HuntSessionUploadDialog({
                       <Users className='size-3' /> {te('partyMembers')} ({parsed.players.length})
                     </p>
                     <div className='space-y-1'>
-                      {parsed.players.map((p, i) => (
-                        <div key={i} className='text-xs bg-background rounded px-2 py-1 flex items-center justify-between'>
+                      {parsed.players.map((p) => (
+                        <div key={p.name} className='text-xs bg-background rounded px-2 py-1 flex items-center justify-between'>
                           <span className='font-medium'>{p.name}</span>
                           <span className='text-muted-foreground'>
                             {p.vocation} &middot; {te('level')} {p.level}
@@ -230,8 +230,8 @@ export function HuntSessionUploadDialog({
                   <div className='border-t pt-2 mt-1'>
                     <p className='text-xs font-medium text-muted-foreground mb-1'>{te('killedMonsters')}</p>
                     <div className='flex flex-wrap gap-1'>
-                      {parsed.killedMonsters.slice(0, 10).map((m, i) => (
-                        <span key={i} className='text-[10px] bg-background rounded px-1.5 py-0.5'>
+                      {parsed.killedMonsters.slice(0, 10).map((m) => (
+                        <span key={`${m.name}-${m.count}`} className='text-[10px] bg-background rounded px-1.5 py-0.5'>
                           {m.name}: {m.count}
                         </span>
                       ))}
