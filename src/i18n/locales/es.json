@@ -17,6 +17,7 @@
     "equipmentReference": "Referencia de Equipo",
     "offlineTraining": "Entrenamiento offline",
     "levelCalculator": "Calculadora de Nivel",
+    "expShareCalculator": "Calculadora de Exp Compartida",
     "blessCalculator": "Calculadora de Bendiciones",
     "huntingSpots": "Lugares de caza",
     "exaltationForge": "Forja de Exaltación",
@@ -131,6 +132,7 @@
     "equipmentReference": "Referencia de Equipo",
     "offlineTraining": "Calculadora de Entreno offline",
     "levelCalculator": "Calculadora de Nivel",
+    "expShareCalculator": "Calculadora de Exp Compartida",
     "blessCalculator": "Calculadora de Bendiciones",
     "huntingSpots": "Lugares de caza",
     "exaltationForge": "Forja de Exaltación",
@@ -648,6 +650,16 @@
     "result": "Resultado",
     "value": "Valor",
     "enterValidValues": "Introduce valores válidos arriba para calcular."
+  },
+  "expShareCalculator": {
+    "title": "Calculadora de Exp Compartida",
+    "description": "Descubre el rango de nivel para la experiencia compartida.",
+    "yourLevel": "Tu nivel",
+    "result": "Resultado",
+    "value": "Valor",
+    "minLevel": "Nivel mínimo del miembro del grupo",
+    "maxLevel": "Nivel máximo del miembro del grupo",
+    "enterValidLevel": "Introduce un nivel válido arriba para calcular."
   },
   "blessCalculator": {
     "title": "Calculadora de Bendiciones",

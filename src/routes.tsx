@@ -17,6 +17,7 @@ const EquipmentReferencePage = lazy(() => import('@/pages/EquipmentReferencePage
 const OfflineTrainingCalculatorPage = lazy(() => import('@/pages/OfflineTrainingCalculatorPage'));
 const LevelCalculatorPage = lazy(() => import('@/pages/LevelCalculatorPage'));
 const BlessCalculatorPage = lazy(() => import('@/pages/BlessCalculatorPage'));
+const ExpShareCalculatorPage = lazy(() => import('@/pages/ExpShareCalculatorPage'));
 const AuthPage = lazy(() => import('@/pages/AuthPage'));
 const AccountPage = lazy(() => import('@/pages/AccountPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
@@ -35,6 +36,7 @@ const TITLE_KEYS: Record<string, string> = {
   '/offline-training': 'offlineTraining',
   '/level-calculator': 'levelCalculator',
   '/bless-calculator': 'blessCalculator',
+  '/exp-share': 'expShareCalculator',
   '/exaltation': 'exaltationForge',
   '/auth': 'auth',
   '/account': 'account',
@@ -65,6 +67,7 @@ const AppRouting = () => {
         <Route path='/offline-training' element={<OfflineTrainingCalculatorPage />} />
         <Route path='/level-calculator' element={<LevelCalculatorPage />} />
         <Route path='/bless-calculator' element={<BlessCalculatorPage />} />
+        <Route path='/exp-share' element={<ExpShareCalculatorPage />} />
         <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
         <Route
           path='/hunting-spots/:vocationId'

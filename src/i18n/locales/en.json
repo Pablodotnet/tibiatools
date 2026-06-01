@@ -17,6 +17,7 @@
     "equipmentReference": "Equipment Reference",
     "offlineTraining": "Offline Training",
     "levelCalculator": "Level Calculator",
+    "expShareCalculator": "Exp Share Calculator",
     "blessCalculator": "Bless Calculator",
     "huntingSpots": "Hunting Spots",
     "exaltationForge": "Exaltation Forge",
@@ -131,6 +132,7 @@
     "equipmentReference": "Equipment Reference",
     "offlineTraining": "Offline Training Calculator",
     "levelCalculator": "Level Calculator",
+    "expShareCalculator": "Exp Share Calculator",
     "blessCalculator": "Bless Calculator",
     "huntingSpots": "Hunting Spots",
     "exaltationForge": "Exaltation Forge",
@@ -277,6 +279,16 @@
     "result": "Result",
     "value": "Value",
     "enterValidValues": "Enter valid values above to calculate."
+  },
+  "expShareCalculator": {
+    "title": "Exp Share Calculator",
+    "description": "Find out the level range for shared experience.",
+    "yourLevel": "Your level",
+    "result": "Result",
+    "value": "Value",
+    "minLevel": "Minimum party member level",
+    "maxLevel": "Maximum party member level",
+    "enterValidLevel": "Enter a valid level above to calculate."
   },
   "blessCalculator": {
     "title": "Bless Calculator",

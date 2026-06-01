@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
-  ChevronDown, ChevronRight,
+  ChevronDown, ChevronRight, Share2,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
@@ -41,6 +41,7 @@ const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
     labelKey: 'groupCalculators',
     items: [
       { to: '/level-calculator', labelKey: 'levelCalculator', icon: TrendingUp },
+      { to: '/exp-share', labelKey: 'expShareCalculator', icon: Share2 },
       { to: '/bless-calculator', labelKey: 'blessCalculator', icon: Church },
       { to: '/offline-training', labelKey: 'offlineTraining', icon: Timer },
     ],
