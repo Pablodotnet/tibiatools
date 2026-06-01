@@ -7,6 +7,12 @@ import { Button } from '@/components/ui/button';
 import { formatGp, parseGpInput } from '@/helpers/exaltationForge';
 
 type SkillType = 'sword' | 'axe' | 'club' | 'distance' | 'shielding' | 'magic';
+type TrainerType = 'public' | 'private';
+
+const TRAINER_MULTIPLIER: Record<TrainerType, number> = {
+  public: 1.0,
+  private: 1.4,
+};
 
 const skillXpForLevel = (type: SkillType, level: number): number => {
   if (type === 'magic') {
@@ -15,15 +21,15 @@ const skillXpForLevel = (type: SkillType, level: number): number => {
   return 50 * level * level * level - 75 * level * level + 205 * level - 110;
 };
 
-const xpPerHour = (level: number): number => {
-  return 1800 * (level + 3);
+const xpPerHour = (level: number, multiplier: number): number => {
+  return 1800 * (level + 3) * multiplier;
 };
 
-function calculateWeapons(type: SkillType, current: number, target: number): number {
+function calculateWeapons(type: SkillType, current: number, target: number, multiplier: number): number {
   if (target <= current) return 0;
   let weapons = 0;
   for (let lvl = current; lvl < target; lvl++) {
-    weapons += skillXpForLevel(type, lvl) / xpPerHour(lvl);
+    weapons += skillXpForLevel(type, lvl) / xpPerHour(lvl, multiplier);
   }
   return weapons;
 }
@@ -42,6 +48,7 @@ export function ExerciseWeaponsCalculator() {
   const ti = (key: string) => t(`exerciseWeapons.${key}`);
 
   const [skillType, setSkillType] = useState<SkillType>('sword');
+  const [trainerType, setTrainerType] = useState<TrainerType>('public');
   const [currentSkill, setCurrentSkill] = useState('');
   const [targetSkill, setTargetSkill] = useState('');
   const [weaponPrice, setWeaponPrice] = useState('200000');
@@ -52,10 +59,11 @@ export function ExerciseWeaponsCalculator() {
   const current = parseInt(currentSkill, 10);
   const target = parseInt(targetSkill, 10);
   const isValid = currentSkill !== '' && targetSkill !== '' && !isNaN(current) && !isNaN(target) && target > current && current >= 0;
+  const multiplier = TRAINER_MULTIPLIER[trainerType];
 
   const result = useMemo(() => {
     if (!isValid) return null;
-    const weapons = calculateWeapons(skillType, current, target);
+    const weapons = calculateWeapons(skillType, current, target, multiplier);
     const totalXp = calculateTotalXp(skillType, current, target);
     const pricePerWeapon = parseGpInput(weaponPrice);
     const tcPerWeapon = parseFloat(tcPrice) || 0;
@@ -64,7 +72,7 @@ export function ExerciseWeaponsCalculator() {
     const pricePer250Tc = parseFloat(tcToMxn) || 0;
     const realMoneyCost = (totalTcCost / 250) * pricePer250Tc;
     return { weapons, totalXp, totalGpCost, totalTcCost, realMoneyCost };
-  }, [isValid, skillType, current, target, weaponPrice, tcPrice, tcToMxn]);
+  }, [isValid, skillType, current, target, weaponPrice, tcPrice, tcToMxn, trainerType]);
 
   const handleCalculate = () => {
     setCalculated(true);
@@ -72,6 +80,7 @@ export function ExerciseWeaponsCalculator() {
 
   const handleClear = () => {
     setSkillType('sword');
+    setTrainerType('public');
     setCurrentSkill('');
     setTargetSkill('');
     setWeaponPrice('200000');
@@ -98,6 +107,25 @@ export function ExerciseWeaponsCalculator() {
             ))}
           </SelectContent>
         </Select>
+      </div>
+
+      <div className='flex flex-col space-y-2'>
+        <Label>{ti('trainerType')}</Label>
+        <div className='flex gap-4'>
+          {(['public', 'private'] as TrainerType[]).map((type) => (
+            <label key={type} className='flex items-center gap-2 cursor-pointer'>
+              <input
+                type='radio'
+                name='trainer_type'
+                value={type}
+                checked={trainerType === type}
+                onChange={() => { setTrainerType(type); setCalculated(false); }}
+                className='size-4 accent-primary'
+              />
+              <span className='text-sm'>{ti(type)}</span>
+            </label>
+          ))}
+        </div>
       </div>
 
       <div className='grid grid-cols-2 gap-4'>
@@ -233,7 +261,7 @@ export function ExerciseWeaponsCalculator() {
                   {Array.from({ length: Math.min(target - current, 200) }, (_, i) => {
                     const lvl = current + i;
                     const xp = skillXpForLevel(skillType, lvl);
-                    const wps = xp / xpPerHour(lvl);
+                    const wps = xp / xpPerHour(lvl, multiplier);
                     return (
                       <tr key={lvl} className='border-b'>
                         <td className='px-2 py-1'>{lvl} → {lvl + 1}</td>
