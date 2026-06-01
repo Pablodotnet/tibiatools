@@ -106,6 +106,7 @@ const VocationHuntSpotsPage = () => {
                   value={sortBy}
                   onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
                   className="h-8 rounded-md border border-input bg-transparent px-2 text-xs text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                  aria-label={translate('sortDefault')}
                 >
                   <option value="default">{translate('sortDefault')}</option>
                   <option value="profit">{translate('sortProfit')}</option>
@@ -225,10 +226,11 @@ function SpotCard({
       <button
         onClick={() => setExpanded(!expanded)}
         className="w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer hover:bg-muted/50 transition-colors rounded-lg"
+        aria-expanded={expanded}
       >
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h4 className="font-semibold">{spot.name}</h4>
+            <h3 className="font-semibold text-sm">{spot.name}</h3>
             {spot.ownerDisplayName && (
               <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm">
                 <User className="size-2.5" />

@@ -22,6 +22,7 @@ export function HuntSessionCard({
       <button
         onClick={() => setExpanded(!expanded)}
         className='w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer hover:bg-muted/50 transition-colors rounded-lg'
+        aria-expanded={expanded}
       >
         <div className='min-w-0 flex-1 flex items-center gap-2'>
           {session.isParty ? (
@@ -78,7 +79,7 @@ export function HuntSessionCard({
       </button>
 
       {expanded && (
-        <div className='border-t px-4 py-3 space-y-2 text-sm'>
+        <div className='border-t px-4 py-3 space-y-2 text-sm fade-in'>
           <div className='grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs'>
             {session.loot !== undefined && (
               <>
