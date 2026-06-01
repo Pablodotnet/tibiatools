@@ -9,6 +9,7 @@ import { getAllHuntingSpots, deleteHuntingSpot } from '@/firebase/huntingSpots';
 import { getSessionsForSpot, deleteHuntSession } from '@/firebase/huntSessions';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
+import { captureError } from '@/lib/monitoring';
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks, Search } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -81,7 +82,7 @@ const VocationHuntSpotsPage = () => {
       setUserSpots((prev) => prev.filter((s) => s.id !== spotId));
       toast.success(translate('spotDeleted'));
     } catch (e) {
-      console.error(e);
+      captureError(e, { context: 'deleteHuntingSpot', spotId });
       toast.error(translate('deleteSpotError'));
     }
   }, [translate]);
@@ -224,7 +225,7 @@ function SpotCard({
       setSessions((prev) => prev.filter((s) => s.id !== sessionId));
       toast.success(translate('sessionDeleted'));
     } catch (e) {
-      console.error(e);
+      captureError(e, { context: 'deleteHuntSession', sessionId });
       toast.error(translate('deleteSessionError'));
     }
   }, [translate]);

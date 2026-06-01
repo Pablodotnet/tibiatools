@@ -14,49 +14,7 @@ import {
 } from 'firebase/firestore';
 import { FirebaseAuth, FirebaseDB } from './config';
 import type { TierProject, TierProjectEntry } from '@/types/tierProject';
-
-function safeStr(v: unknown, fallback = ''): string {
-  return typeof v === 'string' ? v : fallback;
-}
-
-function safeNum(v: unknown, fallback = 0): number {
-  return typeof v === 'number' ? v : fallback;
-}
-
-function optNum(v: unknown): number | undefined {
-  return typeof v === 'number' ? v : undefined;
-}
-
-function optStr(v: unknown): string | undefined {
-  return typeof v === 'string' ? v : undefined;
-}
-
-function safeBool(v: unknown, fallback = false): boolean {
-  return typeof v === 'boolean' ? v : fallback;
-}
-
-function toMs(v: unknown): number {
-  if (v && typeof v === 'object' && 'toDate' in v && typeof (v as { toDate: () => Date }).toDate === 'function') return (v as { toDate: () => Date }).toDate().getTime();
-  if (typeof v === 'number') return v;
-  return Date.now();
-}
-
-function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
-  const out: Record<string, unknown> = {};
-  for (const [k, v] of Object.entries(obj)) {
-    if (v === undefined) continue;
-    if (Array.isArray(v)) {
-      out[k] = v.map((item) =>
-        item && typeof item === 'object' && !Array.isArray(item)
-          ? Object.fromEntries(Object.entries(item).filter(([, vi]) => vi !== undefined))
-          : item,
-      );
-    } else {
-      out[k] = v;
-    }
-  }
-  return out;
-}
+import { safeStr, safeNum, optNum, optStr, safeBool, toMs, stripUndefined } from '@/lib/firestore-helpers';
 
 function mapProjectDoc(id: string, data: Record<string, unknown>): TierProject {
   return {

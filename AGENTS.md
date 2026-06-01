@@ -42,6 +42,11 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - Widget error boundaries: `WidgetErrorBoundary` wrapping each dashboard widget
 - Analytics: `monitoring.ts` enhanced with `initMonitoring`, batching, `flush()`, `sendBeacon` on unload
 - 13 new tests: monitoring (5), RecentSessionsWidget (5), ExaltationPage (3) — 121 total passing
+- Extracted duplicate Firestore validation helpers into shared `src/lib/firestore-helpers.ts` (was triplicated across huntingSpots, huntSessions, tierProjects)
+- Added missing composite index for `huntSessions` (ownerUid + createdAt) to `firestore.indexes.json`
+- Replaced 4 `console.error` calls with `captureError()` from monitoring stub
+- Added `limit(100)` to `getAllHuntingSpots` to prevent unbounded Firestore reads
+- Fixed dynamic `import()` bug in `getSession` (was re-importing getDoc already at top level)
 
 ### In Progress
 - (none)
@@ -85,3 +90,5 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - `src/components/HuntSessionDisplay/hunt-session-card.tsx`: session display card
 - `src/pages/VocationHuntSpotsPage/index.tsx`: page merging built-in + user spots + sessions
 - `src/pages/HuntingSpotsPage/index.tsx`: main hunting spots page with Add Spot button
+- `src/lib/firestore-helpers.ts`: shared Firestore doc validation helpers (safeStr, safeNum, optNum, optStr, safeBool, safeArr, safeLevelRange, toMs, stripUndefined)
+- `firestore.indexes.json`: composite indexes for Firebase queries

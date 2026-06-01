@@ -13,18 +13,7 @@ import {
 } from 'firebase/firestore';
 import { FirebaseAuth, FirebaseDB } from './config';
 import type { HuntSession } from '@/types/huntSession';
-
-function safeStr(v: unknown, fallback = ''): string {
-  return typeof v === 'string' ? v : fallback;
-}
-
-function safeNum(v: unknown, fallback?: number): number | undefined {
-  return typeof v === 'number' ? v : fallback;
-}
-
-function safeBool(v: unknown, fallback = false): boolean {
-  return typeof v === 'boolean' ? v : fallback;
-}
+import { safeStr, optNum, safeBool } from '@/lib/firestore-helpers';
 
 function mapSessionDoc(id: string, data: Record<string, unknown>): HuntSession {
   return {
@@ -35,18 +24,18 @@ function mapSessionDoc(id: string, data: Record<string, unknown>): HuntSession {
     ownerDisplayName: safeStr(data.ownerDisplayName),
     isParty: safeBool(data.isParty),
     sessionDate: safeStr(data.sessionDate, undefined),
-    durationMinutes: safeNum(data.durationMinutes),
+    durationMinutes: optNum(data.durationMinutes),
     vocation: safeStr(data.vocation, undefined),
-    level: safeNum(data.level),
-    damage: safeNum(data.damage),
-    healing: safeNum(data.healing),
-    damageReceived: safeNum(data.damageReceived),
-    loot: safeNum(data.loot),
-    supplies: safeNum(data.supplies),
-    balance: safeNum(data.balance),
-    xpGain: safeNum(data.xpGain),
-    xpPerHour: safeNum(data.xpPerHour),
-    rawXpPerHour: safeNum(data.rawXpPerHour),
+    level: optNum(data.level),
+    damage: optNum(data.damage),
+    healing: optNum(data.healing),
+    damageReceived: optNum(data.damageReceived),
+    loot: optNum(data.loot),
+    supplies: optNum(data.supplies),
+    balance: optNum(data.balance),
+    xpGain: optNum(data.xpGain),
+    xpPerHour: optNum(data.xpPerHour),
+    rawXpPerHour: optNum(data.rawXpPerHour),
     players: Array.isArray(data.players) ? data.players as HuntSession['players'] : undefined,
     killedMonsters: Array.isArray(data.killedMonsters) ? data.killedMonsters as HuntSession['killedMonsters'] : undefined,
     lootItems: Array.isArray(data.lootItems) ? data.lootItems as HuntSession['lootItems'] : undefined,
@@ -129,7 +118,6 @@ export async function getSessionsForSpot(
 }
 
 export async function getSession(id: string): Promise<HuntSession | null> {
-  const { getDoc } = await import('firebase/firestore');
   const snap = await getDoc(doc(FirebaseDB, 'huntSessions', id));
   if (!snap.exists()) return null;
   return mapSessionDoc(snap.id, snap.data() as Record<string, unknown>);

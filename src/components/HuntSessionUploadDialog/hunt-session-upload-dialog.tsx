@@ -16,6 +16,7 @@ import { parseHuntSession } from '@/helpers/huntSessionParser';
 import { addHuntSession } from '@/firebase/huntSessions';
 import { formatProfit, formatRate } from '@/helpers/huntingSpots';
 import { toast } from 'sonner';
+import { captureError } from '@/lib/monitoring';
 import { Users, User, Clock, Swords, HeartPulse, Shield, Coins, PackageOpen, Zap, PartyPopper, Upload } from 'lucide-react';
 
 export function HuntSessionUploadDialog({
@@ -72,7 +73,7 @@ export function HuntSessionUploadDialog({
       setOpen(false);
       onSubmit();
     } catch (e) {
-      console.error(e);
+      captureError(e, { context: 'addHuntSession', spotId });
       toast.error(te('errorGeneric'));
     } finally {
       setSubmitting(false);

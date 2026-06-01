@@ -8,27 +8,12 @@ import {
   query,
   where,
   orderBy,
+  limit,
   Timestamp,
 } from 'firebase/firestore';
 import { FirebaseAuth, FirebaseDB } from './config';
 import type { HuntingSpotData } from '@/helpers/huntingSpots';
-
-function safeStr(v: unknown, fallback = ''): string {
-  return typeof v === 'string' ? v : fallback;
-}
-
-function safeNum(v: unknown, fallback = 0): number {
-  return typeof v === 'number' ? v : fallback;
-}
-
-function safeArr<T>(v: unknown, fallback: T[] = []): T[] {
-  return Array.isArray(v) ? v : fallback;
-}
-
-function safeLevelRange(v: unknown): [number, number] {
-  if (Array.isArray(v) && v.length === 2 && typeof v[0] === 'number' && typeof v[1] === 'number') return [v[0], v[1]];
-  return [0, 0];
-}
+import { safeStr, safeNum, safeArr, safeLevelRange } from '@/lib/firestore-helpers';
 
 function mapSpotDoc(id: string, data: Record<string, unknown>): HuntingSpotData {
   return {
@@ -98,14 +83,15 @@ export async function getUserHuntingSpots(): Promise<HuntingSpotData[]> {
   return snapshot.docs.map((d) => mapSpotDoc(d.id, d.data() as Record<string, unknown>));
 }
 
-export async function getAllHuntingSpots(vocationId?: string): Promise<HuntingSpotData[]> {
+export async function getAllHuntingSpots(vocationId?: string, limitCount = 100): Promise<HuntingSpotData[]> {
   const q = vocationId
     ? query(
         collection(FirebaseDB, 'huntingSpots'),
         where('vocationId', '==', vocationId),
         orderBy('createdAt', 'desc'),
+        limit(limitCount),
       )
-    : query(collection(FirebaseDB, 'huntingSpots'), orderBy('createdAt', 'desc'));
+    : query(collection(FirebaseDB, 'huntingSpots'), orderBy('createdAt', 'desc'), limit(limitCount));
   const snapshot = await getDocs(q);
   return snapshot.docs.map((d) => mapSpotDoc(d.id, d.data() as Record<string, unknown>));
 }
