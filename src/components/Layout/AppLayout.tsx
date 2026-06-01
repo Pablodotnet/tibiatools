@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
-  ChevronDown, ChevronRight, Share2,
+  ChevronDown, ChevronRight, Share2, HandCoins,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
@@ -27,6 +27,7 @@ const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
       { to: '/real-money-calculator', labelKey: 'realMoney', icon: Wallet },
       { to: '/coins-to-money', labelKey: 'coinsToMoney', icon: Coins },
       { to: '/imbue-cost-calculator', labelKey: 'imbueCostCalculator', icon: Calculator },
+      { to: '/tibia-loot-split', labelKey: 'tibiaLootSplit', icon: HandCoins },
     ],
   },
   {
