@@ -196,6 +196,17 @@ function SpotCard({
     setSessions([]);
   }, []);
 
+  const sessionStats = useMemo(() => {
+    if (sessions.length === 0) return null;
+    const count = sessions.length;
+    const avgXpPerHour = Math.round(sessions.reduce((s, x) => s + (x.xpPerHour ?? 0), 0) / count);
+    const avgBalance = Math.round(sessions.reduce((s, x) => s + (x.balance ?? 0), 0) / count);
+    const avgDuration = Math.round(sessions.reduce((s, x) => s + (x.durationMinutes ?? 0), 0) / count);
+    const bestXpPerHour = Math.max(...sessions.map((x) => x.xpPerHour ?? 0));
+    const bestBalance = Math.max(...sessions.map((x) => x.balance ?? 0));
+    return { count, avgXpPerHour, avgBalance, avgDuration, bestXpPerHour, bestBalance };
+  }, [sessions]);
+
   const supplyCost = customSupplyCost !== '' ? (parseInt(customSupplyCost, 10) || 0) : spot.supplyCost;
   const netProfit = spot.profit - (supplyCost - spot.supplyCost);
 
@@ -375,6 +386,25 @@ function SpotCard({
                 onSubmit={handleSessionAdded}
               />
             </div>
+
+            {sessionStats && (
+              <div className="grid grid-cols-3 gap-2 text-[10px] bg-muted/40 rounded-md p-2">
+                <div>
+                  <span className="text-muted-foreground">{translate('avgXpPerHour')}</span>
+                  <p className="font-medium tabular-nums">{formatRate(sessionStats.avgXpPerHour)}</p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">{translate('avgProfit')}</span>
+                  <p className={`font-medium tabular-nums ${sessionStats.avgBalance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
+                    {formatProfit(sessionStats.avgBalance)}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-muted-foreground">{translate('avgDuration')}</span>
+                  <p className="font-medium tabular-nums">{formatHours(sessionStats.avgDuration / 60)}</p>
+                </div>
+              </div>
+            )}
 
             {sessionsLoading && (
               <p className="text-xs text-muted-foreground text-center py-2">{translate('loadingSessions')}</p>

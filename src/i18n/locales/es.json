@@ -250,7 +250,10 @@
     "sortProfit": "Por ganancia",
     "sortExp": "Por exp",
     "sortLevel": "Por nivel",
-    "noSpotsMatch": "Ningún lugar coincide con tu búsqueda."
+    "noSpotsMatch": "Ningún lugar coincide con tu búsqueda.",
+    "avgXpPerHour": "XP/h promedio",
+    "avgProfit": "Ganancia promedio",
+    "avgDuration": "Duración promedio"
   },
   "huntingSpotsAdd": {
     "addSpot": "Añadir Lugar",

@@ -317,7 +317,10 @@
     "sortProfit": "By profit",
     "sortExp": "By exp",
     "sortLevel": "By level",
-    "noSpotsMatch": "No spots match your search."
+    "noSpotsMatch": "No spots match your search.",
+    "avgXpPerHour": "Avg XP/h",
+    "avgProfit": "Avg profit",
+    "avgDuration": "Avg duration"
   },
   "huntingSpotsAdd": {
     "addSpot": "Add Spot",

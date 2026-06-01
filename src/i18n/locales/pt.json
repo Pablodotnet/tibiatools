@@ -250,7 +250,10 @@
     "sortProfit": "Por lucro",
     "sortExp": "Por exp",
     "sortLevel": "Por nível",
-    "noSpotsMatch": "Nenhum local corresponde à sua pesquisa."
+    "noSpotsMatch": "Nenhum local corresponde à sua pesquisa.",
+    "avgXpPerHour": "XP/h média",
+    "avgProfit": "Lucro médio",
+    "avgDuration": "Duração média"
   },
   "huntingSpotsAdd": {
     "addSpot": "Adicionar Local",
