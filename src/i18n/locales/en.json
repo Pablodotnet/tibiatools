@@ -1,21 +1,6 @@
 {
   "nav": {
-    "title": "Tibia Tools",
-    "links": {
-      "realMoney": "Real Money",
-      "coinsToMoney": "Coins to Money",
-      "imbuings": "Imbuings",
-      "imbueCostCalculator": "Imbue Cost",
-      "exerciseWeapons": "Exercise Weapons",
-      "equipmentReference": "Equipment",
-      "offlineTraining": "Offline Training",
-      "levelCalculator": "Level",
-      "blessCalculator": "Bless",
-      "huntingSpots": "Hunting Spots",
-      "exaltationForge": "Exaltation Forge",
-      "tierProjects": "Tier Projects",
-      "community": "Community"
-    }
+    "title": "Tibia Tools"
   },
   "sidebar": {
     "home": "Home",
@@ -533,36 +518,7 @@
       "tcQuantityMsg": "Tibia Coins Quantity must be at least 1 character."
     }
   },
-  "pagesCard": {
-    "title": "Utilities",
-    "description": "Useful or not so useful tools, just for practice.",
-    "titleRealMoney": "Real Money Calculator",
-    "descriptionRealMoney": "Calculate how much real money will cost your Tibia gold.",
-    "titleTibiaCoins": "Tibia Coins to Real Money Calculator",
-    "descriptionTibiaCoins": "Calculate how much real money will cost your Tibia Coins.",
-    "titleImbuing": "Imbuing System",
-    "descriptionImbuing": "What imbuings can you put on your items?",
-    "titleImbueCost": "Imbue Cost Calculator",
-    "descriptionImbueCost": "Calculate the total cost of an imbuement, including materials and fees.",
-    "titleExerciseWeapons": "Exercise Weapons Calculator",
-    "descriptionExerciseWeapons": "Calculate how many exercise weapons you need between skill levels.",
-    "titleEquipment": "Vocation Equipment Reference",
-    "descriptionEquipment": "Browse equipment by vocation and slot, filter by elemental protection.",
-    "titleOfflineTraining": "Offline Training Calculator",
-    "descriptionOfflineTraining": "Calculate how much your skills improve with offline training over time.",
-    "titleLevel": "Level Calculator",
-    "descriptionLevel": "Calculate the total experience needed to reach a target level.",
-    "titleBlessCalculator": "Bless Calculator",
-    "descriptionBlessCalculator": "Calculate blessing costs for your level — regular, enhanced, Twist of Fate.",
-    "titleHuntSpots": "Hunting Spots",
-    "descriptionHuntSpots": "Find the best hunting spots for your level and which set to use.",
-    "titleExaltation": "Exaltation/Forge System",
-    "descriptionExaltation": "Learn how exaltation works and how to use it.",
-    "titleMyTierProjects": "My Tier Projects",
-    "descriptionMyTierProjects": "Track your usages and costs of your project to your desired tier.",
-    "titlePublicProjects": "Tier Projects",
-    "descriptionPublicProjects": "Browse tier projects shared by the community."
-  },
+
   "errors": {
     "invalidStringFormat": "Invalid string format"
   },

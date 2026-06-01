@@ -4,12 +4,6 @@ import { RegisterParams, LoginParams } from '@/types';
 import { AppDispatch } from '@/store';
 import { checkingCredentials, login, logout } from './authSlice';
 
-export const checkingAuthentication = () => {
-  return async (dispatch: AppDispatch) => {
-    dispatch(checkingCredentials());
-  };
-};
-
 export const startGoogleSignIn = () => {
   return async (dispatch: AppDispatch) => {
     dispatch(checkingCredentials());

@@ -1,21 +1,6 @@
 {
   "nav": {
-    "title": "Herramientas de Tibia",
-    "links": {
-      "realMoney": "Dinero real",
-      "coinsToMoney": "Coins a dinero",
-      "imbuings": "Imbuings",
-      "imbueCostCalculator": "Costo de Imbu",
-      "exerciseWeapons": "Armas de Ejercicio",
-      "equipmentReference": "Equipo",
-      "offlineTraining": "Entrenamiento offline",
-      "levelCalculator": "Nivel",
-      "blessCalculator": "Bendiciones",
-      "huntingSpots": "Lugares de caza",
-      "exaltationForge": "Forja de Exaltación",
-      "tierProjects": "Proyectos de Tier",
-      "community": "Comunidad"
-    }
+    "title": "Tibia Tools"
   },
   "sidebar": {
     "home": "Inicio",
@@ -466,36 +451,7 @@
       "tcQuantityMsg": "La cantidad de Tibia Coins debe tener al menos 1 carácter."
     }
   },
-  "pagesCard": {
-    "title": "Utilidades",
-    "description": "Herramientas útiles o no tan útiles, solo por práctica.",
-    "titleRealMoney": "Calculadora de dinero real",
-    "descriptionRealMoney": "Calcula cuánto dinero real costará tu Tibia gold.",
-    "titleTibiaCoins": "Calculadora de Tibia Coins a dinero real",
-    "descriptionTibiaCoins": "Calcula cuánto dinero real costarán tus Tibia Coins.",
-    "titleImbuing": "Sistema de Imbuing",
-    "descriptionImbuing": "¿Qué imbuements puedes poner en tus objetos?",
-    "titleImbueCost": "Calculadora de Costo de Imbu",
-    "descriptionImbueCost": "Calcula el costo total de un imbu, incluyendo materiales y tarifas.",
-    "titleExerciseWeapons": "Calculadora de Armas de Ejercicio",
-    "descriptionExerciseWeapons": "Calcula cuántas armas de ejercicio necesitas entre niveles de habilidad.",
-    "titleEquipment": "Referencia de Equipo por Vocación",
-    "descriptionEquipment": "Explora el equipo por vocación y ranura, filtra por protección elemental.",
-    "titleOfflineTraining": "Calculadora de Entreno offline",
-    "descriptionOfflineTraining": "Calcula cuánto mejoran tus habilidades con el entrenamiento offline.",
-    "titleLevel": "Calculadora de Nivel",
-    "descriptionLevel": "Calcula la experiencia total necesaria para alcanzar un nivel objetivo.",
-    "titleBlessCalculator": "Calculadora de Bendiciones",
-    "descriptionBlessCalculator": "Calcula el costo de las bendiciones para tu nivel — regulares, mejoradas, Twist of Fate.",
-    "titleHuntSpots": "Lugares de caza",
-    "descriptionHuntSpots": "Encuentra los mejores lugares de caza para tu nivel y qué set usar.",
-    "titleExaltation": "Sistema de Exaltación/Forge",
-    "descriptionExaltation": "Aprende cómo funciona la exaltación y cómo usarla.",
-    "titleMyTierProjects": "Mis Proyectos de Tier",
-    "descriptionMyTierProjects": "Rastrea tus usos y costos del proyecto hasta tu tier deseado.",
-    "titlePublicProjects": "Proyectos de Tier",
-    "descriptionPublicProjects": "Explora proyectos de tier compartidos por la comunidad."
-  },
+
   "myTierProjects": {
     "title": "Mis Proyectos de Tier",
     "description": "Rastrea tus usos y costos del proyecto hasta tu tier deseado.",
