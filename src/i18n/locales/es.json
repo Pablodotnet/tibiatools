@@ -60,7 +60,10 @@
     "exerciseWeapons": "Armas de Ejercicio",
     "exerciseDesc": "Calc. de habilidad",
     "blessCalculator": "Calculadora de Bendiciones",
-    "blessDesc": "Costos de bendiciones"
+    "blessDesc": "Costos de bendiciones",
+    "recentSessionsTitle": "Sesiones recientes",
+    "noRecentSessions": "Aún no hay sesiones subidas.",
+    "level": "Nv."
   },
   "auth": {
     "login": "Iniciar sesión",

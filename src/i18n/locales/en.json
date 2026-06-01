@@ -60,7 +60,10 @@
     "exerciseWeapons": "Exercise Weapons",
     "exerciseDesc": "Skill calculator",
     "blessCalculator": "Bless Calculator",
-    "blessDesc": "Blessing costs"
+    "blessDesc": "Blessing costs",
+    "recentSessionsTitle": "Recent Sessions",
+    "noRecentSessions": "No sessions uploaded yet.",
+    "level": "Lv."
   },
   "auth": {
     "login": "Log In",

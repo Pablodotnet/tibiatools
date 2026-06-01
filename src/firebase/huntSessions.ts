@@ -7,6 +7,7 @@ import {
   query,
   where,
   orderBy,
+  limit,
   Timestamp,
 } from 'firebase/firestore';
 import { FirebaseAuth, FirebaseDB } from './config';
@@ -118,4 +119,14 @@ export async function deleteHuntSession(sessionId: string): Promise<void> {
   const user = FirebaseAuth.currentUser;
   if (!user) throw new Error('Not authenticated');
   await deleteDoc(doc(FirebaseDB, 'huntSessions', sessionId));
+}
+
+export async function getRecentSessions(limitCount = 5): Promise<HuntSession[]> {
+  const q = query(
+    collection(FirebaseDB, 'huntSessions'),
+    orderBy('createdAt', 'desc'),
+    limit(limitCount),
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => mapSessionDoc(d.id, d.data() as Record<string, unknown>));
 }

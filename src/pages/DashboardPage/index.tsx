@@ -3,6 +3,7 @@ import { HuntingSpotsWidget } from '@/components/Dashboard/hunting-spots-widget'
 import { GangrenaBanner } from '@/components/Dashboard/gangrena-banner';
 import { TierProjectsWidget } from '@/components/Dashboard/tier-projects-widget';
 import { QuickToolsWidget } from '@/components/Dashboard/quick-tools-widget';
+import { RecentSessionsWidget } from '@/components/Dashboard/recent-sessions-widget';
 
 export default function DashboardPage() {
   const { t } = useTranslation();
@@ -22,7 +23,10 @@ export default function DashboardPage() {
         <QuickToolsWidget />
       </div>
 
-      <TierProjectsWidget />
+      <div className='grid gap-4 md:grid-cols-2'>
+        <TierProjectsWidget />
+        <RecentSessionsWidget />
+      </div>
     </div>
   );
 }
