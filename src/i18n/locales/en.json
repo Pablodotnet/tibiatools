@@ -173,6 +173,9 @@
     "xpNeeded": "XP needed",
     "weaponsForLevel": "Weapons",
     "breakdownTruncated": "Showing first 200 levels",
+    "copyResults": "Copy results",
+    "resultsCopied": "Results copied to clipboard!",
+    "copyFailed": "Failed to copy results.",
     "calculate": "Calculate",
     "clear": "Clear"
   },

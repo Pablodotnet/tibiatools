@@ -173,6 +173,9 @@
     "xpNeeded": "XP necesaria",
     "weaponsForLevel": "Armas",
     "breakdownTruncated": "Mostrando primeros 200 niveles",
+    "copyResults": "Copiar resultados",
+    "resultsCopied": "¡Resultados copiados al portapapeles!",
+    "copyFailed": "Error al copiar los resultados.",
     "calculate": "Calcular",
     "clear": "Limpiar"
   },

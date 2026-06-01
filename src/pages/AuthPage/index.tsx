@@ -11,9 +11,6 @@ import { LoginForm } from './LoginForm';
 import { RegisterForm } from './RegisterForm';
 import { useTranslation } from 'react-i18next';
 
-// Note: redirect logic is now handled by PublicRoute wrapper,
-// so this page doesn't need to check auth status itself.
-
 const AuthPage = () => {
   const [showRegisterForm, setShowRegisterForm] = useState(false);
   const { t } = useTranslation();

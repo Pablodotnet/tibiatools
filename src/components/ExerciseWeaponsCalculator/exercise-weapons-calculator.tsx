@@ -4,6 +4,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { toast } from 'sonner';
+import { Copy } from 'lucide-react';
 import { formatGp, parseGpInput } from '@/helpers/exaltationForge';
 
 type SkillType = 'sword' | 'axe' | 'club' | 'distance' | 'shielding' | 'magic';
@@ -76,6 +78,22 @@ export function ExerciseWeaponsCalculator() {
 
   const handleCalculate = () => {
     setCalculated(true);
+  };
+
+  const handleCopyResults = () => {
+    if (!result) return;
+    const lines = [
+      `${ti('weaponsNeeded')}: ${Math.ceil(result.weapons).toLocaleString()}`,
+      `${ti('trainingTime')}: ${Math.ceil(result.weapons).toLocaleString()} ${ti('hours')}`,
+      `${ti('totalGoldCost')}: ${formatGp(result.totalGpCost)} gp`,
+      `${ti('totalTcCost')}: ${Math.ceil(result.totalTcCost).toLocaleString()} TC`,
+      `${ti('realMoney')}: $${formatGp(result.realMoneyCost)} MXN`,
+    ];
+    navigator.clipboard.writeText(lines.join('\n')).then(() => {
+      toast.success(ti('resultsCopied'));
+    }).catch(() => {
+      toast.error(ti('copyFailed'));
+    });
   };
 
   const handleClear = () => {
@@ -244,6 +262,13 @@ export function ExerciseWeaponsCalculator() {
                 </tr>
               </tbody>
             </table>
+          </div>
+
+          <div className='flex gap-2'>
+            <Button variant='outline' size='sm' className='gap-1.5' onClick={handleCopyResults}>
+              <Copy className='size-3.5' />
+              {ti('copyResults')}
+            </Button>
           </div>
 
           <details className='text-xs text-muted-foreground'>

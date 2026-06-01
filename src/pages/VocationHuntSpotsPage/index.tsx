@@ -248,8 +248,14 @@ function SpotCard({
     return { count, avgXpPerHour, avgBalance, avgDuration, bestXpPerHour, bestBalance };
   }, [sessions]);
 
-  const supplyCost = customSupplyCost !== '' ? (parseInt(customSupplyCost, 10) || 0) : spot.supplyCost;
-  const netProfit = spot.profit - (supplyCost - spot.supplyCost);
+  const supplyCost = useMemo(
+    () => customSupplyCost !== '' ? (parseInt(customSupplyCost, 10) || 0) : spot.supplyCost,
+    [customSupplyCost, spot.supplyCost],
+  );
+  const netProfit = useMemo(
+    () => spot.profit - (supplyCost - spot.supplyCost),
+    [spot.profit, spot.supplyCost, supplyCost],
+  );
 
   const timeToNext = useMemo(() => {
     const lvl = parseInt(calcLevel, 10);
@@ -333,6 +339,8 @@ function SpotCard({
           <button
             onClick={(e) => { e.stopPropagation(); setShowCalc(!showCalc); }}
             className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            aria-expanded={showCalc}
+            aria-label={showCalc ? translate('hideCalc') : translate('showCalc')}
           >
             <Calculator className="size-3.5" />
             {showCalc ? translate('hideCalc') : translate('showCalc')}
@@ -476,6 +484,7 @@ function SpotCard({
               <button
                 onClick={(e) => { e.stopPropagation(); setShowAllSessions(true); }}
                 className="w-full text-xs text-muted-foreground hover:text-foreground py-1.5 transition-colors cursor-pointer"
+                aria-label={translate('loadMoreSessions')}
               >
                 {translate('loadMoreSessions')} ({sessions.length - 10} more)
               </button>
