@@ -221,7 +221,12 @@
     "costPerHour": "Cost per hour",
     "clear": "Clear",
     "slot": "slot",
-    "slots": "slots"
+    "slots": "slots",
+    "goldTokenValue": "Gold token (gp)",
+    "tokenCost": "Tokens",
+    "marketCheaper": "market",
+    "totalWithTokens": "Total (via Yana)",
+    "withTokens": "via Yana"
   },
   "equipmentReference": {
     "title": "Vocation Equipment Reference",

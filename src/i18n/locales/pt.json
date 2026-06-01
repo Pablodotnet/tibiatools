@@ -221,7 +221,12 @@
     "costPerHour": "Custo por hora",
     "clear": "Limpar",
     "slot": "slot",
-    "slots": "slots"
+    "slots": "slots",
+    "goldTokenValue": "Token de ouro (gp)",
+    "tokenCost": "Tokens",
+    "marketCheaper": "mercado",
+    "totalWithTokens": "Total (via Yana)",
+    "withTokens": "via Yana"
   },
   "errorBoundary": {
     "somethingWentWrong": "Algo deu errado",
