@@ -32,7 +32,7 @@ const HuntingSpotsPage = () => {
           <div className='relative'>
             <Search className='absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground' />
             <Input
-              placeholder='Search vocation...'
+              placeholder={translate('searchVocation')}
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               className='pl-8 h-9 text-sm'

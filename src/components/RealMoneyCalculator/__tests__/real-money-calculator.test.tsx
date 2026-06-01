@@ -22,6 +22,7 @@ vi.mock('react-i18next', () => ({
         'realMoney.calculator.realMoney': 'Real Money',
         'realMoney.calculator.priceFor250TcMsg': 'Price for 250 Tibia Coins must be at least 2 characters.',
         'realMoney.calculator.tibiaGoldForOneTcMsg': 'Tibia gold for one Tibia Coin must be at least 2 characters.',
+        'realMoney.calculator.enterAmount': 'Enter amount',
         'realMoney.calculator.goldToConvertMsg': 'Gold to convert must be at least 2 characters.',
         'errors.invalidStringFormat': 'Invalid string format',
       };

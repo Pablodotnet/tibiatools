@@ -91,7 +91,8 @@ export function HuntingSpotsAddDialog() {
       reset();
       setOpen(false);
     } catch (e) {
-      toast.error((e as Error).message);
+      console.error(e);
+      toast.error(te('errorGeneric'));
     } finally {
       setSubmitting(false);
     }
@@ -141,39 +142,39 @@ export function HuntingSpotsAddDialog() {
 
           <div className='space-y-1'>
             <Label className='text-xs text-muted-foreground'>{te('location')} *</Label>
-            <Input value={location} onChange={(e) => setLocation(e.target.value)} className='h-8' placeholder='e.g. Edron' />
+            <Input value={location} onChange={(e) => setLocation(e.target.value)} className='h-8' placeholder={te('locationPlaceholder')} />
           </div>
 
           <div className='grid grid-cols-2 gap-2'>
             <div className='space-y-1'>
               <Label className='text-xs text-muted-foreground'>{te('expRaw')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={expRaw} onChange={(e) => setExpRaw(e.target.value)} min={0} className='h-8' placeholder='e.g. 900' />
+              <Input type='number' value={expRaw} onChange={(e) => setExpRaw(e.target.value)} min={0} className='h-8' placeholder={te('expRawPlaceholder')} />
             </div>
             <div className='space-y-1'>
               <Label className='text-xs text-muted-foreground'>{te('expBonus')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={expBonus} onChange={(e) => setExpBonus(e.target.value)} min={0} className='h-8' placeholder='e.g. 1300' />
+              <Input type='number' value={expBonus} onChange={(e) => setExpBonus(e.target.value)} min={0} className='h-8' placeholder={te('expBonusPlaceholder')} />
             </div>
           </div>
 
           <div className='grid grid-cols-2 gap-2'>
             <div className='space-y-1'>
               <Label className='text-xs text-muted-foreground'>{te('profit')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={profit} onChange={(e) => setProfit(e.target.value)} className='h-8' placeholder='e.g. 200' />
+              <Input type='number' value={profit} onChange={(e) => setProfit(e.target.value)} className='h-8' placeholder={te('profitPlaceholder')} />
             </div>
             <div className='space-y-1'>
               <Label className='text-xs text-muted-foreground'>{te('supplyCost')}<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={supplyCost} onChange={(e) => setSupplyCost(e.target.value)} min={0} className='h-8' placeholder='0' />
+              <Input type='number' value={supplyCost} onChange={(e) => setSupplyCost(e.target.value)} min={0} className='h-8' placeholder={te('supplyCostPlaceholder')} />
             </div>
           </div>
 
           <div className='space-y-1'>
             <Label className='text-xs text-muted-foreground'>{te('set')} *</Label>
-            <Input value={setStr} onChange={(e) => setSetStr(e.target.value)} className='h-8' placeholder='e.g. Ornate set, Terra Helmet' />
+            <Input value={setStr} onChange={(e) => setSetStr(e.target.value)} className='h-8' placeholder={te('setPlaceholder')} />
           </div>
 
           <div className='space-y-1'>
             <Label className='text-xs text-muted-foreground'>{te('imbuements')}</Label>
-            <Input value={imbuements} onChange={(e) => setImbuements(e.target.value)} className='h-8' placeholder='e.g. Critical, Void, Vampirism' />
+            <Input value={imbuements} onChange={(e) => setImbuements(e.target.value)} className='h-8' placeholder={te('imbuementsPlaceholder')} />
             <p className='text-[10px] text-muted-foreground'>{te('imbuementsHint')}</p>
           </div>
 

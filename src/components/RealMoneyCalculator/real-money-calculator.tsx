@@ -157,7 +157,7 @@ export function RealMoneyCalculator() {
             <FormItem>
               <FormLabel>{translate('goldToConvert')}</FormLabel>
               <FormControl>
-                <Input placeholder='Enter amount' {...field} />
+                <Input placeholder={translate('enterAmount')} {...field} />
               </FormControl>
               <FormDescription>
                 {translate('goldToConvertDesc')}

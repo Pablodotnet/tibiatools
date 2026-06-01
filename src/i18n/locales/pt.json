@@ -98,7 +98,8 @@
       "goldToConvert": "Ouro para converter",
       "goldToConvertDesc": "Digite a quantidade de ouro que deseja converter, no formato \"10kk\", por exemplo.",
       "calculate": "Calcular",
-      "clear": "Limpar"
+      "clear": "Limpar",
+      "enterAmount": "Insira o valor"
     }
   },
   "imbuings": {
@@ -205,7 +206,14 @@
   },
   "huntingSpots": {
     "title": "Onde posso caçar em determinado nível? Qual set devo usar?",
-    "description": "Aqui você pode encontrar locais de caça, recomendações de equipamentos e quais imbuements usar."
+    "description": "Aqui você pode encontrar locais de caça, recomendações de equipamentos e quais imbuements usar.",
+    "searchVocation": "Buscar vocação..."
+  },
+  "common": {
+    "loading": "Carregando..."
+  },
+  "theme": {
+    "toggle": "Alternar tema"
   },
   "huntingSpotsPage": {
     "title": "Locais de caça para",
@@ -241,7 +249,9 @@
     "noSpotsMatch": "Nenhum local corresponde à sua pesquisa.",
     "avgXpPerHour": "XP/h média",
     "avgProfit": "Lucro médio",
-    "avgDuration": "Duração média"
+    "avgDuration": "Duração média",
+    "deleteSpotError": "Falha ao excluir local.",
+    "deleteSessionError": "Falha ao excluir sessão."
   },
   "huntingSpotsAdd": {
     "addSpot": "Adicionar Local",
@@ -265,6 +275,14 @@
     "notesPlaceholder": "Dicas ou observações adicionais...",
     "fillRequired": "Preencha todos os campos obrigatórios",
     "spotAdded": "Local de caça adicionado com sucesso!",
+    "locationPlaceholder": "ex. Edron",
+    "expRawPlaceholder": "ex. 900",
+    "expBonusPlaceholder": "ex. 1300",
+    "profitPlaceholder": "ex. 200",
+    "supplyCostPlaceholder": "0",
+    "setPlaceholder": "ex. Conjunto Ornate, Capacete Terra",
+    "imbuementsPlaceholder": "ex. Critical, Void, Vampirism",
+    "errorGeneric": "Algo deu errado. Tente novamente.",
     "cancel": "Cancelar",
     "submit": "Enviar",
     "submitting": "Enviando..."
@@ -295,7 +313,8 @@
     "sessionAdded": "Sessão de caça enviada!",
     "cancel": "Cancelar",
     "save": "Salvar",
-    "saving": "Salvando..."
+    "saving": "Salvando...",
+    "errorGeneric": "Falha ao salvar sessão. Tente novamente."
   },
   "huntSessionDisplay": {
     "soloSession": "Caça individual",

@@ -69,7 +69,8 @@ const VocationHuntSpotsPage = () => {
       setUserSpots((prev) => prev.filter((s) => s.id !== spotId));
       toast.success(translate('spotDeleted'));
     } catch (e) {
-      toast.error((e as Error).message);
+      console.error(e);
+      toast.error(translate('deleteSpotError'));
     }
   }, [translate]);
 
@@ -187,7 +188,8 @@ function SpotCard({
       setSessions((prev) => prev.filter((s) => s.id !== sessionId));
       toast.success(translate('sessionDeleted'));
     } catch (e) {
-      toast.error((e as Error).message);
+      console.error(e);
+      toast.error(translate('deleteSessionError'));
     }
   }, [translate]);
 

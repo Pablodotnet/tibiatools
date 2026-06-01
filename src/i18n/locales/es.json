@@ -98,7 +98,8 @@
       "goldToConvert": "Oro a convertir",
       "goldToConvertDesc": "Ingresa la cantidad de oro que quieres convertir, con formato \"10kk\", por ejemplo.",
       "calculate": "Calcular",
-      "clear": "Limpiar"
+      "clear": "Limpiar",
+      "enterAmount": "Ingresa el monto"
     }
   },
   "imbuings": {
@@ -205,7 +206,14 @@
   },
   "huntingSpots": {
     "title": "¿Dónde puedo cazar a cierto nivel? ¿Qué set debería usar?",
-    "description": "Aquí puedes encontrar lugares de caza así como recomendaciones de equipo y qué imbuements usar."
+    "description": "Aquí puedes encontrar lugares de caza así como recomendaciones de equipo y qué imbuements usar.",
+    "searchVocation": "Buscar vocación..."
+  },
+  "common": {
+    "loading": "Cargando..."
+  },
+  "theme": {
+    "toggle": "Cambiar tema"
   },
   "huntingSpotsPage": {
     "title": "Lugares de caza para",
@@ -241,7 +249,9 @@
     "noSpotsMatch": "Ningún lugar coincide con tu búsqueda.",
     "avgXpPerHour": "XP/h promedio",
     "avgProfit": "Ganancia promedio",
-    "avgDuration": "Duración promedio"
+    "avgDuration": "Duración promedio",
+    "deleteSpotError": "Error al eliminar el lugar.",
+    "deleteSessionError": "Error al eliminar la sesión."
   },
   "huntingSpotsAdd": {
     "addSpot": "Añadir Lugar",
@@ -265,6 +275,14 @@
     "notesPlaceholder": "Consejos u observaciones adicionales...",
     "fillRequired": "Completa todos los campos obligatorios",
     "spotAdded": "¡Lugar de caza añadido exitosamente!",
+    "locationPlaceholder": "ej. Edron",
+    "expRawPlaceholder": "ej. 900",
+    "expBonusPlaceholder": "ej. 1300",
+    "profitPlaceholder": "ej. 200",
+    "supplyCostPlaceholder": "0",
+    "setPlaceholder": "ej. Set Ornate, Yelmo Terra",
+    "imbuementsPlaceholder": "ej. Critical, Void, Vampirism",
+    "errorGeneric": "Algo salió mal. Intenta de nuevo.",
     "cancel": "Cancelar",
     "submit": "Enviar",
     "submitting": "Enviando..."
@@ -295,7 +313,8 @@
     "sessionAdded": "¡Sesión de caza subida!",
     "cancel": "Cancelar",
     "save": "Guardar",
-    "saving": "Guardando..."
+    "saving": "Guardando...",
+    "errorGeneric": "Error al guardar la sesión. Intenta de nuevo."
   },
   "huntSessionDisplay": {
     "soloSession": "Caza individual",

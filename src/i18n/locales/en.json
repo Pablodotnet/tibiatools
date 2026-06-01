@@ -98,7 +98,8 @@
       "goldToConvert": "Gold to Convert",
       "goldToConvertDesc": "Enter the amount of gold you want to convert, with format \"10kk\", for example.",
       "calculate": "Calculate",
-      "clear": "Clear"
+      "clear": "Clear",
+      "enterAmount": "Enter amount"
     }
   },
   "imbuings": {
@@ -272,7 +273,14 @@
   },
   "huntingSpots": {
     "title": "Where can I hunt at certain level? What set should I use?",
-    "description": "Here you can find hunting spots as well as recommendations of set to use there and which imbuements to use."
+    "description": "Here you can find hunting spots as well as equipment recommendations and which imbuements to use.",
+    "searchVocation": "Search vocation..."
+  },
+  "common": {
+    "loading": "Loading..."
+  },
+  "theme": {
+    "toggle": "Toggle theme"
   },
   "huntingSpotsPage": {
     "title": "Hunting Spots for",
@@ -308,7 +316,9 @@
     "noSpotsMatch": "No spots match your search.",
     "avgXpPerHour": "Avg XP/h",
     "avgProfit": "Avg profit",
-    "avgDuration": "Avg duration"
+    "avgDuration": "Avg duration",
+    "deleteSpotError": "Failed to delete spot.",
+    "deleteSessionError": "Failed to delete session."
   },
   "huntingSpotsAdd": {
     "addSpot": "Add Spot",
@@ -332,6 +342,14 @@
     "notesPlaceholder": "Any additional tips or observations...",
     "fillRequired": "Please fill in all required fields",
     "spotAdded": "Hunting spot added successfully!",
+    "locationPlaceholder": "e.g. Edron",
+    "expRawPlaceholder": "e.g. 900",
+    "expBonusPlaceholder": "e.g. 1300",
+    "profitPlaceholder": "e.g. 200",
+    "supplyCostPlaceholder": "0",
+    "setPlaceholder": "e.g. Ornate set, Terra Helmet",
+    "imbuementsPlaceholder": "e.g. Critical, Void, Vampirism",
+    "errorGeneric": "Something went wrong. Please try again.",
     "cancel": "Cancel",
     "submit": "Submit",
     "submitting": "Submitting..."
@@ -362,7 +380,8 @@
     "sessionAdded": "Hunt session uploaded!",
     "cancel": "Cancel",
     "save": "Save",
-    "saving": "Saving..."
+    "saving": "Saving...",
+    "errorGeneric": "Failed to save session. Please try again."
   },
   "huntSessionDisplay": {
     "soloSession": "Solo Hunt",

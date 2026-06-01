@@ -72,7 +72,8 @@ export function HuntSessionUploadDialog({
       setOpen(false);
       onSubmit();
     } catch (e) {
-      toast.error((e as Error).message);
+      console.error(e);
+      toast.error(te('errorGeneric'));
     } finally {
       setSubmitting(false);
     }
