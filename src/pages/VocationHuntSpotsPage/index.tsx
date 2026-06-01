@@ -2,7 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { useTranslation } from 'react-i18next';
-import { useParams } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import { vocations } from '@/helpers';
 import { type HuntingSpotData, formatRate, formatProfit, calculateHoursToNextLevel, formatHours, huntingSpotsByVocation } from '@/helpers/huntingSpots';
 import { getAllHuntingSpots, deleteHuntingSpot } from '@/firebase/huntingSpots';
@@ -22,6 +22,7 @@ const VocationHuntSpotsPage = () => {
   const { user } = useAuth();
 
   const vocation = vocations.find((v) => v.id === vocationId);
+  if (!vocationId || !vocation) return <Navigate to="/not-found" replace />;
   const [userSpots, setUserSpots] = useState<HuntingSpotData[]>([]);
   const [loadingSpots, setLoadingSpots] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');

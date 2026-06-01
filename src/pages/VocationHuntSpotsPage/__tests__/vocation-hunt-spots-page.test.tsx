@@ -86,8 +86,8 @@ describe('VocationHuntSpotsPage', () => {
     await screen.findByText('Carlin Cults');
   });
 
-  it('shows coming soon for unknown vocation', async () => {
+  it('redirects to not-found for unknown vocation', () => {
     renderAtRoute('unknown');
-    await screen.findByText(/Data coming soon for/);
+    expect(screen.queryByText(/Hunting Spots for/)).not.toBeInTheDocument();
   });
 });
