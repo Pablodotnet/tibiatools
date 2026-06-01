@@ -9,7 +9,7 @@ import { getAllHuntingSpots, deleteHuntingSpot } from '@/firebase/huntingSpots';
 import { getSessionsForSpot, deleteHuntSession } from '@/firebase/huntSessions';
 import { useAuth } from '@/hooks';
 import { toast } from 'sonner';
-import { useEffect, useMemo, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks } from 'lucide-react';
 import { HuntSessionUploadDialog } from '@/components/HuntSessionUploadDialog';
 import { HuntSessionCard } from '@/components/HuntSessionDisplay';
@@ -116,9 +116,11 @@ function SpotCard({
   const [sessions, setSessions] = useState<HuntSession[]>([]);
   const [sessionsLoaded, setSessionsLoaded] = useState(false);
   const [sessionsLoading, setSessionsLoading] = useState(false);
+  const loadingRef = useRef(false);
 
   const loadSessions = useCallback(async () => {
-    if (sessionsLoaded || sessionsLoading) return;
+    if (loadingRef.current) return;
+    loadingRef.current = true;
     setSessionsLoading(true);
     try {
       const data = await getSessionsForSpot(spot.id);
@@ -128,14 +130,15 @@ function SpotCard({
       void 0;
     } finally {
       setSessionsLoading(false);
+      loadingRef.current = false;
     }
-  }, [spot.id, sessionsLoaded, sessionsLoading]);
+  }, [spot.id]);
 
   useEffect(() => {
-    if (expanded && !sessionsLoaded && !sessionsLoading) {
+    if (expanded && !sessionsLoaded) {
       loadSessions();
     }
-  }, [expanded, sessionsLoaded, sessionsLoading, loadSessions]);
+  }, [expanded, sessionsLoaded, loadSessions]);
 
   const handleSessionDelete = useCallback(async (sessionId: string) => {
     try {
@@ -149,9 +152,8 @@ function SpotCard({
 
   const handleSessionAdded = useCallback(() => {
     setSessionsLoaded(false);
-    setSessionsLoading(false);
-    loadSessions();
-  }, [loadSessions]);
+    setSessions([]);
+  }, []);
 
   const supplyCost = customSupplyCost !== '' ? (parseInt(customSupplyCost, 10) || 0) : spot.supplyCost;
   const netProfit = spot.profit - (supplyCost - spot.supplyCost);
