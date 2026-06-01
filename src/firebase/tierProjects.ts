@@ -15,6 +15,32 @@ import {
 import { FirebaseAuth, FirebaseDB } from './config';
 import type { TierProject, TierProjectEntry } from '@/types/tierProject';
 
+function safeStr(v: unknown, fallback = ''): string {
+  return typeof v === 'string' ? v : fallback;
+}
+
+function safeNum(v: unknown, fallback = 0): number {
+  return typeof v === 'number' ? v : fallback;
+}
+
+function optNum(v: unknown): number | undefined {
+  return typeof v === 'number' ? v : undefined;
+}
+
+function optStr(v: unknown): string | undefined {
+  return typeof v === 'string' ? v : undefined;
+}
+
+function safeBool(v: unknown, fallback = false): boolean {
+  return typeof v === 'boolean' ? v : fallback;
+}
+
+function toMs(v: unknown): number {
+  if (v && typeof v === 'object' && 'toDate' in v && typeof (v as { toDate: () => Date }).toDate === 'function') return (v as { toDate: () => Date }).toDate().getTime();
+  if (typeof v === 'number') return v;
+  return Date.now();
+}
+
 function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
   const out: Record<string, unknown> = {};
   for (const [k, v] of Object.entries(obj)) {
@@ -35,35 +61,36 @@ function stripUndefined(obj: Record<string, unknown>): Record<string, unknown> {
 function mapProjectDoc(id: string, data: Record<string, unknown>): TierProject {
   return {
     id,
-    name: data.name as string,
-    targetTier: data.targetTier as number,
-    currentTier: data.currentTier as number,
-    isPublic: data.isPublic as boolean,
-    ownerUid: data.ownerUid as string,
-    ownerDisplayName: data.ownerDisplayName as string,
-    totalSpentGp: (data.totalSpentGp as number) ?? 0,
-    createdAt: (data.createdAt as Timestamp).toDate().getTime(),
-    updatedAt: (data.updatedAt as Timestamp).toDate().getTime(),
+    name: safeStr(data.name),
+    targetTier: safeNum(data.targetTier),
+    currentTier: safeNum(data.currentTier),
+    isPublic: safeBool(data.isPublic),
+    ownerUid: safeStr(data.ownerUid),
+    ownerDisplayName: safeStr(data.ownerDisplayName),
+    totalSpentGp: safeNum(data.totalSpentGp),
+    createdAt: toMs(data.createdAt),
+    updatedAt: toMs(data.updatedAt),
   };
 }
 
 function mapEntryDoc(id: string, data: Record<string, unknown>): TierProjectEntry {
-  const items = data.items as Array<Record<string, unknown>> | undefined;
+  const rawItems = data.items;
+  const items: Array<Record<string, unknown>> = Array.isArray(rawItems) ? rawItems : [];
   return {
     id,
-    projectId: data.projectId as string,
-    fromTier: data.fromTier as number,
-    toTier: data.toTier as number,
-    items: items
-      ? items.map((i) => ({ name: i.name as string, costGp: i.costGp as number, marketPriceGp: i.marketPriceGp as number | undefined }))
-      : [{ name: (data.itemsUsed as string) || '', costGp: (data.costGp as number) || 0 }],
-    notes: data.notes as string,
-    method: data.method as string | undefined,
-    classification: data.classification as number | undefined,
-    exaltedCores: data.exaltedCores as number | undefined,
-    exaltedCorePriceGp: data.exaltedCorePriceGp as number | undefined,
-    dust: data.dust as number | undefined,
-    createdAt: (data.createdAt as Timestamp).toDate().getTime(),
+    projectId: safeStr(data.projectId),
+    fromTier: safeNum(data.fromTier),
+    toTier: safeNum(data.toTier),
+    items: items.length > 0
+      ? items.map((i) => ({ name: safeStr(i.name), costGp: safeNum(i.costGp), marketPriceGp: optNum(i.marketPriceGp) }))
+      : [{ name: safeStr(data.itemsUsed), costGp: safeNum(data.costGp) }],
+    notes: safeStr(data.notes),
+    method: optStr(data.method),
+    classification: optNum(data.classification),
+    exaltedCores: optNum(data.exaltedCores),
+    exaltedCorePriceGp: optNum(data.exaltedCorePriceGp),
+    dust: optNum(data.dust),
+    createdAt: toMs(data.createdAt),
   };
 }
 

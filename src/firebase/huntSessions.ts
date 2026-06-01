@@ -14,32 +14,44 @@ import {
 import { FirebaseAuth, FirebaseDB } from './config';
 import type { HuntSession } from '@/types/huntSession';
 
+function safeStr(v: unknown, fallback = ''): string {
+  return typeof v === 'string' ? v : fallback;
+}
+
+function safeNum(v: unknown, fallback?: number): number | undefined {
+  return typeof v === 'number' ? v : fallback;
+}
+
+function safeBool(v: unknown, fallback = false): boolean {
+  return typeof v === 'boolean' ? v : fallback;
+}
+
 function mapSessionDoc(id: string, data: Record<string, unknown>): HuntSession {
   return {
     id,
-    spotId: data.spotId as string,
-    spotName: data.spotName as string,
-    ownerUid: data.ownerUid as string,
-    ownerDisplayName: data.ownerDisplayName as string,
-    isParty: data.isParty as boolean,
-    sessionDate: data.sessionDate as string | undefined,
-    durationMinutes: data.durationMinutes as number | undefined,
-    vocation: data.vocation as string | undefined,
-    level: data.level as number | undefined,
-    damage: data.damage as number | undefined,
-    healing: data.healing as number | undefined,
-    damageReceived: data.damageReceived as number | undefined,
-    loot: data.loot as number | undefined,
-    supplies: data.supplies as number | undefined,
-    balance: data.balance as number | undefined,
-    xpGain: data.xpGain as number | undefined,
-    xpPerHour: data.xpPerHour as number | undefined,
-    rawXpPerHour: data.rawXpPerHour as number | undefined,
-    players: data.players as HuntSession['players'],
-    killedMonsters: data.killedMonsters as HuntSession['killedMonsters'],
-    lootItems: data.lootItems as HuntSession['lootItems'],
-    supplyItems: data.supplyItems as HuntSession['supplyItems'],
-    rawText: data.rawText as string,
+    spotId: safeStr(data.spotId),
+    spotName: safeStr(data.spotName),
+    ownerUid: safeStr(data.ownerUid),
+    ownerDisplayName: safeStr(data.ownerDisplayName),
+    isParty: safeBool(data.isParty),
+    sessionDate: safeStr(data.sessionDate, undefined),
+    durationMinutes: safeNum(data.durationMinutes),
+    vocation: safeStr(data.vocation, undefined),
+    level: safeNum(data.level),
+    damage: safeNum(data.damage),
+    healing: safeNum(data.healing),
+    damageReceived: safeNum(data.damageReceived),
+    loot: safeNum(data.loot),
+    supplies: safeNum(data.supplies),
+    balance: safeNum(data.balance),
+    xpGain: safeNum(data.xpGain),
+    xpPerHour: safeNum(data.xpPerHour),
+    rawXpPerHour: safeNum(data.rawXpPerHour),
+    players: Array.isArray(data.players) ? data.players as HuntSession['players'] : undefined,
+    killedMonsters: Array.isArray(data.killedMonsters) ? data.killedMonsters as HuntSession['killedMonsters'] : undefined,
+    lootItems: Array.isArray(data.lootItems) ? data.lootItems as HuntSession['lootItems'] : undefined,
+    supplyItems: Array.isArray(data.supplyItems) ? data.supplyItems as HuntSession['supplyItems'] : undefined,
+    rawText: safeStr(data.rawText),
     createdAt: data.createdAt as Timestamp,
   };
 }

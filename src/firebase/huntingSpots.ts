@@ -13,22 +13,39 @@ import {
 import { FirebaseAuth, FirebaseDB } from './config';
 import type { HuntingSpotData } from '@/helpers/huntingSpots';
 
+function safeStr(v: unknown, fallback = ''): string {
+  return typeof v === 'string' ? v : fallback;
+}
+
+function safeNum(v: unknown, fallback = 0): number {
+  return typeof v === 'number' ? v : fallback;
+}
+
+function safeArr<T>(v: unknown, fallback: T[] = []): T[] {
+  return Array.isArray(v) ? v : fallback;
+}
+
+function safeLevelRange(v: unknown): [number, number] {
+  if (Array.isArray(v) && v.length === 2 && typeof v[0] === 'number' && typeof v[1] === 'number') return [v[0], v[1]];
+  return [0, 0];
+}
+
 function mapSpotDoc(id: string, data: Record<string, unknown>): HuntingSpotData {
   return {
     id,
-    name: data.name as string,
-    levelRange: data.levelRange as [number, number],
-    location: data.location as string,
-    expRaw: data.expRaw as number,
-    expBonus: data.expBonus as number,
-    profit: data.profit as number,
-    supplyCost: data.supplyCost as number,
-    set: data.set as string,
-    imbuements: data.imbuements as string[],
-    notes: data.notes as string,
-    ownerUid: data.ownerUid as string,
-    ownerDisplayName: data.ownerDisplayName as string,
-    vocationId: data.vocationId as string,
+    name: safeStr(data.name),
+    levelRange: safeLevelRange(data.levelRange),
+    location: safeStr(data.location),
+    expRaw: safeNum(data.expRaw),
+    expBonus: safeNum(data.expBonus),
+    profit: safeNum(data.profit),
+    supplyCost: safeNum(data.supplyCost),
+    set: safeStr(data.set),
+    imbuements: safeArr<string>(data.imbuements),
+    notes: safeStr(data.notes),
+    ownerUid: safeStr(data.ownerUid),
+    ownerDisplayName: safeStr(data.ownerDisplayName),
+    vocationId: safeStr(data.vocationId),
   };
 }
 
