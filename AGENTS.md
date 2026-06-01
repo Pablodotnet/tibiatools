@@ -14,6 +14,7 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - i18n for all 3 locales (en, es, pt)
 - Sidebar groups nav links by category, collapsible groups, mobile hamburger toggle
 - Dashboard shows hunting spots, OT server banner, tier projects, and quick tools widgets
+- Exp Share Calculator: input level → min/max party member level range
 
 ## Progress
 ### Done
