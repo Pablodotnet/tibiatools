@@ -4,6 +4,7 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
+  getDoc,
   query,
   where,
   orderBy,
@@ -118,6 +119,12 @@ export async function getSession(id: string): Promise<HuntSession | null> {
 export async function deleteHuntSession(sessionId: string): Promise<void> {
   const user = FirebaseAuth.currentUser;
   if (!user) throw new Error('Not authenticated');
+
+  const snap = await getDoc(doc(FirebaseDB, 'huntSessions', sessionId));
+  if (!snap.exists()) throw new Error('Session not found');
+  const data = snap.data() as Record<string, unknown>;
+  if (data.ownerUid !== user.uid) throw new Error('Not authorized to delete this session');
+
   await deleteDoc(doc(FirebaseDB, 'huntSessions', sessionId));
 }
 

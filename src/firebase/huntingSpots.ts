@@ -4,6 +4,7 @@ import {
   addDoc,
   getDocs,
   deleteDoc,
+  getDoc,
   query,
   where,
   orderBy,
@@ -92,5 +93,11 @@ export async function getAllHuntingSpots(): Promise<HuntingSpotData[]> {
 export async function deleteHuntingSpot(spotId: string): Promise<void> {
   const user = FirebaseAuth.currentUser;
   if (!user) throw new Error('Not authenticated');
+
+  const snap = await getDoc(doc(FirebaseDB, 'huntingSpots', spotId));
+  if (!snap.exists()) throw new Error('Spot not found');
+  const data = snap.data() as Record<string, unknown>;
+  if (data.ownerUid !== user.uid) throw new Error('Not authorized to delete this spot');
+
   await deleteDoc(doc(FirebaseDB, 'huntingSpots', spotId));
 }
