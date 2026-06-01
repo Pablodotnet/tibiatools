@@ -251,7 +251,10 @@
     "avgProfit": "Ganancia promedio",
     "avgDuration": "Duración promedio",
     "deleteSpotError": "Error al eliminar el lugar.",
-    "deleteSessionError": "Error al eliminar la sesión."
+    "deleteSessionError": "Error al eliminar la sesión.",
+    "minProfit": "Ganancia mín.",
+    "minExp": "XP/h mín.",
+    "loadMoreSessions": "Cargar más sesiones..."
   },
   "huntingSpotsAdd": {
     "addSpot": "Añadir Lugar",

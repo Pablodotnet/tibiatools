@@ -28,6 +28,8 @@ const VocationHuntSpotsPage = () => {
   const [loadingSpots, setLoadingSpots] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
   const [sortBy, setSortBy] = useState<'default' | 'profit' | 'exp' | 'level'>('default');
+  const [minProfit, setMinProfit] = useState('');
+  const [minExp, setMinExp] = useState('');
 
   const loadSpots = useCallback(async () => {
     setLoadingSpots(true);
@@ -54,6 +56,14 @@ const VocationHuntSpotsPage = () => {
     if (searchTerm) {
       const q = searchTerm.toLowerCase();
       all = all.filter((s) => s.name.toLowerCase().includes(q));
+    }
+    if (minProfit !== '') {
+      const threshold = parseInt(minProfit, 10) || 0;
+      all = all.filter((s) => s.profit >= threshold);
+    }
+    if (minExp !== '') {
+      const threshold = parseInt(minExp, 10) || 0;
+      all = all.filter((s) => s.expBonus >= threshold);
     }
     if (sortBy === 'profit') {
       all = [...all].sort((a, b) => b.profit - a.profit);
@@ -119,6 +129,24 @@ const VocationHuntSpotsPage = () => {
                   <option value="level">{translate('sortLevel')}</option>
                 </select>
               </div>
+              <div className="flex items-center gap-2">
+                <Input
+                  type="number"
+                  placeholder={translate('minProfit')}
+                  value={minProfit}
+                  onChange={(e) => setMinProfit(e.target.value)}
+                  min={0}
+                  className="h-7 text-xs"
+                />
+                <Input
+                  type="number"
+                  placeholder={translate('minExp')}
+                  value={minExp}
+                  onChange={(e) => setMinExp(e.target.value)}
+                  min={0}
+                  className="h-7 text-xs"
+                />
+              </div>
               {mergedSpots.length === 0 ? (
                 <p className="text-xs text-muted-foreground text-center py-4">
                   {translate('noSpotsMatch')}
@@ -165,6 +193,7 @@ function SpotCard({
   const [sessions, setSessions] = useState<HuntSession[]>([]);
   const [sessionsLoaded, setSessionsLoaded] = useState(false);
   const [sessionsLoading, setSessionsLoading] = useState(false);
+  const [showAllSessions, setShowAllSessions] = useState(false);
   const loadingRef = useRef(false);
 
   const loadSessions = useCallback(async () => {
@@ -387,7 +416,9 @@ function SpotCard({
                 <ListChecks className="size-3" />
                 {translate('huntSessions')}
                 {sessions.length > 0 && (
-                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-sm">{sessions.length}</span>
+                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-sm">
+                    {showAllSessions || sessions.length <= 10 ? sessions.length : `10/${sessions.length}`}
+                  </span>
                 )}
               </p>
               <HuntSessionUploadDialog
@@ -428,7 +459,7 @@ function SpotCard({
             )}
 
             <div className="space-y-1.5">
-              {sessions.map((session) => (
+              {(showAllSessions ? sessions : sessions.slice(0, 10)).map((session) => (
                 <HuntSessionCard
                   key={session.id}
                   session={session}
@@ -437,6 +468,15 @@ function SpotCard({
                 />
               ))}
             </div>
+
+            {!showAllSessions && sessions.length > 10 && (
+              <button
+                onClick={(e) => { e.stopPropagation(); setShowAllSessions(true); }}
+                className="w-full text-xs text-muted-foreground hover:text-foreground py-1.5 transition-colors cursor-pointer"
+              >
+                {translate('loadMoreSessions')} ({sessions.length - 10} more)
+              </button>
+            )}
           </div>
         </div>
       )}

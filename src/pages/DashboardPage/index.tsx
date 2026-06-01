@@ -4,6 +4,7 @@ import { GangrenaBanner } from '@/components/Dashboard/gangrena-banner';
 import { TierProjectsWidget } from '@/components/Dashboard/tier-projects-widget';
 import { QuickToolsWidget } from '@/components/Dashboard/quick-tools-widget';
 import { RecentSessionsWidget } from '@/components/Dashboard/recent-sessions-widget';
+import { WidgetErrorBoundary } from '@/components/ui/widget-error-boundary';
 
 export default function DashboardPage() {
   const { t } = useTranslation();
@@ -19,13 +20,21 @@ export default function DashboardPage() {
       <GangrenaBanner />
 
       <div className='grid gap-4 md:grid-cols-2'>
-        <HuntingSpotsWidget />
-        <QuickToolsWidget />
+        <WidgetErrorBoundary title={tw('huntingSpotsTitle')}>
+          <HuntingSpotsWidget />
+        </WidgetErrorBoundary>
+        <WidgetErrorBoundary title={tw('quickToolsTitle')}>
+          <QuickToolsWidget />
+        </WidgetErrorBoundary>
       </div>
 
       <div className='grid gap-4 md:grid-cols-2'>
-        <TierProjectsWidget />
-        <RecentSessionsWidget />
+        <WidgetErrorBoundary title={tw('tierProjectsTitle')}>
+          <TierProjectsWidget />
+        </WidgetErrorBoundary>
+        <WidgetErrorBoundary title={tw('recentSessionsTitle')}>
+          <RecentSessionsWidget />
+        </WidgetErrorBoundary>
       </div>
     </div>
   );

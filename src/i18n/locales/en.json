@@ -318,7 +318,10 @@
     "avgProfit": "Avg profit",
     "avgDuration": "Avg duration",
     "deleteSpotError": "Failed to delete spot.",
-    "deleteSessionError": "Failed to delete session."
+    "deleteSessionError": "Failed to delete session.",
+    "minProfit": "Min profit (gp)",
+    "minExp": "Min XP/h",
+    "loadMoreSessions": "View all sessions"
   },
   "huntingSpotsAdd": {
     "addSpot": "Add Spot",

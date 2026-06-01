@@ -111,11 +111,18 @@ export async function addHuntSession(data: {
   return docRef.id;
 }
 
-export async function getSessionsForSpot(spotId: string): Promise<HuntSession[]> {
-  const q = query(
-    collection(FirebaseDB, 'huntSessions'),
+export async function getSessionsForSpot(
+  spotId: string,
+  opts?: { limit?: number },
+): Promise<HuntSession[]> {
+  const constraints: import('firebase/firestore').QueryConstraint[] = [
     where('spotId', '==', spotId),
     orderBy('createdAt', 'desc'),
+  ];
+  if (opts?.limit) constraints.push(limit(opts.limit));
+  const q = query(
+    collection(FirebaseDB, 'huntSessions'),
+    ...constraints,
   );
   const snapshot = await getDocs(q);
   return snapshot.docs.map((d) => mapSessionDoc(d.id, d.data() as Record<string, unknown>));

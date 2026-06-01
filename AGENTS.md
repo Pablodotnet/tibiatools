@@ -38,6 +38,10 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - Exaltation tab lazy-loading: all 4 calculator components (`ExaltationForgeSimulator`, `TransferCalculator`, `ConvergenceFusionCalculator`, `ConvergenceTransferCalculator`) loaded via `React.lazy()` + `<Suspense>`
 - Radix-ui imports: `tabs.tsx`, `switch.tsx`, `avatar.tsx`, `separator.tsx` changed from `"radix-ui"` shorthand to `"@radix-ui/react-*"` scoped imports
 - Error monitoring placeholder: `src/lib/monitoring.ts` with `captureError`/`captureEvent` noop stubs
+- Filter & pagination: min profit / min XP filters on VocationHuntSpotsPage, session batch load (10) with "View all" toggle
+- Widget error boundaries: `WidgetErrorBoundary` wrapping each dashboard widget
+- Analytics: `monitoring.ts` enhanced with `initMonitoring`, batching, `flush()`, `sendBeacon` on unload
+- 13 new tests: monitoring (5), RecentSessionsWidget (5), ExaltationPage (3) — 121 total passing
 
 ### In Progress
 - (none)

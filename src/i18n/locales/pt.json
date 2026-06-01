@@ -251,7 +251,10 @@
     "avgProfit": "Lucro médio",
     "avgDuration": "Duração média",
     "deleteSpotError": "Falha ao excluir local.",
-    "deleteSessionError": "Falha ao excluir sessão."
+    "deleteSessionError": "Falha ao excluir sessão.",
+    "minProfit": "Lucro mín.",
+    "minExp": "XP/h mín.",
+    "loadMoreSessions": "Carregar mais sessões..."
   },
   "huntingSpotsAdd": {
     "addSpot": "Adicionar Local",
