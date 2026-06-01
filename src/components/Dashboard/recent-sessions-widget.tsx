@@ -5,6 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, ArrowRight } from 'lucide-react';
 import { getRecentSessions } from '@/firebase/huntSessions';
 import type { HuntSession } from '@/types/huntSession';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function RecentSessionsWidget() {
   const { t } = useTranslation();
@@ -29,7 +30,11 @@ export function RecentSessionsWidget() {
       </CardHeader>
       <CardContent>
         {loading ? (
-          <p className='text-xs text-muted-foreground text-center py-4'>{tw('loading')}</p>
+          <div className='space-y-2 py-2'>
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-3/4' />
+          </div>
         ) : sessions.length === 0 ? (
           <p className='text-xs text-muted-foreground text-center py-4'>{tw('noRecentSessions')}</p>
         ) : (

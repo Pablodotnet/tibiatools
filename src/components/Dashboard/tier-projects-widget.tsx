@@ -6,6 +6,7 @@ import { FolderKanban, ArrowRight } from 'lucide-react';
 import { startFetchPublicProjects } from '@/store/tierProjects';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import type { TierProject } from '@/types/tierProject';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export function TierProjectsWidget() {
   const { t } = useTranslation();
@@ -29,7 +30,11 @@ export function TierProjectsWidget() {
       </CardHeader>
       <CardContent>
         {projectsLoading ? (
-          <p className='text-xs text-muted-foreground text-center py-4'>{tw('loading')}</p>
+          <div className='space-y-2 py-2'>
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-full' />
+            <Skeleton className='h-10 w-3/4' />
+          </div>
         ) : displayed.length === 0 ? (
           <p className='text-xs text-muted-foreground text-center py-4'>{tw('noProjects')}</p>
         ) : (

@@ -11,6 +11,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
 import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks, Search } from 'lucide-react';
+import { Skeleton } from '@/components/ui/skeleton';
 import { HuntSessionUploadDialog } from '@/components/HuntSessionUploadDialog';
 import { HuntSessionCard } from '@/components/HuntSessionDisplay';
 import type { HuntSession } from '@/types/huntSession';
@@ -80,15 +81,19 @@ const VocationHuntSpotsPage = () => {
       <Card>
         <CardHeader>
           <CardTitle>
-            {translate('title')} {vocation?.name || vocationId}
+            {translate('title')} {vocation.name}
           </CardTitle>
         </CardHeader>
         <CardContent>
           {loadingSpots ? (
-            <p className="text-muted-foreground text-center py-8">{translate('loading')}</p>
+            <div className="space-y-3 py-4">
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-full" />
+              <Skeleton className="h-16 w-3/4" />
+            </div>
           ) : mergedSpots.length === 0 ? (
             <p className="text-muted-foreground text-center py-8">
-              {translate('comingSoon')} {vocation?.name || vocationId}.
+              {translate('comingSoon')} {vocation.name}.
             </p>
           ) : (
             <div className="space-y-3">
@@ -412,7 +417,10 @@ function SpotCard({
             )}
 
             {sessionsLoading && (
-              <p className="text-xs text-muted-foreground text-center py-2">{translate('loadingSessions')}</p>
+              <div className="space-y-1.5 py-1">
+                <Skeleton className="h-12 w-full" />
+                <Skeleton className="h-12 w-full" />
+              </div>
             )}
 
             {!sessionsLoading && sessions.length === 0 && (
