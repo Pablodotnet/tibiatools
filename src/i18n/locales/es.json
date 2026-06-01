@@ -244,7 +244,13 @@
     "huntSessions": "Sesiones de caza",
     "loadingSessions": "Cargando sesiones...",
     "noSessions": "Aún no hay sesiones. ¡Comparte tus datos de caza!",
-    "sessionDeleted": "Sesión eliminada"
+    "sessionDeleted": "Sesión eliminada",
+    "searchSpots": "Buscar lugares...",
+    "sortDefault": "Por defecto",
+    "sortProfit": "Por ganancia",
+    "sortExp": "Por exp",
+    "sortLevel": "Por nivel",
+    "noSpotsMatch": "Ningún lugar coincide con tu búsqueda."
   },
   "huntingSpotsAdd": {
     "addSpot": "Añadir Lugar",

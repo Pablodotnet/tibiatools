@@ -10,7 +10,7 @@ import { getSessionsForSpot, deleteHuntSession } from '@/firebase/huntSessions';
 import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
-import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks } from 'lucide-react';
+import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks, Search } from 'lucide-react';
 import { HuntSessionUploadDialog } from '@/components/HuntSessionUploadDialog';
 import { HuntSessionCard } from '@/components/HuntSessionDisplay';
 import type { HuntSession } from '@/types/huntSession';
@@ -24,6 +24,8 @@ const VocationHuntSpotsPage = () => {
   const vocation = vocations.find((v) => v.id === vocationId);
   const [userSpots, setUserSpots] = useState<HuntingSpotData[]>([]);
   const [loadingSpots, setLoadingSpots] = useState(true);
+  const [searchTerm, setSearchTerm] = useState('');
+  const [sortBy, setSortBy] = useState<'default' | 'profit' | 'exp' | 'level'>('default');
 
   const loadSpots = useCallback(async () => {
     setLoadingSpots(true);
@@ -46,8 +48,20 @@ const VocationHuntSpotsPage = () => {
     const builtIn = huntingSpotsByVocation[vocationId] ?? [];
     const builtInIds = new Set(builtIn.map((s) => s.id));
     const matchingUserSpots = userSpots.filter((s) => s.vocationId === vocationId && !builtInIds.has(s.id));
-    return [...builtIn, ...matchingUserSpots];
-  }, [vocationId, userSpots]);
+    let all = [...builtIn, ...matchingUserSpots];
+    if (searchTerm) {
+      const q = searchTerm.toLowerCase();
+      all = all.filter((s) => s.name.toLowerCase().includes(q));
+    }
+    if (sortBy === 'profit') {
+      all = [...all].sort((a, b) => b.profit - a.profit);
+    } else if (sortBy === 'exp') {
+      all = [...all].sort((a, b) => b.expBonus - a.expBonus);
+    } else if (sortBy === 'level') {
+      all = [...all].sort((a, b) => a.levelRange[0] - b.levelRange[0]);
+    }
+    return all;
+  }, [vocationId, userSpots, searchTerm, sortBy]);
 
   const handleDelete = useCallback(async (spotId: string) => {
     try {
@@ -76,16 +90,43 @@ const VocationHuntSpotsPage = () => {
             </p>
           ) : (
             <div className="space-y-3">
-              {mergedSpots.map((spot) => (
-                <SpotCard
-                  key={spot.id}
-                  spot={spot}
-                  translate={translate}
-                  isOwner={spot.ownerUid === user.uid}
-                  onDelete={handleDelete}
-                  userId={user.uid}
-                />
-              ))}
+              <div className="flex items-center gap-2">
+                <div className="relative flex-1">
+                  <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
+                  <Input
+                    placeholder={translate('searchSpots')}
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-8 h-8 text-xs"
+                  />
+                </div>
+                <select
+                  value={sortBy}
+                  onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
+                  className="h-8 rounded-md border border-input bg-transparent px-2 text-xs text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+                >
+                  <option value="default">{translate('sortDefault')}</option>
+                  <option value="profit">{translate('sortProfit')}</option>
+                  <option value="exp">{translate('sortExp')}</option>
+                  <option value="level">{translate('sortLevel')}</option>
+                </select>
+              </div>
+              {mergedSpots.length === 0 ? (
+                <p className="text-xs text-muted-foreground text-center py-4">
+                  {translate('noSpotsMatch')}
+                </p>
+              ) : (
+                mergedSpots.map((spot) => (
+                  <SpotCard
+                    key={spot.id}
+                    spot={spot}
+                    translate={translate}
+                    isOwner={spot.ownerUid === user.uid}
+                    onDelete={handleDelete}
+                    userId={user.uid}
+                  />
+                ))
+              )}
             </div>
           )}
         </CardContent>

@@ -311,7 +311,13 @@
     "huntSessions": "Hunt Sessions",
     "loadingSessions": "Loading sessions...",
     "noSessions": "No sessions uploaded yet. Share your hunt data!",
-    "sessionDeleted": "Session deleted"
+    "sessionDeleted": "Session deleted",
+    "searchSpots": "Search spots...",
+    "sortDefault": "Default",
+    "sortProfit": "By profit",
+    "sortExp": "By exp",
+    "sortLevel": "By level",
+    "noSpotsMatch": "No spots match your search."
   },
   "huntingSpotsAdd": {
     "addSpot": "Add Spot",
