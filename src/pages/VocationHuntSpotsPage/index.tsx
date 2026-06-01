@@ -259,7 +259,7 @@ function SpotCard({
       </button>
 
       {expanded && (
-        <div className="border-t px-4 py-3 space-y-2 text-sm">
+        <div className="border-t px-4 py-3 space-y-2 text-sm fade-in">
           <div className="grid grid-cols-2 gap-2">
             <div>
               <span className="text-muted-foreground">{translate('expRaw')}:</span>{' '}
