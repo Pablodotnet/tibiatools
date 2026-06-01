@@ -2,6 +2,8 @@ export type SkillType = 'melee' | 'distance' | 'shielding' | 'magic' | 'fist';
 
 export type VocationId = 'knight' | 'paladin' | 'sorcerer' | 'druid' | 'monk';
 
+export type TrainingType = 'offline' | 'online';
+
 type VocationSkillConfig = {
   skillConstant: number;
   vocationConstant: number;
@@ -99,7 +101,39 @@ export type OfflineTrainingResult = {
   sessions12h: number;
 };
 
-export function calculateOfflineTrainingToSkill(input: OfflineTrainingInput): OfflineTrainingResult {
+function spPerMinOnline(level: number, loyaltyPercent: number): number {
+  return (level + 3) * 30 * (1 + loyaltyPercent / 100);
+}
+
+function buildResult(
+  config: VocationSkillConfig,
+  startingSkill: number,
+  startingTotalSp: number,
+  totalSpGained: number,
+  totalMinutes: number,
+  trainingType: TrainingType,
+): OfflineTrainingResult {
+  const finalTotalSp = startingTotalSp + totalSpGained;
+  const endingSkill = Math.floor(skillFromTotalSp(finalTotalSp, config));
+  const endingPercent = spToPercentThrough(endingSkill, finalTotalSp - cumulativeSpTo(endingSkill, config), config);
+
+  return {
+    startingTotalSp,
+    finalTotalSp,
+    startingSkill,
+    endingSkill,
+    endingPercent,
+    totalSpGained,
+    totalMinutes,
+    trainingDays: trainingType === 'offline' ? totalMinutes / (60 * 12) : totalMinutes / (60 * 24),
+    sessions12h: Math.ceil(totalMinutes / (60 * 12)),
+  };
+}
+
+export function calculateOfflineTrainingToSkill(
+  input: OfflineTrainingInput,
+  trainingType: TrainingType = 'offline',
+): OfflineTrainingResult {
   const config = getSkillConfig(input.vocation, input.skill);
 
   const spSoFar = cumulativeSpTo(input.currentSkill, config);
@@ -109,51 +143,64 @@ export function calculateOfflineTrainingToSkill(input: OfflineTrainingInput): Of
   const targetTotalSp = cumulativeSpTo(input.targetSkill, config);
   const spNeeded = targetTotalSp - startingTotalSp;
 
-  const spPerMin = config.offlineSpPerMinute * (1 + input.loyaltyPercent / 100);
-  const totalMinutes = spNeeded / spPerMin;
+  let totalMinutes: number;
 
-  const finalTotalSp = startingTotalSp + spNeeded;
+  if (trainingType === 'online') {
+    totalMinutes = 0;
+    for (let lvl = input.currentSkill; lvl < input.targetSkill; lvl++) {
+      let needed = spToNextLevel(lvl, config);
+      if (lvl === input.currentSkill) {
+        needed -= spIntoCurrent;
+      }
+      totalMinutes += needed / spPerMinOnline(lvl, input.loyaltyPercent);
+    }
+  } else {
+    const spPerMin = config.offlineSpPerMinute * (1 + input.loyaltyPercent / 100);
+    totalMinutes = spNeeded / spPerMin;
+  }
 
-  const endingSkill = Math.floor(skillFromTotalSp(finalTotalSp, config));
-  const endingPercent = spToPercentThrough(endingSkill, finalTotalSp - cumulativeSpTo(endingSkill, config), config);
-
-  return {
-    startingTotalSp,
-    finalTotalSp,
-    startingSkill: input.currentSkill,
-    endingSkill,
-    endingPercent,
-    totalSpGained: spNeeded,
-    totalMinutes,
-    trainingDays: totalMinutes / (60 * 12),
-    sessions12h: Math.ceil(totalMinutes / (60 * 12)),
-  };
+  return buildResult(config, input.currentSkill, startingTotalSp, spNeeded, totalMinutes, trainingType);
 }
 
-export function calculateOfflineTrainingByTime(input: OfflineTrainingInputTime): OfflineTrainingResult {
+export function calculateOfflineTrainingByTime(
+  input: OfflineTrainingInputTime,
+  trainingType: TrainingType = 'offline',
+): OfflineTrainingResult {
   const config = getSkillConfig(input.vocation, input.skill);
 
   const spSoFar = cumulativeSpTo(input.currentSkill, config);
   const spIntoCurrent = spToNextLevel(input.currentSkill, config) * input.currentPercent / 100;
   const startingTotalSp = spSoFar + spIntoCurrent;
 
-  const spPerMin = config.offlineSpPerMinute * (1 + input.loyaltyPercent / 100);
   const totalMinutes = input.trainingHours * 60;
-  const spGained = spPerMin * totalMinutes;
-  const finalTotalSp = startingTotalSp + spGained;
 
-  const endingSkill = Math.floor(skillFromTotalSp(finalTotalSp, config));
-  const endingPercent = spToPercentThrough(endingSkill, finalTotalSp - cumulativeSpTo(endingSkill, config), config);
+  let spGained: number;
 
-  return {
-    startingTotalSp,
-    finalTotalSp,
-    startingSkill: input.currentSkill,
-    endingSkill,
-    endingPercent,
-    totalSpGained: spGained,
-    totalMinutes,
-    trainingDays: input.trainingHours / 12,
-    sessions12h: Math.ceil(input.trainingHours / 12),
-  };
+  if (trainingType === 'online') {
+    let remainingMinutes = totalMinutes;
+    let lvl = input.currentSkill;
+    let progress = input.currentPercent;
+    spGained = 0;
+
+    while (remainingMinutes > 0 && lvl < 9999) {
+      const needed = spToNextLevel(lvl, config) * (1 - progress / 100);
+      const perMin = spPerMinOnline(lvl, input.loyaltyPercent);
+      const minutesNeeded = needed / perMin;
+
+      if (remainingMinutes >= minutesNeeded) {
+        remainingMinutes -= minutesNeeded;
+        spGained += needed;
+        lvl++;
+        progress = 0;
+      } else {
+        spGained += remainingMinutes * perMin;
+        remainingMinutes = 0;
+      }
+    }
+  } else {
+    const spPerMin = config.offlineSpPerMinute * (1 + input.loyaltyPercent / 100);
+    spGained = spPerMin * totalMinutes;
+  }
+
+  return buildResult(config, input.currentSkill, startingTotalSp, spGained, totalMinutes, trainingType);
 }

@@ -6,6 +6,7 @@ import { Separator } from '@/components/ui/separator';
 import {
   type VocationId,
   type SkillType,
+  type TrainingType,
   type OfflineTrainingResult,
   calculateOfflineTrainingToSkill,
   calculateOfflineTrainingByTime,
@@ -76,6 +77,7 @@ export function OfflineTrainingCalculator() {
 
   const [vocation, setVocation] = useState<VocationId>('knight');
   const [skill, setSkill] = useState<SkillType>('melee');
+  const [trainingType, setTrainingType] = useState<TrainingType>('offline');
   const [mode, setMode] = useState<'toSkill' | 'byTime'>('toSkill');
 
   const [currentSkill, setCurrentSkill] = useState('80');
@@ -101,7 +103,7 @@ export function OfflineTrainingCalculator() {
         currentPercent: pct,
         targetSkill: tgt,
         loyaltyPercent: loyalty,
-      });
+      }, trainingType);
     }
 
     const hrs = parseFloat(trainingHours) || 0;
@@ -113,8 +115,8 @@ export function OfflineTrainingCalculator() {
       currentPercent: pct,
       trainingHours: hrs,
       loyaltyPercent: loyalty,
-    });
-  }, [vocation, skill, mode, currentSkill, currentPercent, targetSkill, trainingHours, loyalty]);
+    }, trainingType);
+  }, [vocation, skill, mode, currentSkill, currentPercent, targetSkill, trainingHours, loyalty, trainingType]);
 
   const handleVocationChange = (v: VocationId) => {
     setVocation(v);
@@ -166,6 +168,25 @@ export function OfflineTrainingCalculator() {
                 </button>
               );
             })}
+          </div>
+        </div>
+
+        <div className='space-y-1'>
+          <label className='text-xs text-muted-foreground'>{te('trainingType')}</label>
+          <div className='flex gap-1'>
+            {(['offline', 'online'] as TrainingType[]).map((type) => (
+              <button
+                key={type}
+                onClick={() => setTrainingType(type)}
+                className={`px-2 py-1 text-xs rounded border cursor-pointer transition-colors ${
+                  trainingType === type
+                    ? 'bg-primary text-primary-foreground border-primary'
+                    : 'bg-background text-muted-foreground border-border hover:bg-accent'
+                }`}
+              >
+                {te(type)}
+              </button>
+            ))}
           </div>
         </div>
 
@@ -248,23 +269,29 @@ export function OfflineTrainingCalculator() {
                 </td>
               </tr>
               <tr className='border-b'>
-                <td className='px-3 py-2 text-muted-foreground'>{te('trainingTime')}</td>
+                <td className='px-3 py-2 text-muted-foreground'>
+                  {trainingType === 'offline' ? te('trainingTime') : te('totalTime')}
+                </td>
                 <td className='px-3 py-2 text-right tabular-nums font-medium'>
                   {formatHours(result.totalMinutes / 60)}
                 </td>
               </tr>
-              <tr className='border-b bg-muted/20'>
-                <td className='px-3 py-2 font-medium'>{te('realDays')}</td>
-                <td className='px-3 py-2 text-right tabular-nums font-semibold'>
-                  {formatDays(result.trainingDays)} {te('days')}
-                </td>
-              </tr>
-              <tr className='border-b bg-muted/20'>
-                <td className='px-3 py-2 font-medium'>{te('sessions12h')}</td>
-                <td className='px-3 py-2 text-right tabular-nums font-semibold'>
-                  {result.sessions12h}
-                </td>
-              </tr>
+              {trainingType === 'offline' && (
+                <>
+                  <tr className='border-b bg-muted/20'>
+                    <td className='px-3 py-2 font-medium'>{te('realDays')}</td>
+                    <td className='px-3 py-2 text-right tabular-nums font-semibold'>
+                      {formatDays(result.trainingDays)} {te('days')}
+                    </td>
+                  </tr>
+                  <tr className='border-b bg-muted/20'>
+                    <td className='px-3 py-2 font-medium'>{te('sessions12h')}</td>
+                    <td className='px-3 py-2 text-right tabular-nums font-semibold'>
+                      {result.sessions12h}
+                    </td>
+                  </tr>
+                </>
+              )}
             </tbody>
           </table>
         </div>
