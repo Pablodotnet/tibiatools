@@ -1,8 +1,5 @@
 // ExaltationPage.tsx  — updated to include all 4 upgrade type calculators
-import { ExaltationForgeSimulator } from "@/components/ExaltationForgeSimulator";
-import { TransferCalculator } from "@/components/ExaltationForgeSimulator/exaltation-transfer-simulator";
-import { ConvergenceFusionCalculator } from "@/components/ExaltationForgeSimulator/exaltation-convergence-fusion-simulator";
-import { ConvergenceTransferCalculator } from "@/components/ExaltationForgeSimulator/exaltation-convergence-transfer-simulator";
+import { lazy, Suspense } from "react";
 import {
   Card,
   CardContent,
@@ -12,6 +9,19 @@ import {
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useTranslation } from "react-i18next";
+
+const ExaltationForgeSimulator = lazy(() =>
+  import("@/components/ExaltationForgeSimulator").then((m) => ({ default: m.ExaltationForgeSimulator })),
+);
+const TransferCalculator = lazy(() =>
+  import("@/components/ExaltationForgeSimulator/exaltation-transfer-simulator").then((m) => ({ default: m.TransferCalculator })),
+);
+const ConvergenceFusionCalculator = lazy(() =>
+  import("@/components/ExaltationForgeSimulator/exaltation-convergence-fusion-simulator").then((m) => ({ default: m.ConvergenceFusionCalculator })),
+);
+const ConvergenceTransferCalculator = lazy(() =>
+  import("@/components/ExaltationForgeSimulator/exaltation-convergence-transfer-simulator").then((m) => ({ default: m.ConvergenceTransferCalculator })),
+);
 
 // ─── Tab metadata ─────────────────────────────────────────────
 const TABS = [
@@ -83,11 +93,12 @@ const ExaltationPage = () => {
               <p className="text-sm text-slate-600 dark:text-slate-400">
                 {t(tab.descKey)}
               </p>
-
-              {tab.value === "fusion" && <ExaltationForgeSimulator />}
-              {tab.value === "convergence-fusion" && <ConvergenceFusionCalculator />}
-              {tab.value === "transfer" && <TransferCalculator />}
-              {tab.value === "convergence-transfer" && <ConvergenceTransferCalculator />}
+              <Suspense fallback={null}>
+                {tab.value === "fusion" && <ExaltationForgeSimulator />}
+                {tab.value === "convergence-fusion" && <ConvergenceFusionCalculator />}
+                {tab.value === "transfer" && <TransferCalculator />}
+                {tab.value === "convergence-transfer" && <ConvergenceTransferCalculator />}
+              </Suspense>
             </TabsContent>
           ))}
         </Tabs>

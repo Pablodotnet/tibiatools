@@ -141,8 +141,12 @@ export async function deleteHuntSession(sessionId: string): Promise<void> {
 }
 
 export async function getRecentSessions(limitCount = 5): Promise<HuntSession[]> {
+  const user = FirebaseAuth.currentUser;
+  if (!user) return [];
+
   const q = query(
     collection(FirebaseDB, 'huntSessions'),
+    where('ownerUid', '==', user.uid),
     orderBy('createdAt', 'desc'),
     limit(limitCount),
   );

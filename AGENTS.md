@@ -28,6 +28,16 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - `PrivateRoute`/`PublicRoute` — `min-h-screen` → `min-h-[50vh]` to prevent overflow inside AppLayout
 - All 98 tests pass, TypeScript clean, production build zero errors
 - Committed: `feat: add sidebar layout and dashboard homepage with widgets`
+- Invalid vocation URL: redirected unknown vocation IDs to /not-found via Navigate
+- Collapse/expand transitions: `fade-in` CSS animation on spot/session card expanded content
+- Accessibility: `aria-expanded` buttons, `aria-label` on sort `<select>`, `<h4>`→`<h3>` for spot names
+- Loading skeletons: `src/components/ui/skeleton.tsx` with animated pulse; replaces plain text in Dashboard widgets and VocationHuntSpotsPage
+- Firestore doc validation: runtime-safe helpers (`safeStr`, `safeNum`, `optNum`, `optStr`, `safeBool`, `toMs`) in `huntingSpots.ts`, `huntSessions.ts`, `tierProjects.ts`
+- Committed: `feat: add runtime-safe Firestore doc validation helpers`
+- Session privacy: `getRecentSessions()` scoped to authenticated user's own sessions via `ownerUid` filter
+- Exaltation tab lazy-loading: all 4 calculator components (`ExaltationForgeSimulator`, `TransferCalculator`, `ConvergenceFusionCalculator`, `ConvergenceTransferCalculator`) loaded via `React.lazy()` + `<Suspense>`
+- Radix-ui imports: `tabs.tsx`, `switch.tsx`, `avatar.tsx`, `separator.tsx` changed from `"radix-ui"` shorthand to `"@radix-ui/react-*"` scoped imports
+- Error monitoring placeholder: `src/lib/monitoring.ts` with `captureError`/`captureEvent` noop stubs
 
 ### In Progress
 - (none)
@@ -46,8 +56,6 @@ Then redesign the layout with a sidebar + dashboard homepage.
 
 ## Next Steps
 - Push commits to remote
-- Remove old HomePage directory (dead code)
-- Consider adding user avatar/display name to sidebar top
 
 ## Critical Context
 - AppLayout wraps entire app content; sidebar is `lg:fixed`, mobile uses `translate-x` slide
