@@ -581,7 +581,8 @@
     "duplicateProjectDesc": "Crea una copia de este proyecto con todas sus entradas como plantilla.",
     "projectDuplicated": "Proyecto duplicado",
     "copyOf": "Copia de",
-    "totalDust": "Polvo total"
+    "totalDust": "Polvo total",
+    "dustRequired": "Polvo requerido"
   },
   "publicTierProjects": {
     "title": "Proyectos de Tier",

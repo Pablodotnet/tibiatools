@@ -581,7 +581,8 @@
     "duplicateProjectDesc": "Cria uma cópia deste projeto com todas as entradas como modelo.",
     "projectDuplicated": "Projeto duplicado",
     "copyOf": "Cópia de",
-    "totalDust": "Pó total"
+    "totalDust": "Pó total",
+    "dustRequired": "Pó necessário"
   },
   "publicTierProjects": {
     "title": "Projetos de Tier",
