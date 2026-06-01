@@ -221,16 +221,14 @@
     "subtotal": "Subtotal",
     "imbueGoldCost": "Custo de ouro do imbu",
     "fullSuccess": "Sucesso total (100%)",
-    "totalCost": "Custo total",
+    "totalMarket": "Total mercado",
+    "totalViaYana": "Via Yana",
     "costPerHour": "Custo por hora",
+    "viaYana": "via Yana",
     "clear": "Limpar",
     "slot": "slot",
     "slots": "slots",
-    "goldTokenValue": "Token de ouro (gp)",
-    "tokenCost": "Tokens",
-    "marketCheaper": "mercado",
-    "totalWithTokens": "Total (via Yana)",
-    "withTokens": "via Yana"
+    "goldTokenValue": "Token de ouro (gp)"
   },
   "errorBoundary": {
     "somethingWentWrong": "Algo deu errado",

@@ -221,16 +221,14 @@
     "subtotal": "Subtotal",
     "imbueGoldCost": "Imbue gold cost",
     "fullSuccess": "Full success (100%)",
-    "totalCost": "Total cost",
+    "totalMarket": "Market total",
+    "totalViaYana": "Via Yana",
     "costPerHour": "Cost per hour",
+    "viaYana": "via Yana",
     "clear": "Clear",
     "slot": "slot",
     "slots": "slots",
-    "goldTokenValue": "Gold token (gp)",
-    "tokenCost": "Tokens",
-    "marketCheaper": "market",
-    "totalWithTokens": "Total (via Yana)",
-    "withTokens": "via Yana"
+    "goldTokenValue": "Gold token (gp)"
   },
   "equipmentReference": {
     "title": "Vocation Equipment Reference",

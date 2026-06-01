@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
 import { formatGp, parseGpInput } from '@/helpers/exaltationForge';
 
 const IMBUE_DURATIONS = {
@@ -83,10 +84,8 @@ export function ImbueCostCalculator() {
 
   const goldTokenTotalCost = useMemo(() => {
     if (!goldTokenGpValue || !tokensPerItem) return 0;
-    return tierMaterials.reduce((sum, m) => {
-      return sum + m.quantity * tokensPerItem * goldTokenGpValue;
-    }, 0);
-  }, [tierMaterials, tokensPerItem, goldTokenGpValue]);
+    return tokensPerItem * goldTokenGpValue;
+  }, [tokensPerItem, goldTokenGpValue]);
 
   const handlePriceChange = (itemName: string, value: string) => {
     setMaterialPrices((prev) => ({ ...prev, [itemName]: value }));
@@ -226,11 +225,6 @@ export function ImbueCostCalculator() {
                     const priceStr = materialPrices[m.itemName] ?? '';
                     const price = parseGpInput(priceStr);
                     const marketSub = m.quantity * price;
-                    const tokenSub = goldTokenGpValue > 0 && tokensPerItem > 0
-                      ? m.quantity * tokensPerItem * goldTokenGpValue
-                      : 0;
-                    const tokensCheaper = tokenSub > 0 && tokenSub < marketSub;
-                    const marketCheaper = tokenSub > 0 && marketSub > 0 && marketSub < tokenSub;
                     return (
                       <tr key={m.itemName} className='border-b last:border-0'>
                         <td className='px-3 py-2'>{m.itemName}</td>
@@ -245,16 +239,7 @@ export function ImbueCostCalculator() {
                             className='h-8 w-28 ml-auto text-right tabular-nums'
                           />
                         </td>
-                        <td className='px-3 py-2 text-right tabular-nums align-top'>
-                          <div>{formatGp(marketSub)}</div>
-                          {tokenSub > 0 && (
-                            <div className={`text-xs mt-0.5 ${tokensCheaper ? 'text-green-600 font-medium' : 'text-muted-foreground'}`}>
-                              {ti('tokenCost')}: {formatGp(tokenSub)}
-                              {tokensCheaper && ` ✓`}
-                              {marketCheaper && ` ${ti('marketCheaper')}`}
-                            </div>
-                          )}
-                        </td>
+                        <td className='px-3 py-2 text-right tabular-nums'>{formatGp(marketSub)}</td>
                       </tr>
                     );
                   })}
@@ -283,22 +268,25 @@ export function ImbueCostCalculator() {
 
             <div className='rounded-md border bg-primary/5 p-3 space-y-1'>
               <div className='flex justify-between text-sm'>
-                <span className='font-medium'>{ti('totalCost')}</span>
+                <span className='font-medium'>{ti('totalMarket')}</span>
                 <span className='font-bold tabular-nums'>{formatGp(total)} gp</span>
               </div>
               {goldTokenGpValue > 0 && (
                 <div className='flex justify-between text-sm'>
-                  <span className='font-medium'>{ti('totalWithTokens')}</span>
-                  <span className='font-bold tabular-nums text-green-600'>{formatGp(totalWithTokens)} gp</span>
+                  <span className='font-medium'>{ti('totalViaYana')} ({tokensPerItem} × {formatGp(goldTokenGpValue)})</span>
+                  <span className={`font-bold tabular-nums ${totalWithTokens < total ? 'text-green-600' : 'text-destructive'}`}>
+                    {formatGp(totalWithTokens)} gp
+                  </span>
                 </div>
               )}
+              <Separator className='my-1' />
               <div className='flex justify-between text-sm text-muted-foreground'>
                 <span>{ti('costPerHour')} ({duration}h)</span>
                 <span className='tabular-nums'>{formatGp(Math.round(costPerHour))} gp/h</span>
               </div>
               {goldTokenGpValue > 0 && (
                 <div className='flex justify-between text-sm text-muted-foreground'>
-                  <span>{ti('costPerHour')} {ti('withTokens')} ({duration}h)</span>
+                  <span>{ti('costPerHour')} {ti('viaYana')} ({duration}h)</span>
                   <span className='tabular-nums'>{formatGp(Math.round(costPerHourWithTokens))} gp/h</span>
                 </div>
               )}
