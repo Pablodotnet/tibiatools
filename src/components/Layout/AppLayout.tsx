@@ -35,13 +35,13 @@ const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
       { to: '/imbuings', labelKey: 'imbuings', icon: Zap },
       { to: '/exercise-weapons', labelKey: 'exerciseWeapons', icon: Sword },
       { to: '/equipment-reference', labelKey: 'equipmentReference', icon: Shirt },
-      { to: '/bless-calculator', labelKey: 'blessCalculator', icon: Church },
     ],
   },
   {
     labelKey: 'groupCalculators',
     items: [
       { to: '/level-calculator', labelKey: 'levelCalculator', icon: TrendingUp },
+      { to: '/bless-calculator', labelKey: 'blessCalculator', icon: Church },
       { to: '/offline-training', labelKey: 'offlineTraining', icon: Timer },
     ],
   },
