@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
-  ChevronDown, ChevronRight, Share2, HandCoins,
+  ChevronDown, ChevronRight, Share2, HandCoins, Search,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
@@ -13,14 +13,15 @@ import { AuthButton } from '@/components/NavBar/auth-button';
 import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
+import { CommandPalette } from '@/components/CommandPalette';
 
-interface NavItem {
+export interface NavItem {
   to: string;
   labelKey: string;
   icon: React.ComponentType<{ className?: string }>;
 }
 
-const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
+export const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
   {
     labelKey: 'groupFinance',
     items: [
@@ -74,6 +75,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   });
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
+  const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   const toggleGroup = (key: string) => {
     setExpandedGroups((prev) => ({ ...prev, [key]: !prev[key] }));
@@ -172,6 +174,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             <span>{tl('home')}</span>
           </NavLink>
 
+          <button
+            onClick={() => setCommandPaletteOpen(true)}
+            className='w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer'
+          >
+            <Search className='size-4 shrink-0' />
+            <span className='flex-1 text-left'>{t('commandPalette.search')}</span>
+            <kbd className='hidden sm:inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm font-mono'>
+              <span>⌘</span>K
+            </kbd>
+          </button>
+
           <div className='border-t border-border my-1' />
 
           {NAV_GROUPS.map((group) => {
@@ -257,6 +270,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           {children}
         </main>
       </div>
+      <CommandPalette open={commandPaletteOpen} onOpenChange={setCommandPaletteOpen} />
     </div>
   );
 }

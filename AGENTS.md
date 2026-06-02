@@ -54,6 +54,10 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - **TASK-5**: Migrated `HashRouter` → `BrowserRouter` for clean, crawlable URLs.
 - **TASK-6**: Added OG tags, Twitter card, meta description, per-route `pageDescriptions` (19 keys/en/es/pt), dynamic `<html lang>`, branded SVG favicon, removed stale `vite.svg`.
 - Committed: `feat: implement loot split transfers, BrowserRouter, and SEO meta`
+- **TASK-7**: Added `public/robots.txt` and `public/sitemap.xml` with 15 crawlable routes.
+- **TASK-8**: Replaced `<Suspense fallback={null}>` with a centered `Loader2` spinner.
+- **TASK-9**: ⌘K command palette (`src/components/CommandPalette`) using shadcn `CommandDialog`, reuses exported `NAV_GROUPS` from AppLayout, global hotkey, sidebar search button, 3 i18n keys.
+- Committed: `feat: add robots.txt, sitemap, Suspense fallback, and command palette`
 
 ### In Progress
 - (none)

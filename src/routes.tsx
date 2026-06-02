@@ -2,6 +2,7 @@ import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import i18n from 'i18next';
+import { Loader2 } from 'lucide-react';
 import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
 
@@ -91,7 +92,7 @@ const AppRouting = () => {
   }, [base, t]);
 
   return (
-    <Suspense fallback={null}>
+    <Suspense fallback={<div className='flex items-center justify-center py-32'><Loader2 className='size-8 animate-spin text-muted-foreground' /></div>}>
       <Routes>
         <Route path='/' element={<DashboardPage />} />
         <Route path='/real-money-calculator' element={<RealMoneyPage />} />
