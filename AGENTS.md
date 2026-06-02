@@ -27,7 +27,7 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - **QuickToolsWidget**: 2x2 grid of Imbuings, Level Calc, Exercise Weapons, Bless Calc
 - **i18n**: `sidebar.*` and `dashboard.*` keys in en/es/pt with full translations
 - `PrivateRoute`/`PublicRoute` — `min-h-screen` → `min-h-[50vh]` to prevent overflow inside AppLayout
-- All 98 tests pass, TypeScript clean, production build zero errors
+- All 98 tests pass, TypeScript clean, production build zero errors (now 124)
 - Committed: `feat: add sidebar layout and dashboard homepage with widgets`
 - Invalid vocation URL: redirected unknown vocation IDs to /not-found via Navigate
 - Collapse/expand transitions: `fade-in` CSS animation on spot/session card expanded content
@@ -48,6 +48,8 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - Replaced 4 `console.error` calls with `captureError()` from monitoring stub
 - Added `limit(100)` to `getAllHuntingSpots` to prevent unbounded Firestore reads
 - Fixed dynamic `import()` bug in `getSession` (was re-importing getDoc already at top level)
+- **P0 batch**: Fixed Rules-of-Hooks crash (moved early-return guard after hooks, wrapped `translate` in `useCallback`, fixed missing deps), fixed Exp Share min-level off-by-one (`Math.floor`→`Math.ceil`), cleared lint baseline (`prefer-const` fix, added `check` script). 124 tests passing, `eslint .` 0 errors.
+- Committed: `fix: resolve Rules-of-Hooks crash, Exp Share min-level off-by-one, and lint errors`
 
 ### In Progress
 - (none)

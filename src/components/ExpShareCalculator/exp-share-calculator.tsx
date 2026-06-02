@@ -14,7 +14,7 @@ export function ExpShareCalculator() {
     if (isNaN(lvl) || lvl < 1) return null;
     return {
       level: lvl,
-      min: Math.floor(lvl * 2 / 3),
+      min: Math.ceil(lvl * 2 / 3),
       max: Math.floor(lvl * 3 / 2),
     };
   }, [level]);

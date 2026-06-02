@@ -75,7 +75,7 @@ function calculateResultingSkill(
 ): { skill: number; percentToNext: number; totalCharges: number } {
   let remainingCharges = weaponCount * chargesPerWeapon;
   let level = current;
-  let progress = Math.min(Math.max(percent, 0), 100) / 100;
+  const progress = Math.min(Math.max(percent, 0), 100) / 100;
   const MAX_LEVEL = 2000;
 
   if (progress > 0) {

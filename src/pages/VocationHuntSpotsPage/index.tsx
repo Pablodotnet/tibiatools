@@ -20,11 +20,9 @@ import type { HuntSession } from '@/types/huntSession';
 const VocationHuntSpotsPage = () => {
   const { vocationId } = useParams();
   const { t } = useTranslation();
-  const translate = (entry: string) => t(`huntingSpotsPage.${entry}`);
+  const translate = useCallback((entry: string) => t(`huntingSpotsPage.${entry}`), [t]);
   const { user } = useAuth();
 
-  const vocation = vocations.find((v) => v.id === vocationId);
-  if (!vocationId || !vocation) return <Navigate to="/not-found" replace />;
   const [userSpots, setUserSpots] = useState<HuntingSpotData[]>([]);
   const [loadingSpots, setLoadingSpots] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
@@ -33,6 +31,7 @@ const VocationHuntSpotsPage = () => {
   const [minExp, setMinExp] = useState('');
 
   const loadSpots = useCallback(async () => {
+    if (!vocationId) return;
     setLoadingSpots(true);
     try {
       const spots = await getAllHuntingSpots(vocationId);
@@ -43,7 +42,7 @@ const VocationHuntSpotsPage = () => {
     } finally {
       setLoadingSpots(false);
     }
-  }, [vocationId]);
+  }, [vocationId, translate]);
 
   useEffect(() => {
     loadSpots();
@@ -75,7 +74,7 @@ const VocationHuntSpotsPage = () => {
       all = [...all].sort((a, b) => a.levelRange[0] - b.levelRange[0]);
     }
     return all;
-  }, [vocationId, userSpots, searchTerm, sortBy]);
+  }, [vocationId, userSpots, searchTerm, sortBy, minProfit, minExp]);
 
   const handleDelete = useCallback(async (spotId: string) => {
     try {
@@ -87,6 +86,9 @@ const VocationHuntSpotsPage = () => {
       toast.error(translate('deleteSpotError'));
     }
   }, [translate]);
+
+  const vocation = vocations.find((v) => v.id === vocationId);
+  if (!vocationId || !vocation) return <Navigate to="/not-found" replace />;
 
   return (
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
@@ -213,7 +215,7 @@ function SpotCard({
       setSessionsLoading(false);
       loadingRef.current = false;
     }
-  }, [spot.id]);
+  }, [spot.id, translate]);
 
   useEffect(() => {
     if (expanded && !sessionsLoaded) {
