@@ -50,6 +50,10 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - Fixed dynamic `import()` bug in `getSession` (was re-importing getDoc already at top level)
 - **P0 batch**: Fixed Rules-of-Hooks crash (moved early-return guard after hooks, wrapped `translate` in `useCallback`, fixed missing deps), fixed Exp Share min-level off-by-one (`Math.floor`→`Math.ceil`), cleared lint baseline (`prefer-const` fix, added `check` script). 124 tests passing, `eslint .` 0 errors.
 - Committed: `fix: resolve Rules-of-Hooks crash, Exp Share min-level off-by-one, and lint errors`
+- **TASK-4**: Loot split now computes per-player transfers (individual balance + extras → fair share → Pay/Receive per player) with greedy pairwise settlements. 3 new tests. 8 new i18n keys (en/es/pt).
+- **TASK-5**: Migrated `HashRouter` → `BrowserRouter` for clean, crawlable URLs.
+- **TASK-6**: Added OG tags, Twitter card, meta description, per-route `pageDescriptions` (19 keys/en/es/pt), dynamic `<html lang>`, branded SVG favicon, removed stale `vite.svg`.
+- Committed: `feat: implement loot split transfers, BrowserRouter, and SEO meta`
 
 ### In Progress
 - (none)
@@ -73,7 +77,7 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - AppLayout wraps entire app content; sidebar is `lg:fixed`, mobile uses `translate-x` slide
 - Dashboard widgets in `src/components/Dashboard/` — each is a named export
 - NavBar subcomponents (`ModeToggle`, `PandaIcon`, etc.) still imported from `@/components/NavBar/` by AppLayout
-- All 98 tests pass, TypeScript clean, production build has zero warnings
+- All 127 tests pass, TypeScript clean, production build has zero warnings
 
 ## Relevant Files
 - `src/components/Layout/AppLayout.tsx`: sidebar + content layout

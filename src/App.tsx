@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/components/theme-provider';
 import { AppLayout } from '@/components/Layout';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import AppRouting from './routes';
 import { Provider } from 'react-redux';
 import { store } from '@/store';
@@ -39,7 +39,7 @@ function App() {
   return (
     <Provider store={store}>
       <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-        <HashRouter>
+        <BrowserRouter>
           <AuthStateListener />
           <AppLayout>
             <ErrorBoundary>
@@ -47,7 +47,7 @@ function App() {
             </ErrorBoundary>
           </AppLayout>
           <Toaster richColors position='top-right' />
-        </HashRouter>
+        </BrowserRouter>
       </ThemeProvider>
     </Provider>
   );

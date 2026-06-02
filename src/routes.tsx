@@ -1,6 +1,7 @@
-import { lazy, Suspense, useEffect } from 'react';
+import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { Routes, Route, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import i18n from 'i18next';
 import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
 
@@ -24,6 +25,27 @@ const AccountPage = lazy(() => import('@/pages/AccountPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const PublicTierProjectsPage = lazy(() => import('@/pages/PublicTierProjectsPage'));
 const MyTierProjectsPage = lazy(() => import('@/pages/MyTierProjectsPage'));
+
+const DESC_KEYS: Record<string, string> = {
+  '/': 'home',
+  '/real-money-calculator': 'realMoneyCalculator',
+  '/coins-to-money': 'coinsToMoney',
+  '/imbuings': 'imbuings',
+  '/hunting-spots': 'huntingSpots',
+  '/imbue-cost-calculator': 'imbueCostCalculator',
+  '/exercise-weapons': 'exerciseWeapons',
+  '/equipment-reference': 'equipmentReference',
+  '/offline-training': 'offlineTraining',
+  '/level-calculator': 'levelCalculator',
+  '/bless-calculator': 'blessCalculator',
+  '/exp-share': 'expShareCalculator',
+  '/tibia-loot-split': 'tibiaLootSplit',
+  '/exaltation': 'exaltationForge',
+  '/auth': 'auth',
+  '/account': 'account',
+  '/myTierProjects': 'myTierProjects',
+  '/public-projects': 'publicProjects',
+};
 
 const TITLE_KEYS: Record<string, string> = {
   '/': 'home',
@@ -50,11 +72,23 @@ const AppRouting = () => {
   const { t } = useTranslation();
   const location = useLocation();
 
+  const base = useMemo(() => location.pathname.split('/').slice(0, 2).join('/') || '/', [location.pathname]);
+
   useEffect(() => {
-    const base = location.pathname.split('/').slice(0, 2).join('/') || '/';
     const key = TITLE_KEYS[base] || 'notFound';
     document.title = `${t(`pageTitles.${key}`)} — ${t('nav.title')}`;
-  }, [location, t]);
+
+    const descKey = DESC_KEYS[base] || 'notFound';
+    let metaDesc = document.querySelector('meta[name="description"]');
+    if (!metaDesc) {
+      metaDesc = document.createElement('meta');
+      metaDesc.setAttribute('name', 'description');
+      document.head.appendChild(metaDesc);
+    }
+    metaDesc.setAttribute('content', t(`pageDescriptions.${descKey}`));
+
+    document.documentElement.lang = i18n.language;
+  }, [base, t]);
 
   return (
     <Suspense fallback={null}>
