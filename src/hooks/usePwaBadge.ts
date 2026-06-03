@@ -39,10 +39,9 @@ export function usePwaBadge() {
 
         if (cancelled) return;
         if (expiringCount > 0) {
-          const setBadge = (navigator as { setAppBadge?: (n: number) => Promise<void> }).setAppBadge
-            ?? (navigator as { setExperimentalAppBadge?: (n: number) => Promise<void> }).setExperimentalAppBadge;
+          const setBadge = navigator.setAppBadge ?? (navigator as { setExperimentalAppBadge?: (n: number) => Promise<void> }).setExperimentalAppBadge;
           if (setBadge) {
-            await setBadge(expiringCount);
+            await setBadge.call(navigator, expiringCount);
           } else {
             await clearBadgeInternal();
           }
@@ -55,14 +54,9 @@ export function usePwaBadge() {
     }
 
     async function clearBadgeInternal() {
-      const setBadge = (navigator as { setAppBadge?: (n: number) => Promise<void> }).setAppBadge
-        ?? (navigator as { setExperimentalAppBadge?: (n: number) => Promise<void> }).setExperimentalAppBadge;
-      const clearBadgeFn = (navigator as { clearAppBadge?: () => Promise<void> }).clearAppBadge
-        ?? (navigator as { clearExperimentalAppBadge?: () => Promise<void> }).clearExperimentalAppBadge;
-      if (setBadge) {
-        await setBadge(0);
-      } else if (clearBadgeFn) {
-        await clearBadgeFn();
+      const clearBadgeFn = navigator.clearAppBadge ?? (navigator as { clearExperimentalAppBadge?: () => Promise<void> }).clearExperimentalAppBadge;
+      if (clearBadgeFn) {
+        await clearBadgeFn.call(navigator);
       }
     }
 
