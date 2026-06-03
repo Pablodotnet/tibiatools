@@ -11,7 +11,7 @@ export function usePwaBadge() {
     async function updateBadge() {
       const user = FirebaseAuth.currentUser;
       if (!user) {
-        await clearBadgeInternal();
+        await clearBadge();
         return;
       }
 
