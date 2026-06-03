@@ -24,7 +24,7 @@ import {
 import { vocations } from '@/helpers';
 import { addHuntingSpot } from '@/firebase/huntingSpots';
 import { toast } from 'sonner';
-import { captureError } from '@/lib/monitoring';
+import { captureError, captureEvent } from '@/lib/monitoring';
 
 export function HuntingSpotsAddDialog() {
   const { t } = useTranslation();
@@ -88,6 +88,7 @@ export function HuntingSpotsAddDialog() {
         vocationId,
       });
 
+      captureEvent('hunting_spot_created', { vocationId });
       toast.success(te('spotAdded'));
       reset();
       setOpen(false);

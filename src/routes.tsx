@@ -23,6 +23,7 @@ const ExpShareCalculatorPage = lazy(() => import('@/pages/ExpShareCalculatorPage
 const StaminaCalculatorPage = lazy(() => import('@/pages/StaminaCalculatorPage'));
 const BossCooldownTrackerPage = lazy(() => import('@/pages/BossCooldownTrackerPage'));
 const ImbuementTrackerPage = lazy(() => import('@/pages/ImbuementTrackerPage'));
+const BestiaryPage = lazy(() => import('@/pages/BestiaryPage'));
 const TibiaLootSplitPage = lazy(() => import('@/pages/TibiaLootSplitPage'));
 const AuthPage = lazy(() => import('@/pages/AuthPage'));
 const AccountPage = lazy(() => import('@/pages/AccountPage'));
@@ -47,6 +48,7 @@ const DESC_KEYS: Record<string, string> = {
   '/stamina-calculator': 'staminaCalculator',
   '/boss-cooldowns': 'bossCooldownTracker',
   '/imbuement-tracker': 'imbuementTracker',
+  '/bestiary': 'bestiary',
   '/tibia-loot-split': 'tibiaLootSplit',
   '/exaltation': 'exaltationForge',
 };
@@ -67,6 +69,7 @@ const TITLE_KEYS: Record<string, string> = {
   '/stamina-calculator': 'staminaCalculator',
   '/boss-cooldowns': 'bossCooldownTracker',
   '/imbuement-tracker': 'imbuementTracker',
+  '/bestiary': 'bestiary',
   '/tibia-loot-split': 'tibiaLootSplit',
   '/exaltation': 'exaltationForge',
   '/auth': 'auth',
@@ -115,6 +118,7 @@ const AppRouting = () => {
         <Route path='/stamina-calculator' element={<StaminaCalculatorPage />} />
         <Route path='/boss-cooldowns' element={<BossCooldownTrackerPage />} />
         <Route path='/imbuement-tracker' element={<ImbuementTrackerPage />} />
+        <Route path='/bestiary' element={<BestiaryPage />} />
         <Route path='/tibia-loot-split' element={<TibiaLootSplitPage />} />
         <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
         <Route

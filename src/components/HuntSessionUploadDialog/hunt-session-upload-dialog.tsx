@@ -16,7 +16,7 @@ import { parseHuntSession } from '@/helpers/huntSessionParser';
 import { addHuntSession } from '@/firebase/huntSessions';
 import { formatProfit, formatRate } from '@/helpers/huntingSpots';
 import { toast } from 'sonner';
-import { captureError } from '@/lib/monitoring';
+import { captureError, captureEvent } from '@/lib/monitoring';
 import { Users, User, Clock, Swords, HeartPulse, Shield, Coins, PackageOpen, Zap, PartyPopper, Upload } from 'lucide-react';
 
 export function HuntSessionUploadDialog({
@@ -68,6 +68,7 @@ export function HuntSessionUploadDialog({
         killedMonsters: parsed.killedMonsters,
         rawText: rawText,
       });
+      captureEvent('hunt_session_uploaded', { spotId, isParty: !!parsed.isParty, playerCount: parsed.players?.length || 1 });
       toast.success(te('sessionAdded'));
       setRawText('');
       setOpen(false);

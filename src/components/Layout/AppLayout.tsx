@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
-  ChevronDown, ChevronRight, Share2, HandCoins, Search, History, Clock,
+  ChevronDown, ChevronRight, Share2, HandCoins, Search, History, Clock, BookOpen,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
@@ -37,6 +37,7 @@ export const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
       { to: '/imbuings', labelKey: 'imbuings', icon: Zap },
       { to: '/exercise-weapons', labelKey: 'exerciseWeapons', icon: Sword },
       { to: '/equipment-reference', labelKey: 'equipmentReference', icon: Shirt },
+      { to: '/bestiary', labelKey: 'bestiary', icon: BookOpen },
     ],
   },
   {

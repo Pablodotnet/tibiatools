@@ -1,24 +1,14 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, ArrowRight } from 'lucide-react';
-import { getRecentSessions } from '@/firebase/huntSessions';
-import type { HuntSession } from '@/types/huntSession';
 import { Skeleton } from '@/components/ui/skeleton';
+import { useRecentSessions } from '@/hooks/queries/useHuntSessions';
 
 export function RecentSessionsWidget() {
   const { t } = useTranslation();
   const tw = (key: string) => t(`dashboard.${key}`);
-  const [sessions, setSessions] = useState<HuntSession[]>([]);
-  const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    getRecentSessions(5)
-      .then(setSessions)
-      .catch(() => void 0)
-      .finally(() => setLoading(false));
-  }, []);
+  const { data: sessions, isLoading } = useRecentSessions(5);
 
   return (
     <Card>
@@ -29,13 +19,13 @@ export function RecentSessionsWidget() {
         </CardTitle>
       </CardHeader>
       <CardContent>
-        {loading ? (
+        {isLoading ? (
           <div className='space-y-2 py-2'>
             <Skeleton className='h-10 w-full' />
             <Skeleton className='h-10 w-full' />
             <Skeleton className='h-10 w-3/4' />
           </div>
-        ) : sessions.length === 0 ? (
+        ) : !sessions || sessions.length === 0 ? (
           <p className='text-xs text-muted-foreground text-center py-4'>{tw('noRecentSessions')}</p>
         ) : (
           <div className='space-y-1.5'>

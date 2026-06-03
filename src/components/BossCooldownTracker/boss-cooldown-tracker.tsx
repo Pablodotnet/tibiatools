@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
 import { Loader2, Clock, CheckCircle2, Trash2, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
-import { captureError } from '@/lib/monitoring';
+import { captureError, captureEvent } from '@/lib/monitoring';
 
 export function BossCooldownTracker() {
   const { t } = useTranslation();
@@ -50,6 +50,7 @@ export function BossCooldownTracker() {
     try {
       await markBossKilled(bossKey);
       await load();
+      captureEvent('boss_marked_killed', { bossKey });
       toast.success(tb('marked'));
     } catch (e) {
       captureError(e, { context: 'mark boss killed' });

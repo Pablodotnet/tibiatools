@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Separator } from '@/components/ui/separator';
 import { Loader2, Trash2, AlertTriangle, Clock } from 'lucide-react';
 import { toast } from 'sonner';
-import { captureError } from '@/lib/monitoring';
+import { captureError, captureEvent } from '@/lib/monitoring';
 
 const IMBUE_DURATIONS: Record<string, number> = {
   basic: 20,
@@ -69,6 +69,7 @@ export function ImbuementTracker() {
       setNewSlot('');
       setNewTier('');
       setNewNote('');
+      captureEvent('imbuement_added', { slot: newSlot, tier: newTier });
       toast.success(ti('added'));
     } catch (e) {
       captureError(e, { context: 'add imbuement' });

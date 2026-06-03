@@ -1,10 +1,7 @@
-// Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
-import { getFirestore } from 'firebase/firestore';
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeFirestore, persistentLocalCache, persistentMultipleTabManager } from 'firebase/firestore';
 
-// Your web app's Firebase configuration
 const firebaseConfig = {
   apiKey: 'AIzaSyDr--UEj8aAX8utnoeEq7UBodHBfx-qBvo',
   authDomain: 'tibiatools-fd53f.firebaseapp.com',
@@ -14,7 +11,8 @@ const firebaseConfig = {
   appId: '1:255745501459:web:bbc37af38bceaa3bfe92e6',
 };
 
-// Initialize Firebase
 export const FirebaseApp = initializeApp(firebaseConfig);
 export const FirebaseAuth = getAuth(FirebaseApp);
-export const FirebaseDB = getFirestore(FirebaseApp);
+export const FirebaseDB = initializeFirestore(FirebaseApp, {
+  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
+});

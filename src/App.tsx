@@ -10,6 +10,7 @@ import { FirebaseAuth } from '@/firebase/config';
 import { login, logout } from '@/store/auth/authSlice';
 import { Toaster } from 'sonner';
 import { ErrorBoundary } from '@/components/ErrorBoundary';
+import { QueryProvider } from '@/lib/query-provider';
 
 // Inner component so it can access the store via hooks
 function AuthStateListener() {
@@ -38,17 +39,19 @@ function AuthStateListener() {
 function App() {
   return (
     <Provider store={store}>
-      <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
-        <BrowserRouter>
-          <AuthStateListener />
-          <AppLayout>
-            <ErrorBoundary>
-              <AppRouting />
-            </ErrorBoundary>
-          </AppLayout>
-          <Toaster richColors position='top-right' />
-        </BrowserRouter>
-      </ThemeProvider>
+      <QueryProvider>
+        <ThemeProvider defaultTheme='dark' storageKey='vite-ui-theme'>
+          <BrowserRouter>
+            <AuthStateListener />
+            <AppLayout>
+              <ErrorBoundary>
+                <AppRouting />
+              </ErrorBoundary>
+            </AppLayout>
+            <Toaster richColors position='top-right' />
+          </BrowserRouter>
+        </ThemeProvider>
+      </QueryProvider>
     </Provider>
   );
 }
