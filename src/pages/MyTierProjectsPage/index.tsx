@@ -498,7 +498,7 @@ const MyTierProjectsPage = () => {
                     <SelectItem value='tier'>{translate('sortByTier')}</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button variant='ghost' size='icon' className='size-8' onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')}>
+                <Button variant='ghost' size='icon' className='size-8' onClick={() => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc')} aria-label={translate('toggleSortOrder')}>
                   <ArrowUpDown className='size-4' />
                 </Button>
               </div>
@@ -727,7 +727,7 @@ const MyTierProjectsPage = () => {
                 <Input placeholder={translate('itemName')} value={itemName} onChange={(e) => setItemName(e.target.value)} className='flex-1' />
                 <Input type='number' placeholder={translate('costGp')} value={itemCost} onChange={(e) => setItemCost(e.target.value)} className='w-28' />
                 <Input type='number' placeholder={translate('marketPriceShort')} value={itemMarketPrice} onChange={(e) => setItemMarketPrice(e.target.value)} className='w-28' />
-                <Button type='button' variant='outline' size='icon' onClick={handleAddItem} disabled={!itemName.trim() || !itemCost}>
+                <Button type='button' variant='outline' size='icon' onClick={handleAddItem} disabled={!itemName.trim() || !itemCost} aria-label={translate('addItem')}>
                   <Plus className='size-4' />
                 </Button>
               </div>

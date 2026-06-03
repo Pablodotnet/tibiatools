@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { memo, useState, useCallback } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BOSSES, BossEntry, computeBossStatus, formatCooldown } from '@/helpers/bosses';
 import type { BossCooldownDoc } from '@/firebase/bossCooldowns';
@@ -9,6 +9,65 @@ import { useFirestoreFetch, useClock } from '@/hooks/useFirestoreFetch';
 import { Loader2, Clock, CheckCircle2, Trash2, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { captureError, captureEvent } from '@/lib/monitoring';
+
+interface BossRowProps {
+  boss: BossEntry;
+  killedAt: number | null;
+  marking: string | null;
+  now: number;
+  onMark: (key: string) => void;
+  onClear: (key: string) => void;
+  t: (key: string) => string;
+}
+
+const BossRow = memo(function BossRow({ boss, killedAt, marking, now, onMark, onClear, t }: BossRowProps) {
+  const status = computeBossStatus(boss, killedAt, now);
+  return (
+    <tr className='border-b'>
+      <td className='px-3 py-2 font-medium'>{boss.name}</td>
+      <td className='px-3 py-2 text-sm text-muted-foreground'>{boss.location || '—'}</td>
+      <td className='px-3 py-2 text-sm text-muted-foreground'>{boss.cooldownHours}h</td>
+      <td className='px-3 py-2'>
+        {status.available ? (
+          <span className='inline-flex items-center gap-1 text-sm font-medium text-green-600 dark:text-green-400'>
+            <CheckCircle2 className='size-3.5' />
+            {t('available')}
+          </span>
+        ) : (
+          <span className='inline-flex items-center gap-1 text-sm font-medium text-amber-600 dark:text-amber-400'>
+            <Clock className='size-3.5' />
+            {formatCooldown(status.remainingMs)}
+          </span>
+        )}
+      </td>
+      <td className='px-3 py-2'>
+        <div className='flex items-center gap-1'>
+          <Button
+            variant='outline'
+            size='sm'
+            onClick={() => onMark(boss.key)}
+            disabled={marking === boss.key}
+            className='h-7 text-xs'
+          >
+            {marking === boss.key ? <Loader2 className='size-3 animate-spin' /> : <RotateCcw className='size-3' />}
+            {t('markKilled')}
+          </Button>
+          {!status.available && (
+            <Button
+              variant='ghost'
+              size='sm'
+              onClick={() => onClear(boss.key)}
+              className='h-7 text-xs text-muted-foreground'
+              aria-label='Clear cooldown'
+            >
+              <Trash2 className='size-3' />
+            </Button>
+          )}
+        </div>
+      </td>
+    </tr>
+  );
+});
 
 export function BossCooldownTracker() {
   const { t } = useTranslation();
@@ -24,33 +83,6 @@ export function BossCooldownTracker() {
     return entry ? entry.killedAtMs : null;
   };
 
-  const handleMark = async (bossKey: string) => {
-    setMarking(bossKey);
-    try {
-      await markBossKilled(bossKey);
-      await refresh();
-      captureEvent('boss_marked_killed', { bossKey });
-      toast.success(tb('marked'));
-    } catch (e) {
-      captureError(e, { context: 'mark boss killed' });
-      toast.error(tb('markError'));
-    } finally {
-      setMarking(null);
-    }
-  };
-
-  const handleClear = async (bossKey: string) => {
-    const entry = cooldowns.find((c) => c.bossKey === bossKey);
-    if (!entry) return;
-    try {
-      await clearBossCooldown(entry.id);
-      await refresh();
-      toast.success(tb('cleared'));
-    } catch (e) {
-      captureError(e, { context: 'clear boss cooldown' });
-      toast.error(tb('clearError'));
-    }
-  };
 
   const handleClearAll = async () => {
     try {
@@ -63,55 +95,35 @@ export function BossCooldownTracker() {
     }
   };
 
-  const renderBossRow = (boss: BossEntry) => {
-    const killedAt = getKilledAt(boss.key);
-    const status = computeBossStatus(boss, killedAt, now);
-    return (
-      <tr key={boss.key} className='border-b'>
-        <td className='px-3 py-2 font-medium'>{boss.name}</td>
-        <td className='px-3 py-2 text-sm text-muted-foreground'>{boss.location || '—'}</td>
-        <td className='px-3 py-2 text-sm text-muted-foreground'>{boss.cooldownHours}h</td>
-        <td className='px-3 py-2'>
-          {status.available ? (
-            <span className='inline-flex items-center gap-1 text-sm font-medium text-green-600 dark:text-green-400'>
-              <CheckCircle2 className='size-3.5' />
-              {tb('available')}
-            </span>
-          ) : (
-            <span className='inline-flex items-center gap-1 text-sm font-medium text-amber-600 dark:text-amber-400'>
-              <Clock className='size-3.5' />
-              {formatCooldown(status.remainingMs)}
-            </span>
-          )}
-        </td>
-        <td className='px-3 py-2'>
-          <div className='flex items-center gap-1'>
-            <Button
-              variant='outline'
-              size='sm'
-              onClick={() => handleMark(boss.key)}
-              disabled={marking === boss.key}
-              className='h-7 text-xs'
-            >
-              {marking === boss.key ? <Loader2 className='size-3 animate-spin' /> : <RotateCcw className='size-3' />}
-              {tb('markKilled')}
-            </Button>
-            {!status.available && (
-              <Button
-                variant='ghost'
-                size='sm'
-                onClick={() => handleClear(boss.key)}
-                className='h-7 text-xs text-muted-foreground'
-                aria-label='Clear cooldown'
-              >
-                <Trash2 className='size-3' />
-              </Button>
-            )}
-          </div>
-        </td>
-      </tr>
-    );
-  };
+  const handleMark = useCallback((key: string) => {
+    setMarking(key);
+    (async () => {
+      try {
+        await markBossKilled(key);
+        await refresh();
+        setMarking(null);
+        toast.success(tb('marked'));
+        captureEvent('boss_marked', { key });
+      } catch (e) {
+        captureError(e, { context: 'mark boss killed' });
+        toast.error(tb('markError'));
+        setMarking(null);
+      }
+    })();
+  }, [refresh]);
+
+  const handleClear = useCallback(async (key: string) => {
+    const entry = cooldowns.find((c) => c.bossKey === key);
+    if (!entry) return;
+    try {
+      await clearBossCooldown(entry.id);
+      await refresh();
+      toast.success(tb('cleared'));
+    } catch (e) {
+      captureError(e, { context: 'clear boss cooldown' });
+      toast.error(tb('clearError'));
+    }
+  }, [cooldowns, refresh]);
 
   if (loading) {
     return (
@@ -152,7 +164,18 @@ export function BossCooldownTracker() {
             <tbody>
               {bosses.length === 0 ? (
                 <tr><td colSpan={5} className='px-3 py-4 text-center text-muted-foreground'>{tb('noBosses')}</td></tr>
-              ) : bosses.map(renderBossRow)}
+              ) : bosses.map((boss) => (
+                <BossRow
+                  key={boss.key}
+                  boss={boss}
+                  killedAt={getKilledAt(boss.key)}
+                  marking={marking}
+                  now={now}
+                  onMark={handleMark}
+                  onClear={handleClear}
+                  t={tb}
+                />
+              ))}
             </tbody>
           </table>
         </div>
@@ -174,7 +197,18 @@ export function BossCooldownTracker() {
             <tbody>
               {raids.length === 0 ? (
                 <tr><td colSpan={5} className='px-3 py-4 text-center text-muted-foreground'>{tb('noRaids')}</td></tr>
-              ) : raids.map(renderBossRow)}
+              ) : raids.map((raid) => (
+                <BossRow
+                  key={raid.key}
+                  boss={raid}
+                  killedAt={getKilledAt(raid.key)}
+                  marking={marking}
+                  now={now}
+                  onMark={handleMark}
+                  onClear={handleClear}
+                  t={tb}
+                />
+              ))}
             </tbody>
           </table>
         </div>

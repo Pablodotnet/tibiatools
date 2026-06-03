@@ -2,9 +2,9 @@ import { useTranslation } from 'react-i18next';
 import { formatRate, formatProfit } from '@/helpers/huntingSpots';
 import type { HuntSession } from '@/types/huntSession';
 import { User, Coins, PackageOpen, Zap, Swords, HeartPulse, Shield, Users, PartyPopper, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 
-export function HuntSessionCard({
+export const HuntSessionCard = memo(function HuntSessionCard({
   session,
   isOwner,
   onDelete,
@@ -66,6 +66,7 @@ export function HuntSessionCard({
               onClick={(e) => { e.stopPropagation(); onDelete(session.id); }}
               className='p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer'
               title={te('delete')}
+              aria-label={te('delete')}
             >
               <Trash2 className='size-3.5' />
             </button>
@@ -243,4 +244,4 @@ export function HuntSessionCard({
       )}
     </div>
   );
-}
+});

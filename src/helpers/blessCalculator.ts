@@ -1,22 +1,22 @@
-export function regularBlessingPrice(level: number): number {
+function regularBlessingPrice(level: number): number {
   if (level <= 30) return 2000;
   if (level < 120) return 200 * (level - 20);
   return 20000 + 75 * (level - 120);
 }
 
-export function enhancedBlessingPrice(level: number): number {
+function enhancedBlessingPrice(level: number): number {
   if (level <= 30) return 2600;
   if (level < 120) return 260 * (level - 20);
   return 26000 + 100 * (level - 120);
 }
 
-export function twistOfFatePrice(level: number): number {
+function twistOfFatePrice(level: number): number {
   if (level <= 30) return 2000;
   if (level < 270) return 200 * (level - 20);
   return 50000;
 }
 
-export function inquisitionPrice(level: number): number {
+function inquisitionPrice(level: number): number {
   const fiveRegular = 5 * regularBlessingPrice(level);
   return Math.round(fiveRegular * 1.1);
 }

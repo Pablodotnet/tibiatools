@@ -272,7 +272,8 @@
   "common": {
     "loading": "Carregando...",
     "copy": "Copiar",
-    "copied": "Copiado!"
+    "copied": "Copiado!",
+    "player": "Jogador"
   },
   "theme": {
     "toggle": "Alternar tema"
@@ -624,7 +625,9 @@
     "projectDuplicated": "Projeto duplicado",
     "copyOf": "Cópia de",
     "totalDust": "Pó total",
-    "dustRequired": "Pó necessário"
+    "dustRequired": "Pó necessário",
+    "toggleSortOrder": "Alternar ordem",
+    "addItem": "Adicionar item"
   },
   "publicTierProjects": {
     "title": "Projetos de Tier",

@@ -157,7 +157,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               )}
             </Avatar>
             <div className='min-w-0'>
-              <p className='text-sm font-medium truncate'>{user.displayName ?? 'Player'}</p>
+              <p className='text-sm font-medium truncate'>{user.displayName ?? t('common.player')}</p>
               <p className='text-[10px] text-muted-foreground truncate'>{t('account.title')}</p>
             </div>
           </Link>

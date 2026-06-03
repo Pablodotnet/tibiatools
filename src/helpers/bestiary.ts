@@ -17,22 +17,6 @@ export interface CharmDefinition {
   type: 'offensive' | 'defensive' | 'utility';
 }
 
-export const DIFFICULTY_KILLS: Record<Difficulty, number> = {
-  easy: 500,
-  medium: 1000,
-  hard: 2000,
-  very_hard: 4000,
-  boss: 1,
-};
-
-export const DIFFICULTY_POINTS: Record<Difficulty, number> = {
-  easy: 5,
-  medium: 10,
-  hard: 15,
-  very_hard: 20,
-  boss: 10,
-};
-
 export const BESTIARY_MONSTERS: BestiaryEntry[] = [
   { key: 'rotworm', name: 'Rotworm', difficulty: 'easy', killsRequired: 500, charmPoints: 5, race: 'creature' },
   { key: 'cyclops', name: 'Cyclops', difficulty: 'easy', killsRequired: 500, charmPoints: 5, race: 'creature' },

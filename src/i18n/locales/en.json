@@ -383,7 +383,8 @@
   "common": {
     "loading": "Loading...",
     "copy": "Copy",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "player": "Player"
   },
   "theme": {
     "toggle": "Toggle theme"
@@ -738,7 +739,9 @@
     "duplicateProjectTitle": "Duplicate project",
     "duplicateProjectDesc": "Create a copy of this project with all its entries as a template.",
     "projectDuplicated": "Project duplicated",
-    "copyOf": "Copy of"
+    "copyOf": "Copy of",
+    "toggleSortOrder": "Toggle sort order",
+    "addItem": "Add item"
   },
   "publicTierProjects": {
     "title": "Tier Projects",
