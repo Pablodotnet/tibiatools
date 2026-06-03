@@ -5,6 +5,7 @@ import i18n from 'i18next';
 import { Loader2 } from 'lucide-react';
 import { PrivateRoute } from '@/components/Layout/PrivateRoute';
 import { PublicRoute } from '@/components/Layout/PublicRoute';
+import { RouteErrorBoundaryWrapper } from '@/components/RouteErrorBoundary';
 
 const DashboardPage = lazy(() => import('@/pages/DashboardPage'));
 const ExaltationPage = lazy(() => import('@/pages/ExaltationPage'));
@@ -31,6 +32,7 @@ const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const PublicTierProjectsPage = lazy(() => import('@/pages/PublicTierProjectsPage'));
 const MyTierProjectsPage = lazy(() => import('@/pages/MyTierProjectsPage'));
 const MySessionsPage = lazy(() => import('@/pages/MySessionsPage'));
+const CharacterPage = lazy(() => import('@/pages/CharacterPage'));
 
 const DESC_KEYS: Record<string, string> = {
   '/': 'home',
@@ -76,6 +78,7 @@ const TITLE_KEYS: Record<string, string> = {
   '/account': 'account',
   '/myTierProjects': 'myTierProjects',
   '/my-sessions': 'mySessions',
+  '/characters': 'characters',
   '/public-projects': 'publicProjects',
 };
 
@@ -104,33 +107,33 @@ const AppRouting = () => {
   return (
     <Suspense fallback={<div className='flex items-center justify-center py-32'><Loader2 className='size-8 animate-spin text-muted-foreground' /></div>}>
       <Routes>
-        <Route path='/' element={<DashboardPage />} />
-        <Route path='/real-money-calculator' element={<RealMoneyPage />} />
-        <Route path='/coins-to-money' element={<CoinsToMoneyPage />} />
-        <Route path='/imbuings' element={<ImbuingsPage />} />
-        <Route path='/imbue-cost-calculator' element={<ImbueCostCalculatorPage />} />
-        <Route path='/exercise-weapons' element={<ExerciseWeaponsCalculatorPage />} />
-        <Route path='/equipment-reference' element={<EquipmentReferencePage />} />
-        <Route path='/offline-training' element={<OfflineTrainingCalculatorPage />} />
-        <Route path='/level-calculator' element={<LevelCalculatorPage />} />
-        <Route path='/bless-calculator' element={<BlessCalculatorPage />} />
-        <Route path='/exp-share' element={<ExpShareCalculatorPage />} />
-        <Route path='/stamina-calculator' element={<StaminaCalculatorPage />} />
-        <Route path='/boss-cooldowns' element={<BossCooldownTrackerPage />} />
-        <Route path='/imbuement-tracker' element={<ImbuementTrackerPage />} />
-        <Route path='/bestiary' element={<BestiaryPage />} />
-        <Route path='/tibia-loot-split' element={<TibiaLootSplitPage />} />
-        <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
+        <Route path='/' element={<RouteErrorBoundaryWrapper><DashboardPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/real-money-calculator' element={<RouteErrorBoundaryWrapper><RealMoneyPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/coins-to-money' element={<RouteErrorBoundaryWrapper><CoinsToMoneyPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/imbuings' element={<RouteErrorBoundaryWrapper><ImbuingsPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/imbue-cost-calculator' element={<RouteErrorBoundaryWrapper><ImbueCostCalculatorPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/exercise-weapons' element={<RouteErrorBoundaryWrapper><ExerciseWeaponsCalculatorPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/equipment-reference' element={<RouteErrorBoundaryWrapper><EquipmentReferencePage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/offline-training' element={<RouteErrorBoundaryWrapper><OfflineTrainingCalculatorPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/level-calculator' element={<RouteErrorBoundaryWrapper><LevelCalculatorPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/bless-calculator' element={<RouteErrorBoundaryWrapper><BlessCalculatorPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/exp-share' element={<RouteErrorBoundaryWrapper><ExpShareCalculatorPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/stamina-calculator' element={<RouteErrorBoundaryWrapper><StaminaCalculatorPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/boss-cooldowns' element={<RouteErrorBoundaryWrapper><BossCooldownTrackerPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/imbuement-tracker' element={<RouteErrorBoundaryWrapper><ImbuementTrackerPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/bestiary' element={<RouteErrorBoundaryWrapper><BestiaryPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/tibia-loot-split' element={<RouteErrorBoundaryWrapper><TibiaLootSplitPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/hunting-spots' element={<RouteErrorBoundaryWrapper><HuntingSpotsPage /></RouteErrorBoundaryWrapper>} />
         <Route
           path='/hunting-spots/:vocationId'
-          element={<VocationHuntSpotsPage />}
+          element={<RouteErrorBoundaryWrapper><VocationHuntSpotsPage /></RouteErrorBoundaryWrapper>}
         />
-        <Route path='/exaltation' element={<ExaltationPage />} />
+        <Route path='/exaltation' element={<RouteErrorBoundaryWrapper><ExaltationPage /></RouteErrorBoundaryWrapper>} />
         <Route
           path='/auth'
           element={
             <PublicRoute>
-              <AuthPage />
+              <RouteErrorBoundaryWrapper><AuthPage /></RouteErrorBoundaryWrapper>
             </PublicRoute>
           }
         />
@@ -138,7 +141,7 @@ const AppRouting = () => {
           path='/account'
           element={
             <PrivateRoute>
-              <AccountPage />
+              <RouteErrorBoundaryWrapper><AccountPage /></RouteErrorBoundaryWrapper>
             </PrivateRoute>
           }
         />
@@ -146,7 +149,7 @@ const AppRouting = () => {
           path='/myTierProjects'
           element={
             <PrivateRoute>
-              <MyTierProjectsPage />
+              <RouteErrorBoundaryWrapper><MyTierProjectsPage /></RouteErrorBoundaryWrapper>
             </PrivateRoute>
           }
         />
@@ -154,12 +157,20 @@ const AppRouting = () => {
           path='/my-sessions'
           element={
             <PrivateRoute>
-              <MySessionsPage />
+              <RouteErrorBoundaryWrapper><MySessionsPage /></RouteErrorBoundaryWrapper>
             </PrivateRoute>
           }
         />
-        <Route path='/public-projects' element={<PublicTierProjectsPage />} />
-        <Route path='*' element={<NotFoundPage />} />
+        <Route
+          path='/characters'
+          element={
+            <PrivateRoute>
+              <RouteErrorBoundaryWrapper><CharacterPage /></RouteErrorBoundaryWrapper>
+            </PrivateRoute>
+          }
+        />
+        <Route path='/public-projects' element={<RouteErrorBoundaryWrapper><PublicTierProjectsPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='*' element={<RouteErrorBoundaryWrapper><NotFoundPage /></RouteErrorBoundaryWrapper>} />
       </Routes>
     </Suspense>
   );

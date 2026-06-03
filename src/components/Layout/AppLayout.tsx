@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
-  ChevronDown, ChevronRight, Share2, HandCoins, Search, History, Clock, BookOpen,
+  ChevronDown, ChevronRight, Share2, HandCoins, Search, History, Clock, BookOpen, User,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
@@ -14,6 +14,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { CommandPalette } from '@/components/CommandPalette';
+import { usePwaBadge } from '@/hooks/usePwaBadge';
 
 export interface NavItem {
   to: string;
@@ -65,6 +66,7 @@ export const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
     items: [
       { to: '/myTierProjects', labelKey: 'tierProjects', icon: FolderKanban },
       { to: '/public-projects', labelKey: 'community', icon: Users },
+      { to: '/characters', labelKey: 'characters', icon: User },
     ],
   },
 ];
@@ -88,6 +90,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const location = useLocation();
   const { user, isAuthenticated } = useAuth();
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
+  usePwaBadge();
 
   const toggleGroup = (key: string) => {
     setExpandedGroups((prev) => {

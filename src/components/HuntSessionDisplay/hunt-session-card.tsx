@@ -176,6 +176,46 @@ export function HuntSessionCard({
             </div>
           )}
 
+          {session.lootItems && session.lootItems.length > 0 && (
+            <div className='border-t pt-2'>
+              <p className='text-xs font-medium text-muted-foreground flex items-center gap-1 mb-1'>
+                <Coins className='size-3' /> {te('lootItems')} ({session.lootItems.length})
+              </p>
+              <div className='flex flex-wrap gap-1'>
+                {session.lootItems.slice(0, 10).map((item) => (
+                  <span key={item.name} className='text-[10px] bg-green-50 dark:bg-green-950/20 rounded px-1.5 py-0.5'>
+                    {item.name}: {item.count}× ({formatProfit(item.value)})
+                  </span>
+                ))}
+                {session.lootItems.length > 10 && (
+                  <span className='text-[10px] text-muted-foreground'>
+                    +{session.lootItems.length - 10} {te('more')}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
+          {session.supplyItems && session.supplyItems.length > 0 && (
+            <div className='border-t pt-2'>
+              <p className='text-xs font-medium text-muted-foreground flex items-center gap-1 mb-1'>
+                <PackageOpen className='size-3' /> {te('supplyItems')} ({session.supplyItems.length})
+              </p>
+              <div className='flex flex-wrap gap-1'>
+                {session.supplyItems.slice(0, 10).map((item) => (
+                  <span key={item.name} className='text-[10px] bg-red-50 dark:bg-red-950/20 rounded px-1.5 py-0.5'>
+                    {item.name}: {item.count}× ({formatProfit(item.value)})
+                  </span>
+                ))}
+                {session.supplyItems.length > 10 && (
+                  <span className='text-[10px] text-muted-foreground'>
+                    +{session.supplyItems.length - 10} {te('more')}
+                  </span>
+                )}
+              </div>
+            </div>
+          )}
+
           {session.killedMonsters && session.killedMonsters.length > 0 && (
             <div className='border-t pt-2'>
               <p className='text-xs font-medium text-muted-foreground mb-1'>{te('killedMonsters')}</p>
