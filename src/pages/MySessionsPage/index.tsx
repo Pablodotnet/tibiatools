@@ -32,7 +32,7 @@ interface Filters {
 
 const MySessionsPage = () => {
   const { t } = useTranslation();
-  const ts = (key: string) => t(`mySessions.${key}`);
+  const ts = useCallback((key: string) => t(`mySessions.${key}`), [t]);
   const { user } = useAuth();
 
   const [sessions, setSessions] = useState<HuntSession[]>([]);
@@ -50,7 +50,7 @@ const MySessionsPage = () => {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [ts]);
 
   useEffect(() => {
     loadSessions();

@@ -18,7 +18,7 @@ export function BestiaryTracker() {
   const { user } = useAuth();
 
   const { data: progressData, loading, refresh } = useFirestoreFetch<BestiaryProgressDoc[]>(getUserBestiaryProgress, { context: 'load bestiary progress', errorKey: 'bestiary.loadError' });
-  const progress = progressData ?? [];
+  const progress = useMemo(() => progressData ?? [], [progressData]);
   const [toggling, setToggling] = useState<string | null>(null);
 
   const completedKeys = useMemo(() => progress.filter((p) => p.completed).map((p) => p.monsterKey), [progress]);

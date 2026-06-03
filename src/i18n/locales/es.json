@@ -24,7 +24,8 @@
     "exaltationForge": "Forja de Exaltación",
     "tierProjects": "Mis Proyectos de Tier",
     "community": "Proyectos Públicos",
-    "mySessions": "Mis sesiones"
+    "mySessions": "Mis sesiones",
+    "characters": "Personajes"
   },
   "dashboard": {
     "welcome": "Bienvenido a Tibia Tools",
@@ -144,7 +145,8 @@
     "myTierProjects": "Mis Proyectos de Tier",
     "publicProjects": "Proyectos de Tier",
     "notFound": "No encontrada",
-    "mySessions": "Mis sesiones"
+    "mySessions": "Mis sesiones",
+    "characters": "Mis Personajes"
   },
   "pageDescriptions": {
     "home": "Panel con lugares de caza, banner del servidor OT, proyectos de tier y herramientas rápidas.",
@@ -166,7 +168,8 @@
     "myTierProjects": "Administra tus proyectos de mejora de tier.",
     "publicProjects": "Explora proyectos de mejora de tier de la comunidad.",
     "notFound": "La página solicitada no fue encontrada.",
-    "mySessions": "Consulta el historial de tus sesiones de caza con gráficos y filtros."
+    "mySessions": "Consulta el historial de tus sesiones de caza con gráficos y filtros.",
+    "characters": "Gestiona tus perfiles de personajes de Tibia"
   },
   "exerciseWeapons": {
     "title": "Calculadora de Armas de Ejercicio",
@@ -257,7 +260,8 @@
   "errorBoundary": {
     "somethingWentWrong": "Algo salió mal",
     "unexpectedError": "Ocurrió un error inesperado",
-    "reloadPage": "Recargar página"
+    "reloadPage": "Recargar página",
+    "tryAgain": "Intentar de nuevo"
   },
   "huntingSpots": {
     "title": "¿Dónde puedo cazar a cierto nivel? ¿Qué set debería usar?",
@@ -396,7 +400,9 @@
     "lvl": "Nv.",
     "delete": "Eliminar sesión",
     "sessionDate": "Fecha de sesión",
-    "sessionDeleted": "Sesión eliminada"
+    "sessionDeleted": "Sesión eliminada",
+    "lootItems": "Objetos de loot",
+    "supplyItems": "Objetos de supplies"
   },
   "exaltationForge": {
     "title": "Simulador de Exaltation Forge",
@@ -860,5 +866,28 @@
     "type_offensive": "Ofensivo",
     "type_defensive": "Defensivo",
     "type_utility": "Utilidad"
+  },
+  "characters": {
+    "title": "Mis personajes",
+    "description": "Gestiona tus perfiles de personajes de Tibia",
+    "addNew": "Añadir personaje",
+    "name": "Nombre",
+    "namePlaceholder": "Nombre del personaje",
+    "vocation": "Vocación",
+    "vocationPlaceholder": "Seleccionar vocación",
+    "vocation_knight": "Caballero",
+    "vocation_paladin": "Paladín",
+    "vocation_sorcerer": "Mago",
+    "vocation_druid": "Druida",
+    "level": "Nivel",
+    "add": "Añadir",
+    "empty": "Sin personajes. Añade tu primer personaje arriba.",
+    "deleted": "Personaje eliminado",
+    "delete": "Eliminar",
+    "added": "Personaje añadido",
+    "addError": "Error al añadir personaje",
+    "deleteError": "Error al eliminar personaje",
+    "loadError": "Error al cargar personajes",
+    "fillRequired": "Completa todos los campos"
   }
 }

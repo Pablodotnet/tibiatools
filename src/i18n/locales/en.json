@@ -24,7 +24,8 @@
     "exaltationForge": "Exaltation Forge",
     "tierProjects": "My Tier Projects",
     "community": "Public Projects",
-    "mySessions": "My Sessions"
+    "mySessions": "My Sessions",
+    "characters": "Characters"
   },
   "dashboard": {
     "welcome": "Welcome to Tibia Tools",
@@ -144,7 +145,8 @@
     "myTierProjects": "My Tier Projects",
     "publicProjects": "Tier Projects",
     "notFound": "Not Found",
-    "mySessions": "My Sessions"
+    "mySessions": "My Sessions",
+    "characters": "My Characters"
   },
   "pageDescriptions": {
     "home": "Dashboard with hunting spots, OT server banner, tier projects, and quick tools.",
@@ -166,7 +168,8 @@
     "myTierProjects": "Manage your tier upgrade projects.",
     "publicProjects": "Browse community-submitted tier upgrade projects.",
     "notFound": "The requested page was not found.",
-    "mySessions": "View your hunt session history with charts and filters."
+    "mySessions": "View your hunt session history with charts and filters.",
+    "characters": "Manage your Tibia character profiles"
   },
   "exerciseWeapons": {
     "title": "Exercise Weapons Calculator",
@@ -368,7 +371,8 @@
   "errorBoundary": {
     "somethingWentWrong": "Something went wrong",
     "unexpectedError": "An unexpected error occurred",
-    "reloadPage": "Reload page"
+    "reloadPage": "Reload page",
+    "tryAgain": "Try again"
   },
   "huntingSpots": {
     "title": "Where can I hunt at certain level? What set should I use?",
@@ -507,7 +511,9 @@
     "lvl": "Lv.",
     "delete": "Delete session",
     "sessionDate": "Session date",
-    "sessionDeleted": "Session deleted"
+    "sessionDeleted": "Session deleted",
+    "lootItems": "Loot Items",
+    "supplyItems": "Supply Items"
   },
   "exaltationForge": {
     "title": "Exaltation Forge Simulator",
@@ -860,5 +866,28 @@
     "type_offensive": "Offensive",
     "type_defensive": "Defensive",
     "type_utility": "Utility"
+  },
+  "characters": {
+    "title": "My Characters",
+    "description": "Manage your Tibia character profiles",
+    "addNew": "Add new character",
+    "name": "Name",
+    "namePlaceholder": "Character name",
+    "vocation": "Vocation",
+    "vocationPlaceholder": "Select vocation",
+    "vocation_knight": "Knight",
+    "vocation_paladin": "Paladin",
+    "vocation_sorcerer": "Sorcerer",
+    "vocation_druid": "Druid",
+    "level": "Level",
+    "add": "Add",
+    "empty": "No characters yet. Add your first character above.",
+    "deleted": "Character deleted",
+    "delete": "Delete",
+    "added": "Character added",
+    "addError": "Failed to add character",
+    "deleteError": "Failed to delete character",
+    "loadError": "Failed to load characters",
+    "fillRequired": "Please fill in all fields"
   }
 }
