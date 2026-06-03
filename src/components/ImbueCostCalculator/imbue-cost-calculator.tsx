@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { Copy } from 'lucide-react';
+import { toast } from 'sonner';
 import { imbuableItems } from '@/helpers/ImbuingLists';
 import {
   imbuementsTypes,
@@ -13,6 +15,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import { formatGp, parseGpInput } from '@/helpers/exaltationForge';
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 
 const IMBUE_DURATIONS = {
   basic: 20,
@@ -37,6 +40,7 @@ export function ImbueCostCalculator() {
   const [materialPrices, setMaterialPrices] = useState<Record<string, string>>({});
   const [fullSuccess, setFullSuccess] = useState(false);
   const [goldTokenValue, setGoldTokenValue] = useState('');
+  const { copy, copied } = useCopyToClipboard();
 
   const itemsTypes = Object.keys(imbuableItems);
 
@@ -295,6 +299,27 @@ export function ImbueCostCalculator() {
         )}
       </div>
       <div className='flex justify-between mt-6'>
+        {selectedTier && (
+          <Button variant='outline' size='sm' onClick={() => {
+            const lines: string[] = [];
+            lines.push(`${ti('item')}: ${selectedItem ?? ''}`);
+            lines.push(`${ti('imbueType')}: ${selectedImbue ?? ''}`);
+            lines.push(`${ti('tier')}: ${selectedTier ?? ''}`);
+            lines.push(`${ti('totalMarket')}: ${formatGp(total)} gp`);
+            if (goldTokenGpValue > 0) {
+              lines.push(`${ti('totalViaYana')}: ${formatGp(totalWithTokens)} gp`);
+            }
+            lines.push(`${ti('costPerHour')}: ${formatGp(Math.round(costPerHour))} gp/h (${duration}h)`);
+            if (goldTokenGpValue > 0) {
+              lines.push(`${ti('costPerHour')} ${ti('viaYana')}: ${formatGp(Math.round(costPerHourWithTokens))} gp/h`);
+            }
+            copy(lines.join('\n'));
+            toast.success(t('common.copied'));
+          }} className='cursor-pointer'>
+            <Copy className='size-3.5' />
+            {copied ? t('common.copied') : t('common.copy')}
+          </Button>
+        )}
         <Button variant='outline' onClick={handleClear}>
           {ti('clear')}
         </Button>

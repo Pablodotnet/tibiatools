@@ -26,6 +26,7 @@ const AccountPage = lazy(() => import('@/pages/AccountPage'));
 const NotFoundPage = lazy(() => import('@/pages/NotFoundPage'));
 const PublicTierProjectsPage = lazy(() => import('@/pages/PublicTierProjectsPage'));
 const MyTierProjectsPage = lazy(() => import('@/pages/MyTierProjectsPage'));
+const MySessionsPage = lazy(() => import('@/pages/MySessionsPage'));
 
 const DESC_KEYS: Record<string, string> = {
   '/': 'home',
@@ -45,6 +46,7 @@ const DESC_KEYS: Record<string, string> = {
   '/auth': 'auth',
   '/account': 'account',
   '/myTierProjects': 'myTierProjects',
+  '/my-sessions': 'mySessions',
   '/public-projects': 'publicProjects',
 };
 
@@ -66,6 +68,7 @@ const TITLE_KEYS: Record<string, string> = {
   '/auth': 'auth',
   '/account': 'account',
   '/myTierProjects': 'myTierProjects',
+  '/my-sessions': 'mySessions',
   '/public-projects': 'publicProjects',
 };
 
@@ -133,6 +136,14 @@ const AppRouting = () => {
           element={
             <PrivateRoute>
               <MyTierProjectsPage />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path='/my-sessions'
+          element={
+            <PrivateRoute>
+              <MySessionsPage />
             </PrivateRoute>
           }
         />

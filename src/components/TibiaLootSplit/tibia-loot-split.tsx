@@ -4,8 +4,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
+import { Copy } from 'lucide-react';
+import { toast } from 'sonner';
 import { parseHuntSession } from '@/helpers/huntSessionParser';
 import { parseGpInput, formatGp } from '@/helpers/exaltationForge';
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard';
 
 interface PlayerData {
   name: string;
@@ -30,6 +33,7 @@ export function TibiaLootSplit() {
   const [submitted, setSubmitted] = useState(false);
   const [players, setPlayers] = useState<PlayerData[]>([]);
   const [tcValue, setTcValue] = useState('25000');
+  const { copy, copied } = useCopyToClipboard();
 
   const parsed = useMemo(() => {
     if (!rawText.trim()) return null;
@@ -271,6 +275,39 @@ export function TibiaLootSplit() {
                   </tr>
                 </tbody>
               </table>
+            </div>
+          )}
+
+          {results && (
+            <div className='flex gap-2'>
+              <Button variant='outline' size='sm' onClick={() => {
+                const lines: string[] = [];
+                results.perPlayerRows.forEach((r) => {
+                  const abs = Math.abs(r.transfer);
+                  if (abs < 1) {
+                    lines.push(`${r.name} — ${te('even')}`);
+                  } else if (r.transfer > 0) {
+                    lines.push(`${r.name} — ${te('pay')} ${formatGp(Math.round(r.transfer))}`);
+                  } else {
+                    lines.push(`${r.name} — ${te('receive')} ${formatGp(Math.round(abs))}`);
+                  }
+                });
+                if (results.settlements.length > 0) {
+                  lines.push('');
+                  lines.push(te('settlements'));
+                  results.settlements.forEach((s) => {
+                    lines.push(`${s.from} → ${s.to}: ${formatGp(s.amount)}`);
+                  });
+                }
+                lines.push('');
+                lines.push(`${te('partyBalance')}: ${formatGp(Math.round(results.partyBalance))}`);
+                lines.push(`${te('fairShare')}: ${formatGp(Math.round(results.fairShare))}`);
+                copy(lines.join('\n'));
+                toast.success(t('common.copied'));
+              }} className='cursor-pointer'>
+                <Copy className='size-3.5' />
+                {copied ? t('common.copied') : t('common.copy')}
+              </Button>
             </div>
           )}
 

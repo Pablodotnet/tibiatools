@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
-  ChevronDown, ChevronRight, Share2, HandCoins, Search,
+  ChevronDown, ChevronRight, Share2, HandCoins, Search, History,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
@@ -52,6 +52,7 @@ export const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
     labelKey: 'groupHunting',
     items: [
       { to: '/hunting-spots', labelKey: 'huntingSpots', icon: Crosshair },
+      { to: '/my-sessions', labelKey: 'mySessions', icon: History },
       { to: '/exaltation', labelKey: 'exaltationForge', icon: Hammer },
     ],
   },
@@ -69,6 +70,13 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const tl = (key: string) => t(`sidebar.${key}`);
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [expandedGroups, setExpandedGroups] = useState<Record<string, boolean>>(() => {
+    try {
+      const stored = localStorage.getItem('tt-sidebar-groups');
+      if (stored) {
+        const parsed = JSON.parse(stored);
+        if (typeof parsed === 'object' && parsed !== null) return parsed;
+      }
+    } catch { /* ignore malformed JSON */ }
     const initial: Record<string, boolean> = {};
     NAV_GROUPS.forEach((g) => { initial[g.labelKey] = true; });
     return initial;
@@ -78,7 +86,11 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
   const [commandPaletteOpen, setCommandPaletteOpen] = useState(false);
 
   const toggleGroup = (key: string) => {
-    setExpandedGroups((prev) => ({ ...prev, [key]: !prev[key] }));
+    setExpandedGroups((prev) => {
+      const next = { ...prev, [key]: !prev[key] };
+      localStorage.setItem('tt-sidebar-groups', JSON.stringify(next));
+      return next;
+    });
   };
 
   const isActive = (to: string) => {

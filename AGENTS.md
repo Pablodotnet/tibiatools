@@ -58,6 +58,10 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - **TASK-8**: Replaced `<Suspense fallback={null}>` with a centered `Loader2` spinner.
 - **TASK-9**: ⌘K command palette (`src/components/CommandPalette`) using shadcn `CommandDialog`, reuses exported `NAV_GROUPS` from AppLayout, global hotkey, sidebar search button, 3 i18n keys.
 - Committed: `feat: add robots.txt, sitemap, Suspense fallback, and command palette`
+- **TASK-10**: `useCopyToClipboard` hook + copy buttons on Loot Split and Imbue Cost calculators. 2 i18n keys (`common.copy`/`copied`).
+- **TASK-11**: Sidebar group collapse state persisted to `localStorage` (`tt-sidebar-groups`), guarded against malformed JSON.
+- **TASK-12**: New `/my-sessions` page (auth-only) with `recharts` line/bar charts (XP/h, profit, loot vs supplies), spot/date filters, loading skeletons, empty state. Added route, sidebar entry, composite index, 15 i18n keys. 1 new test.
+- Committed: `feat: add copy/share results, sidebar persistence, and hunt session history page`
 
 ### In Progress
 - (none)

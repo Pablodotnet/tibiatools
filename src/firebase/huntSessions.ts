@@ -148,3 +148,16 @@ export async function getRecentSessions(limitCount = 5): Promise<HuntSession[]> 
   const snapshot = await getDocs(q);
   return snapshot.docs.map((d) => mapSessionDoc(d.id, d.data() as Record<string, unknown>));
 }
+
+export async function getAllUserSessions(): Promise<HuntSession[]> {
+  const user = FirebaseAuth.currentUser;
+  if (!user) return [];
+
+  const q = query(
+    collection(FirebaseDB, 'huntSessions'),
+    where('ownerUid', '==', user.uid),
+    orderBy('createdAt', 'desc'),
+  );
+  const snapshot = await getDocs(q);
+  return snapshot.docs.map((d) => mapSessionDoc(d.id, d.data() as Record<string, unknown>));
+}
