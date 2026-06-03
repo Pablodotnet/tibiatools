@@ -65,6 +65,7 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - **TASK-13**: Stamina regeneration calculator with math helper (`src/helpers/stamina.ts`), thin UI with Input/result table, route `/stamina-calculator`, sidebar entry under Calculators, 11 new i18n keys, 11 tests
 - **TASK-14**: Boss/raid cooldown tracker with static boss list (`src/helpers/bosses.ts`), Firestore CRUD (`src/firebase/bossCooldowns.ts`), component with per-boss status/kill/clear, grouped by category, auth-gated save. Route `/boss-cooldowns`, sidebar entry, 21 i18n keys, 7 tests, firestore rules + indexes
 - **TASK-15**: Imbuement expiry tracker with Firestore CRUD (`src/firebase/activeImbuements.ts`), form to log imbuements (slot + tier + note), live countdown with "expiring soon" warnings (4h threshold), active/expired sections. Route `/imbuement-tracker`, sidebar entry, 35 i18n keys (10 slots + 3 tiers), firestore rules + indexes
+- **TASK-16**: PWA via `vite-plugin-pwa` with `registerType: 'autoUpdate'`, web app manifest (`name`, `theme_color: "#1a1a2e"`, icons 192/512 PNG), Workbox precaching (72 entries, ~2MB), runtime caching for Firestore GETs (NetworkFirst, 5min expiry). Service worker + manifest.webmanifest auto-generated at build. 146 tests pass, 0 eslint errors.
 - All 146 tests pass, 0 eslint errors (9 warnings), 755 leaf keys matching across en/es/pt
 
 ### In Progress
