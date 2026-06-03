@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BOSSES, BossEntry, computeBossStatus, formatCooldown } from '@/helpers/bosses';
 import type { BossCooldownDoc } from '@/firebase/bossCooldowns';
 import { getUserBossCooldowns, markBossKilled, clearBossCooldown, clearAllBossCooldowns } from '@/firebase/bossCooldowns';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/hooks/useAuth';
+import { useFirestoreFetch, useClock } from '@/hooks/useFirestoreFetch';
 import { Loader2, Clock, CheckCircle2, Trash2, RotateCcw } from 'lucide-react';
 import { toast } from 'sonner';
 import { captureError, captureEvent } from '@/lib/monitoring';
@@ -13,32 +14,10 @@ export function BossCooldownTracker() {
   const { t } = useTranslation();
   const tb = (key: string) => t(`bossCooldownTracker.${key}`);
   const { user } = useAuth();
-  const [cooldowns, setCooldowns] = useState<BossCooldownDoc[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: cooldownsData, loading, refresh } = useFirestoreFetch<BossCooldownDoc[]>(getUserBossCooldowns, { context: 'load boss cooldowns', errorKey: 'bossCooldownTracker.loadError' });
+  const cooldowns = cooldownsData ?? [];
   const [marking, setMarking] = useState<string | null>(null);
-  const [now, setNow] = useState(Date.now());
-
-  useEffect(() => {
-    const interval = setInterval(() => setNow(Date.now()), 60_000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await getUserBossCooldowns();
-      setCooldowns(data);
-    } catch (e) {
-      captureError(e, { context: 'load boss cooldowns' });
-      toast.error(tb('loadError'));
-    } finally {
-      setLoading(false);
-    }
-  }, [tb]);
-
-  useEffect(() => {
-    load();
-  }, [load]);
+  const now = useClock();
 
   const getKilledAt = (bossKey: string): number | null => {
     const entry = cooldowns.find((c) => c.bossKey === bossKey);
@@ -49,7 +28,7 @@ export function BossCooldownTracker() {
     setMarking(bossKey);
     try {
       await markBossKilled(bossKey);
-      await load();
+      await refresh();
       captureEvent('boss_marked_killed', { bossKey });
       toast.success(tb('marked'));
     } catch (e) {
@@ -65,7 +44,7 @@ export function BossCooldownTracker() {
     if (!entry) return;
     try {
       await clearBossCooldown(entry.id);
-      await load();
+      await refresh();
       toast.success(tb('cleared'));
     } catch (e) {
       captureError(e, { context: 'clear boss cooldown' });
@@ -76,7 +55,7 @@ export function BossCooldownTracker() {
   const handleClearAll = async () => {
     try {
       await clearAllBossCooldowns();
-      await load();
+      await refresh();
       toast.success(tb('clearedAll'));
     } catch (e) {
       captureError(e, { context: 'clear all boss cooldowns' });
@@ -123,6 +102,7 @@ export function BossCooldownTracker() {
                 size='sm'
                 onClick={() => handleClear(boss.key)}
                 className='h-7 text-xs text-muted-foreground'
+                aria-label='Clear cooldown'
               >
                 <Trash2 className='size-3' />
               </Button>

@@ -76,7 +76,7 @@ export const FUSION_SUCCESS_WITH_CORE = 0.65;
  */
 export const FUSION_TIER_LOSS_MITIGATION = 0.5;
 
-export function getForgeGoldPerRow(
+function getForgeGoldPerRow(
   classification: 1 | 2 | 3 | 4,
   rowIndex: number,
   class4GoldByRow: number[],
@@ -107,7 +107,7 @@ export type SingleSimulationResult = {
  * One stochastic run: inventory fusion until at least one item reaches `desiredTier`.
  * Probabilities match Tibia Wiki (50% / 65% success; optional 50% tier-loss mitigation).
  */
-export function simulateSingleForgeRun(params: {
+function simulateSingleForgeRun(params: {
   desiredTier: number;
   classification: 1 | 2 | 3 | 4;
   class4GoldByRow: number[];

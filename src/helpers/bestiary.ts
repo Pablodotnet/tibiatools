@@ -95,12 +95,4 @@ export function calculateCharmPoints(completedKeys: string[]): number {
     .reduce((sum, m) => sum + m.charmPoints, 0);
 }
 
-export function getCompletedDifficultyCounts(completedKeys: string[]): Record<Difficulty, number> {
-  const counts: Record<string, number> = { easy: 0, medium: 0, hard: 0, very_hard: 0, boss: 0 };
-  for (const m of BESTIARY_MONSTERS) {
-    if (completedKeys.includes(m.key)) {
-      counts[m.difficulty]++;
-    }
-  }
-  return counts as Record<Difficulty, number>;
-}
+

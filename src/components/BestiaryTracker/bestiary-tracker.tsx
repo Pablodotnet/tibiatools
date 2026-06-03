@@ -1,9 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BESTIARY_MONSTERS, CHARMS, calculateCharmPoints, type Difficulty } from '@/helpers/bestiary';
 import type { BestiaryProgressDoc } from '@/firebase/bestiaryProgress';
 import { getUserBestiaryProgress, setBestiaryCompletion } from '@/firebase/bestiaryProgress';
 import { useAuth } from '@/hooks/useAuth';
+import { useFirestoreFetch } from '@/hooks/useFirestoreFetch';
 import { Loader2, CheckCircle2, Circle, Sparkles } from 'lucide-react';
 import { Separator } from '@/components/ui/separator';
 import { toast } from 'sonner';
@@ -16,26 +17,9 @@ export function BestiaryTracker() {
   const tb = (key: string) => t(`bestiary.${key}`);
   const { user } = useAuth();
 
-  const [progress, setProgress] = useState<BestiaryProgressDoc[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { data: progressData, loading, refresh } = useFirestoreFetch<BestiaryProgressDoc[]>(getUserBestiaryProgress, { context: 'load bestiary progress', errorKey: 'bestiary.loadError' });
+  const progress = progressData ?? [];
   const [toggling, setToggling] = useState<string | null>(null);
-
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await getUserBestiaryProgress();
-      setProgress(data);
-    } catch (e) {
-      captureError(e, { context: 'load bestiary progress' });
-      toast.error(tb('loadError'));
-    } finally {
-      setLoading(false);
-    }
-  }, [tb]);
-
-  useEffect(() => {
-    load();
-  }, [load]);
 
   const completedKeys = useMemo(() => progress.filter((p) => p.completed).map((p) => p.monsterKey), [progress]);
   const charmPoints = useMemo(() => calculateCharmPoints(completedKeys), [completedKeys]);
@@ -57,7 +41,7 @@ export function BestiaryTracker() {
     try {
       await setBestiaryCompletion(monsterKey, !currentlyCompleted);
       captureEvent('bestiary_toggled', { monsterKey, completed: !currentlyCompleted });
-      await load();
+      await refresh();
     } catch (e) {
       captureError(e, { context: 'toggle bestiary' });
       toast.error(tb('toggleError'));

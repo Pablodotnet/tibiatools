@@ -7,6 +7,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 import { getAllUserSessions } from '@/firebase/huntSessions';
 import { useAuth } from '@/hooks/useAuth';
 import { captureError } from '@/lib/monitoring';
+import { toast } from 'sonner';
 import { formatGp } from '@/helpers/exaltationForge';
 import type { HuntSession } from '@/types/huntSession';
 import {
@@ -45,6 +46,7 @@ const MySessionsPage = () => {
       setSessions(data);
     } catch (e) {
       captureError(e, { context: 'loadMySessions' });
+      toast.error(ts('loadError'));
     } finally {
       setLoading(false);
     }

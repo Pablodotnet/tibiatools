@@ -6,72 +6,10 @@ import {
   signInWithPopup,
   updateProfile,
 } from 'firebase/auth';
-import { FirebaseAuth, FirebaseDB } from './config';
-import {
-  doc,
-  getDoc,
-  getDocs,
-  setDoc,
-  collection,
-} from 'firebase/firestore';
+import { FirebaseAuth } from './config';
 import { LoginParams, RegisterParams } from '@/types';
 
 const googleProvider = new GoogleAuthProvider();
-
-export const getCurrentUser = () => {
-  return FirebaseAuth.currentUser;
-};
-
-export const getUsers = async () => {
-  const usersRef = collection(FirebaseDB, 'users');
-  const usersSnap = await getDocs(usersRef);
-  const users: { uid: string; email: string; displayName: string | null }[] =
-    [];
-  usersSnap.forEach((doc) => {
-    const data = doc.data();
-    users.push({
-      uid: doc.id,
-      email: data.email,
-      displayName: data.displayName || null,
-    });
-  });
-  return users;
-};
-
-export const getUserById = async (uid: string) => {
-  const userRef = doc(FirebaseDB, 'users', uid);
-  const userSnap = await getDoc(userRef);
-  if (userSnap.exists()) {
-    const data = userSnap.data();
-    return {
-      uid: userSnap.id,
-      email: data.email,
-      displayName: data.displayName || null,
-      photoURL: data.photoURL || null,
-      createdAt: data.createdAt?.toDate ? data.createdAt.toDate() : null,
-    };
-  } else {
-    return null;
-  }
-};
-
-export const registerUserInFirestore = async () => {
-  const user = FirebaseAuth.currentUser;
-  if (!user) return;
-
-  const userRef = doc(FirebaseDB, 'users', user.uid);
-  const userSnap = await getDoc(userRef);
-
-  if (!userSnap.exists()) {
-    await setDoc(userRef, {
-      uid: user.uid,
-      email: user.email,
-      displayName: user.displayName || '',
-      photoURL: user.photoURL || '',
-      createdAt: new Date(),
-    });
-  }
-};
 
 export const signInWithGoogle = async () => {
   try {

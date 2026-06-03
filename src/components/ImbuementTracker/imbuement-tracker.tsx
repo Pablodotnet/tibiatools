@@ -1,8 +1,9 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { ActiveImbuementDoc } from '@/firebase/activeImbuements';
 import { getUserImbuements, addImbuement, removeImbuement } from '@/firebase/activeImbuements';
 import { useAuth } from '@/hooks/useAuth';
+import { useFirestoreFetch, useClock } from '@/hooks/useFirestoreFetch';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -25,36 +26,14 @@ export function ImbuementTracker() {
   const ti = (key: string) => t(`imbuementTracker.${key}`);
   const { user } = useAuth();
 
-  const [imbuements, setImbuements] = useState<ActiveImbuementDoc[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [now, setNow] = useState(Date.now());
+  const { data: imbuementsData, loading, refresh } = useFirestoreFetch<ActiveImbuementDoc[]>(getUserImbuements, { context: 'load imbuements', errorKey: 'imbuementTracker.loadError' });
+  const imbuements = imbuementsData ?? [];
+  const now = useClock();
   const [adding, setAdding] = useState(false);
 
   const [newSlot, setNewSlot] = useState('');
   const [newTier, setNewTier] = useState('');
   const [newNote, setNewNote] = useState('');
-
-  useEffect(() => {
-    const interval = setInterval(() => setNow(Date.now()), 60_000);
-    return () => clearInterval(interval);
-  }, []);
-
-  const load = useCallback(async () => {
-    setLoading(true);
-    try {
-      const data = await getUserImbuements();
-      setImbuements(data);
-    } catch (e) {
-      captureError(e, { context: 'load imbuements' });
-      toast.error(ti('loadError'));
-    } finally {
-      setLoading(false);
-    }
-  }, [ti]);
-
-  useEffect(() => {
-    load();
-  }, [load]);
 
   const handleAdd = async () => {
     if (!newSlot || !newTier) {
@@ -65,7 +44,7 @@ export function ImbuementTracker() {
     try {
       const durationHours = IMBUE_DURATIONS[newTier] || 20;
       await addImbuement({ slot: newSlot, tier: newTier, durationHours, note: newNote || undefined });
-      await load();
+      await refresh();
       setNewSlot('');
       setNewTier('');
       setNewNote('');
@@ -82,7 +61,7 @@ export function ImbuementTracker() {
   const handleRemove = async (docId: string) => {
     try {
       await removeImbuement(docId);
-      await load();
+      await refresh();
       toast.success(ti('removed'));
     } catch (e) {
       captureError(e, { context: 'remove imbuement' });
@@ -188,7 +167,7 @@ export function ImbuementTracker() {
                     </div>
                   </div>
                   {user && (
-                    <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} className='h-7 text-xs text-muted-foreground'>
+                    <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} className='h-7 text-xs text-muted-foreground' aria-label='Remove imbuement'>
                       <Trash2 className='size-3' />
                     </Button>
                   )}
@@ -214,7 +193,7 @@ export function ImbuementTracker() {
                   {imb.note && <p className='text-xs text-muted-foreground mt-0.5'>{imb.note}</p>}
                 </div>
                 {user && (
-                  <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} className='h-7 text-xs'>
+                  <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} className='h-7 text-xs' aria-label='Remove expired imbuement'>
                     <Trash2 className='size-3' />
                   </Button>
                 )}

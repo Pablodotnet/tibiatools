@@ -34,7 +34,7 @@ export function formatProfit(n: number): string {
   return `${prefix}${(abs / 1_000).toFixed(0)}k/h`;
 }
 
-export function calculateHoursToLevel(
+function calculateHoursToLevel(
   currentLevel: number,
   currentPercent: number,
   targetLevel: number,
@@ -62,18 +62,6 @@ export function calculateHoursToNextLevel(
   expPerHour: number,
 ): number | null {
   return calculateHoursToLevel(currentLevel, currentPercent, currentLevel + 1, expPerHour);
-}
-
-export function getMergedSpots(
-  vocationId: string,
-  userSpots: HuntingSpotData[],
-): HuntingSpotData[] {
-  const builtIn = huntingSpotsByVocation[vocationId] ?? [];
-  const userSpotsForVocation = userSpots.filter((s) => {
-    const builtInIds = new Set(builtIn.map((b) => b.id));
-    return s.vocationId === vocationId && !builtInIds.has(s.id);
-  });
-  return [...builtIn, ...userSpotsForVocation];
 }
 
 export function formatHours(hours: number): string {

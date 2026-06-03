@@ -131,6 +131,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <button
             onClick={() => setSidebarOpen(false)}
             className='lg:hidden p-1 text-muted-foreground hover:text-foreground cursor-pointer'
+            aria-label='Close sidebar'
           >
             <X className='size-5' />
           </button>
@@ -268,6 +269,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <button
             onClick={() => setSidebarOpen(true)}
             className='p-1 text-muted-foreground hover:text-foreground cursor-pointer'
+            aria-label='Open sidebar'
           >
             <Menu className='size-5' />
           </button>
