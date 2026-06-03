@@ -62,6 +62,10 @@ Then redesign the layout with a sidebar + dashboard homepage.
 - **TASK-11**: Sidebar group collapse state persisted to `localStorage` (`tt-sidebar-groups`), guarded against malformed JSON.
 - **TASK-12**: New `/my-sessions` page (auth-only) with `recharts` line/bar charts (XP/h, profit, loot vs supplies), spot/date filters, loading skeletons, empty state. Added route, sidebar entry, composite index, 15 i18n keys. 1 new test.
 - Committed: `feat: add copy/share results, sidebar persistence, and hunt session history page`
+- **TASK-13**: Stamina regeneration calculator with math helper (`src/helpers/stamina.ts`), thin UI with Input/result table, route `/stamina-calculator`, sidebar entry under Calculators, 11 new i18n keys, 11 tests
+- **TASK-14**: Boss/raid cooldown tracker with static boss list (`src/helpers/bosses.ts`), Firestore CRUD (`src/firebase/bossCooldowns.ts`), component with per-boss status/kill/clear, grouped by category, auth-gated save. Route `/boss-cooldowns`, sidebar entry, 21 i18n keys, 7 tests, firestore rules + indexes
+- **TASK-15**: Imbuement expiry tracker with Firestore CRUD (`src/firebase/activeImbuements.ts`), form to log imbuements (slot + tier + note), live countdown with "expiring soon" warnings (4h threshold), active/expired sections. Route `/imbuement-tracker`, sidebar entry, 35 i18n keys (10 slots + 3 tiers), firestore rules + indexes
+- All 146 tests pass, 0 eslint errors (9 warnings), 755 leaf keys matching across en/es/pt
 
 ### In Progress
 - (none)

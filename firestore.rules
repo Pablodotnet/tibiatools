@@ -37,5 +37,23 @@ service cloud.firestore {
       allow delete: if request.auth != null
         && resource.data.ownerUid == request.auth.uid;
     }
+
+    match /bossCooldowns/{docId} {
+      allow create: if request.auth != null
+        && request.resource.data.ownerUid == request.auth.uid;
+      allow read: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+      allow delete: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+    }
+
+    match /activeImbuements/{docId} {
+      allow create: if request.auth != null
+        && request.resource.data.ownerUid == request.auth.uid;
+      allow read: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+      allow delete: if request.auth != null
+        && resource.data.ownerUid == request.auth.uid;
+    }
   }
 }

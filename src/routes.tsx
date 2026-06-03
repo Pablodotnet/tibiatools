@@ -20,6 +20,9 @@ const OfflineTrainingCalculatorPage = lazy(() => import('@/pages/OfflineTraining
 const LevelCalculatorPage = lazy(() => import('@/pages/LevelCalculatorPage'));
 const BlessCalculatorPage = lazy(() => import('@/pages/BlessCalculatorPage'));
 const ExpShareCalculatorPage = lazy(() => import('@/pages/ExpShareCalculatorPage'));
+const StaminaCalculatorPage = lazy(() => import('@/pages/StaminaCalculatorPage'));
+const BossCooldownTrackerPage = lazy(() => import('@/pages/BossCooldownTrackerPage'));
+const ImbuementTrackerPage = lazy(() => import('@/pages/ImbuementTrackerPage'));
 const TibiaLootSplitPage = lazy(() => import('@/pages/TibiaLootSplitPage'));
 const AuthPage = lazy(() => import('@/pages/AuthPage'));
 const AccountPage = lazy(() => import('@/pages/AccountPage'));
@@ -41,13 +44,11 @@ const DESC_KEYS: Record<string, string> = {
   '/level-calculator': 'levelCalculator',
   '/bless-calculator': 'blessCalculator',
   '/exp-share': 'expShareCalculator',
+  '/stamina-calculator': 'staminaCalculator',
+  '/boss-cooldowns': 'bossCooldownTracker',
+  '/imbuement-tracker': 'imbuementTracker',
   '/tibia-loot-split': 'tibiaLootSplit',
   '/exaltation': 'exaltationForge',
-  '/auth': 'auth',
-  '/account': 'account',
-  '/myTierProjects': 'myTierProjects',
-  '/my-sessions': 'mySessions',
-  '/public-projects': 'publicProjects',
 };
 
 const TITLE_KEYS: Record<string, string> = {
@@ -63,6 +64,9 @@ const TITLE_KEYS: Record<string, string> = {
   '/level-calculator': 'levelCalculator',
   '/bless-calculator': 'blessCalculator',
   '/exp-share': 'expShareCalculator',
+  '/stamina-calculator': 'staminaCalculator',
+  '/boss-cooldowns': 'bossCooldownTracker',
+  '/imbuement-tracker': 'imbuementTracker',
   '/tibia-loot-split': 'tibiaLootSplit',
   '/exaltation': 'exaltationForge',
   '/auth': 'auth',
@@ -108,6 +112,9 @@ const AppRouting = () => {
         <Route path='/level-calculator' element={<LevelCalculatorPage />} />
         <Route path='/bless-calculator' element={<BlessCalculatorPage />} />
         <Route path='/exp-share' element={<ExpShareCalculatorPage />} />
+        <Route path='/stamina-calculator' element={<StaminaCalculatorPage />} />
+        <Route path='/boss-cooldowns' element={<BossCooldownTrackerPage />} />
+        <Route path='/imbuement-tracker' element={<ImbuementTrackerPage />} />
         <Route path='/tibia-loot-split' element={<TibiaLootSplitPage />} />
         <Route path='/hunting-spots' element={<HuntingSpotsPage />} />
         <Route

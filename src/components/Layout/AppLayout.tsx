@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
-  ChevronDown, ChevronRight, Share2, HandCoins, Search, History,
+  ChevronDown, ChevronRight, Share2, HandCoins, Search, History, Clock,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
@@ -46,6 +46,7 @@ export const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
       { to: '/exp-share', labelKey: 'expShareCalculator', icon: Share2 },
       { to: '/bless-calculator', labelKey: 'blessCalculator', icon: Church },
       { to: '/offline-training', labelKey: 'offlineTraining', icon: Timer },
+      { to: '/stamina-calculator', labelKey: 'staminaCalculator', icon: Timer },
     ],
   },
   {
@@ -53,6 +54,8 @@ export const NAV_GROUPS: { labelKey: string; items: NavItem[] }[] = [
     items: [
       { to: '/hunting-spots', labelKey: 'huntingSpots', icon: Crosshair },
       { to: '/my-sessions', labelKey: 'mySessions', icon: History },
+      { to: '/boss-cooldowns', labelKey: 'bossCooldownTracker', icon: Clock },
+      { to: '/imbuement-tracker', labelKey: 'imbuementTracker', icon: Zap },
       { to: '/exaltation', labelKey: 'exaltationForge', icon: Hammer },
     ],
   },
