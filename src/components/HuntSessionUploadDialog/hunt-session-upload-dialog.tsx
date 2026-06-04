@@ -137,8 +137,8 @@ export function HuntSessionUploadDialog({
                       <span className='text-muted-foreground flex items-center gap-1'>
                         <Coins className='size-3' /> {te('loot')}
                       </span>
-                      <span className='tabular-nums text-right font-medium text-green-600 dark:text-green-400'>
-                        {formatProfit(parsed.loot)}
+                      <span className='tabular-nums text-right font-medium text-success'>
+                        +{formatProfit(parsed.loot)}
                       </span>
                     </>
                   )}
@@ -157,8 +157,8 @@ export function HuntSessionUploadDialog({
                       <span className='text-muted-foreground flex items-center gap-1'>
                         <Coins className='size-3' /> {te('balance')}
                       </span>
-                      <span className={`tabular-nums text-right font-medium ${parsed.balance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
-                        {formatProfit(parsed.balance)}
+                      <span className={`tabular-nums text-right font-medium ${parsed.balance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                        {parsed.balance >= 0 ? '+' : ''}{formatProfit(parsed.balance)}
                       </span>
                     </>
                   )}
@@ -216,8 +216,8 @@ export function HuntSessionUploadDialog({
                           <span className='text-muted-foreground'>
                             {p.vocation} &middot; {te('level')} {p.level}
                             {p.balance !== undefined && (
-                              <span className={p.balance >= 0 ? 'text-green-600 dark:text-green-400 ml-2' : 'text-destructive ml-2'}>
-                                {formatProfit(p.balance)}
+                              <span className={p.balance >= 0 ? 'text-success ml-2' : 'text-destructive ml-2'}>
+                                {p.balance >= 0 ? '+' : ''}{formatProfit(p.balance)}
                               </span>
                             )}
                           </span>

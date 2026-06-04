@@ -14,6 +14,7 @@ const ImbuingsPage = () => {
   return (
     <Card className='w-full max-w-md mx-auto mt-6'>
       <CardHeader>
+        <h1 className="sr-only">{translate('title')}</h1>
         <CardTitle>{translate('title')}</CardTitle>
         <CardDescription>{translate('description')}</CardDescription>
       </CardHeader>

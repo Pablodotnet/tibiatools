@@ -28,6 +28,7 @@ export function CharacterManager() {
   const { data: charsData, loading, refresh } = useFirestoreFetch<CharacterDoc[]>(getUserCharacters, { context: 'load characters', errorKey: 'characters.loadError' });
   const characters = charsData ?? [];
   const [adding, setAdding] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
   const [newName, setNewName] = useState('');
   const [newVocation, setNewVocation] = useState('');
   const [newLevel, setNewLevel] = useState('');
@@ -54,6 +55,7 @@ export function CharacterManager() {
   };
 
   const handleDelete = async (id: string) => {
+    setDeletingId(id);
     try {
       await deleteCharacter(id);
       await refresh();
@@ -61,6 +63,8 @@ export function CharacterManager() {
     } catch (e) {
       captureError(e, { context: 'delete character' });
       toast.error(tc('deleteError'));
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -121,8 +125,8 @@ export function CharacterManager() {
                     </p>
                   </div>
                 </div>
-                <Button variant='ghost' size='sm' onClick={() => handleDelete(c.id)} className='h-7 text-xs text-muted-foreground' aria-label={tc('delete')}>
-                  <Trash2 className='size-3' />
+                <Button variant='ghost' size='sm' onClick={() => handleDelete(c.id)} disabled={deletingId === c.id} className='h-7 text-xs text-muted-foreground' aria-label={tc('delete')}>
+                  {deletingId === c.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
                 </Button>
               </div>
             );

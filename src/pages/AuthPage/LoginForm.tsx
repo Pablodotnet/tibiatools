@@ -89,8 +89,8 @@ export const LoginForm = () => {
           )}
         />
         <div className='flex justify-end space-x-4'>
-          <Button type='submit'>{translate('login')}</Button>
-          <Button type='button' variant='outline' onClick={onGoogleSignIn}>
+          <Button type='submit' disabled={isAuthenticating}>{translate('login')}</Button>
+          <Button type='button' variant='outline' onClick={onGoogleSignIn} disabled={isAuthenticating}>
             {translate('googleButton')}
           </Button>
         </div>

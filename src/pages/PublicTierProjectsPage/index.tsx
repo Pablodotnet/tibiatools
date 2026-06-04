@@ -117,6 +117,7 @@ const PublicTierProjectsPage = () => {
     <div className='w-full max-w-2xl mx-auto mt-6'>
       <Card>
         <CardHeader>
+          <h1 className="sr-only">{translate('title')}</h1>
           <CardTitle>{translate('title')}</CardTitle>
           <CardDescription>{translate('description')}</CardDescription>
         </CardHeader>

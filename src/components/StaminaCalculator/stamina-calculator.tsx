@@ -23,8 +23,9 @@ export function StaminaCalculator() {
     <div className='space-y-4'>
       <div className='grid grid-cols-2 gap-4 max-w-xs'>
         <div className='space-y-1'>
-          <Label className='text-xs text-muted-foreground'>{ts('hours')}</Label>
+          <Label htmlFor='stamina-hours' className='text-xs text-muted-foreground'>{ts('hours')}</Label>
           <Input
+            id='stamina-hours'
             type='number'
             min={0}
             max={42}
@@ -35,8 +36,9 @@ export function StaminaCalculator() {
           />
         </div>
         <div className='space-y-1'>
-          <Label className='text-xs text-muted-foreground'>{ts('minutes')}</Label>
+          <Label htmlFor='stamina-minutes' className='text-xs text-muted-foreground'>{ts('minutes')}</Label>
           <Input
+            id='stamina-minutes'
             type='number'
             min={0}
             max={59}

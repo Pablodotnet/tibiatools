@@ -52,7 +52,7 @@ describe('ExaltationPage', () => {
         <ExaltationPage />
       </MemoryRouter>,
     );
-    expect(screen.getByText('Exaltation Forge')).toBeDefined();
+    expect(screen.getByRole('heading', { level: 1, name: 'Exaltation Forge' })).toBeDefined();
     expect(screen.getByText('Plan your upgrades')).toBeDefined();
   });
 

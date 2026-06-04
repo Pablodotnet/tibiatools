@@ -30,6 +30,7 @@ export function ImbuementTracker() {
   const imbuements = imbuementsData ?? [];
   const now = useClock();
   const [adding, setAdding] = useState(false);
+  const [removingId, setRemovingId] = useState<string | null>(null);
 
   const [newSlot, setNewSlot] = useState('');
   const [newTier, setNewTier] = useState('');
@@ -59,6 +60,7 @@ export function ImbuementTracker() {
   };
 
   const handleRemove = async (docId: string) => {
+    setRemovingId(docId);
     try {
       await removeImbuement(docId);
       await refresh();
@@ -66,6 +68,8 @@ export function ImbuementTracker() {
     } catch (e) {
       captureError(e, { context: 'remove imbuement' });
       toast.error(ti('removeError'));
+    } finally {
+      setRemovingId(null);
     }
   };
 
@@ -167,8 +171,8 @@ export function ImbuementTracker() {
                     </div>
                   </div>
                   {user && (
-                    <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} className='h-7 text-xs text-muted-foreground' aria-label='Remove imbuement'>
-                      <Trash2 className='size-3' />
+                    <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='h-7 text-xs text-muted-foreground' aria-label='Remove imbuement'>
+                      {removingId === imb.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
                     </Button>
                   )}
                 </div>
@@ -193,8 +197,8 @@ export function ImbuementTracker() {
                   {imb.note && <p className='text-xs text-muted-foreground mt-0.5'>{imb.note}</p>}
                 </div>
                 {user && (
-                  <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} className='h-7 text-xs' aria-label='Remove expired imbuement'>
-                    <Trash2 className='size-3' />
+                  <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='h-7 text-xs' aria-label='Remove expired imbuement'>
+                    {removingId === imb.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
                   </Button>
                 )}
               </div>

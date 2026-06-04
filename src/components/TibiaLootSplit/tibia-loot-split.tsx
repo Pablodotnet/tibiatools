@@ -142,8 +142,9 @@ export function TibiaLootSplit() {
       {!submitted ? (
         <>
           <div className='space-y-2'>
-            <Label className='text-xs text-muted-foreground'>{te('pasteLabel')}</Label>
+            <Label htmlFor='loot-paste' className='text-xs text-muted-foreground'>{te('pasteLabel')}</Label>
             <textarea
+              id='loot-paste'
               value={rawText}
               onChange={(e: React.ChangeEvent<HTMLTextAreaElement>) => setRawText(e.target.value)}
               placeholder={te('pastePlaceholder')}
@@ -153,8 +154,9 @@ export function TibiaLootSplit() {
           </div>
 
           <div className='space-y-2'>
-            <Label className='text-xs text-muted-foreground'>{te('tcValue')}</Label>
+            <Label htmlFor='loot-tc-value' className='text-xs text-muted-foreground'>{te('tcValue')}</Label>
             <Input
+              id='loot-tc-value'
               type='text'
               value={tcValue}
               onChange={(e) => setTcValue(e.target.value)}
@@ -177,8 +179,9 @@ export function TibiaLootSplit() {
             <p className='text-sm font-medium'>{te('players')} ({players.length})</p>
             <div className='flex items-center gap-2'>
               <div className='flex items-center gap-1'>
-                <Label className='text-xs text-muted-foreground whitespace-nowrap'>{te('tcValue')}</Label>
+                <Label htmlFor='loot-tc-value-2' className='text-xs text-muted-foreground whitespace-nowrap'>{te('tcValue')}</Label>
                 <Input
+                  id='loot-tc-value-2'
                   type='text'
                   value={tcValue}
                   onChange={(e) => setTcValue(e.target.value)}
@@ -221,6 +224,7 @@ export function TibiaLootSplit() {
                           onChange={(e) => updatePlayer(i, 'extraTc', e.target.value)}
                           min={0}
                           className='h-7 w-16 text-xs ml-auto'
+                          aria-label={`${p.name} ${te('extraTc')}`}
                         />
                       </td>
                       <td className='px-2 py-1.5'>
@@ -231,6 +235,7 @@ export function TibiaLootSplit() {
                           min={0}
                           step={0.1}
                           className='h-7 w-16 text-xs ml-auto'
+                          aria-label={`${p.name} ${te('extraGoldK')}`}
                         />
                       </td>
                       {results && (
@@ -305,7 +310,7 @@ export function TibiaLootSplit() {
                 copy(lines.join('\n'));
                 toast.success(t('common.copied'));
               }} className='cursor-pointer'>
-                <Copy className='size-3.5' />
+                <Copy className='size-3.5' data-icon />
                 {copied ? t('common.copied') : t('common.copy')}
               </Button>
             </div>

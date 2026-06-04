@@ -120,7 +120,7 @@ export function ImbueCostCalculator() {
   return (
     <>
       <div className='grid w-full items-center gap-4'>
-        <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col gap-2'>
           <Label htmlFor='item_type'>{ti('itemType')}</Label>
           <Select onValueChange={(v) => { setSelectedType(v); setSelectedItem(null); setSelectedImbue(null); setSelectedTier(null); setMaterialPrices({}); }} value={selectedType ?? ''}>
             <SelectTrigger id='item_type'>
@@ -137,7 +137,7 @@ export function ImbueCostCalculator() {
         </div>
 
         {selectedType && (
-          <div className='flex flex-col space-y-2'>
+          <div className='flex flex-col gap-2'>
             <Label htmlFor='item_select'>{ti('item')}</Label>
             <Select onValueChange={(v) => { setSelectedItem(v); setSelectedImbue(null); setSelectedTier(null); setMaterialPrices({}); }} value={selectedItem ?? ''}>
               <SelectTrigger id='item_select'>
@@ -156,7 +156,7 @@ export function ImbueCostCalculator() {
         )}
 
         {selectedItem && (
-          <div className='flex flex-col space-y-2'>
+          <div className='flex flex-col gap-2'>
             <Label htmlFor='imbue_type'>{ti('imbueType')}</Label>
             <Select onValueChange={(v) => { setSelectedImbue(v); setSelectedTier(null); setMaterialPrices({}); }} value={selectedImbue ?? ''}>
               <SelectTrigger id='imbue_type'>
@@ -174,7 +174,7 @@ export function ImbueCostCalculator() {
         )}
 
         {selectedImbue && (
-          <div className='flex flex-col space-y-2'>
+          <div className='flex flex-col gap-2'>
             <Label htmlFor='tier_select'>{ti('tier')}</Label>
             <Select onValueChange={handleTierChange} value={selectedTier ?? ''}>
               <SelectTrigger id='tier_select'>
@@ -241,6 +241,7 @@ export function ImbueCostCalculator() {
                             value={priceStr}
                             onChange={(e) => handlePriceChange(m.itemName, e.target.value)}
                             className='h-8 w-28 ml-auto text-right tabular-nums'
+                            aria-label={`${m.itemName} ${ti('pricePerUnit')}`}
                           />
                         </td>
                         <td className='px-3 py-2 text-right tabular-nums'>{formatGp(marketSub)}</td>
@@ -316,7 +317,7 @@ export function ImbueCostCalculator() {
             copy(lines.join('\n'));
             toast.success(t('common.copied'));
           }} className='cursor-pointer'>
-            <Copy className='size-3.5' />
+            <Copy className='size-3.5' data-icon />
             {copied ? t('common.copied') : t('common.copy')}
           </Button>
         )}

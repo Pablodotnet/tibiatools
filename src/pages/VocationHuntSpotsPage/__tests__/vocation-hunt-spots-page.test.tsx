@@ -82,7 +82,7 @@ function renderAtRoute(vocationId: string) {
 describe('VocationHuntSpotsPage', () => {
   it('renders hunting spots for a known vocation', async () => {
     renderAtRoute('knight');
-    expect(screen.getByText(/Hunting Spots for/)).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: /Hunting Spots for/ })).toBeInTheDocument();
     await screen.findByText('Carlin Cults');
   });
 

@@ -3,6 +3,8 @@ import { formatRate, formatProfit } from '@/helpers/huntingSpots';
 import type { HuntSession } from '@/types/huntSession';
 import { User, Coins, PackageOpen, Zap, Swords, HeartPulse, Shield, Users, PartyPopper, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
 import { memo, useState } from 'react';
+import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 
 export const HuntSessionCard = memo(function HuntSessionCard({
   session,
@@ -36,8 +38,8 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                 {session.isParty ? te('partySession') : te('soloSession')}
               </span>
               {session.balance !== undefined && (
-                <span className={`text-xs tabular-nums font-medium ${session.balance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
-                  {formatProfit(session.balance)}
+                <span className={`text-xs tabular-nums font-medium ${session.balance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                  {session.balance >= 0 ? '+' : ''}{formatProfit(session.balance)}
                 </span>
               )}
               {session.xpPerHour !== undefined && (
@@ -64,7 +66,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
           {isOwner && (
             <button
               onClick={(e) => { e.stopPropagation(); onDelete(session.id); }}
-              className='p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer'
+              className='p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
               title={te('delete')}
               aria-label={te('delete')}
             >
@@ -87,8 +89,8 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                 <span className='text-muted-foreground flex items-center gap-1'>
                   <Coins className='size-3' /> {te('loot')}
                 </span>
-                <span className='tabular-nums text-right font-medium text-green-600 dark:text-green-400'>
-                  {formatProfit(session.loot)}
+                <span className='tabular-nums text-right font-medium text-success'>
+                  +{formatProfit(session.loot)}
                 </span>
               </>
             )}
@@ -107,8 +109,8 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                 <span className='text-muted-foreground flex items-center gap-1'>
                   <Coins className='size-3' /> {te('balance')}
                 </span>
-                <span className={`tabular-nums text-right font-medium ${session.balance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
-                  {formatProfit(session.balance)}
+                <span className={`tabular-nums text-right font-medium ${session.balance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                  {session.balance >= 0 ? '+' : ''}{formatProfit(session.balance)}
                 </span>
               </>
             )}
@@ -155,7 +157,9 @@ export const HuntSessionCard = memo(function HuntSessionCard({
           </div>
 
           {session.players && session.players.length > 0 && (
-            <div className='border-t pt-2'>
+            <>
+            <Separator />
+            <div className='pt-2'>
               <p className='text-xs font-medium text-muted-foreground flex items-center gap-1 mb-1'>
                 <Users className='size-3' /> {te('partyMembers')} ({session.players.length})
               </p>
@@ -166,27 +170,30 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                     <span className='text-muted-foreground'>
                       {p.vocation} &middot; {te('lvl')} {p.level}
                       {p.balance !== undefined && (
-                        <span className={p.balance >= 0 ? 'text-green-600 dark:text-green-400 ml-2' : 'text-destructive ml-2'}>
-                          {formatProfit(p.balance)}
+                        <span className={p.balance >= 0 ? 'text-success ml-2' : 'text-destructive ml-2'}>
+                          {p.balance >= 0 ? '+' : ''}{formatProfit(p.balance)}
                         </span>
                       )}
                     </span>
-                  </div>
-                ))}
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
+            </>
           )}
 
           {session.lootItems && session.lootItems.length > 0 && (
-            <div className='border-t pt-2'>
+            <>
+            <Separator />
+            <div className='pt-2'>
               <p className='text-xs font-medium text-muted-foreground flex items-center gap-1 mb-1'>
                 <Coins className='size-3' /> {te('lootItems')} ({session.lootItems.length})
               </p>
               <div className='flex flex-wrap gap-1'>
                 {session.lootItems.slice(0, 10).map((item) => (
-                  <span key={item.name} className='text-[10px] bg-green-50 dark:bg-green-950/20 rounded px-1.5 py-0.5'>
+                  <Badge key={item.name} className='text-[10px] bg-success/10 px-1.5 py-0.5 font-normal rounded'>
                     {item.name}: {item.count}× ({formatProfit(item.value)})
-                  </span>
+                  </Badge>
                 ))}
                 {session.lootItems.length > 10 && (
                   <span className='text-[10px] text-muted-foreground'>
@@ -195,18 +202,21 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                 )}
               </div>
             </div>
+            </>
           )}
 
           {session.supplyItems && session.supplyItems.length > 0 && (
-            <div className='border-t pt-2'>
+            <>
+            <Separator />
+            <div className='pt-2'>
               <p className='text-xs font-medium text-muted-foreground flex items-center gap-1 mb-1'>
                 <PackageOpen className='size-3' /> {te('supplyItems')} ({session.supplyItems.length})
               </p>
               <div className='flex flex-wrap gap-1'>
                 {session.supplyItems.slice(0, 10).map((item) => (
-                  <span key={item.name} className='text-[10px] bg-red-50 dark:bg-red-950/20 rounded px-1.5 py-0.5'>
+                  <Badge key={item.name} className='text-[10px] bg-destructive/10 px-1.5 py-0.5 font-normal rounded'>
                     {item.name}: {item.count}× ({formatProfit(item.value)})
-                  </span>
+                  </Badge>
                 ))}
                 {session.supplyItems.length > 10 && (
                   <span className='text-[10px] text-muted-foreground'>
@@ -215,16 +225,19 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                 )}
               </div>
             </div>
+            </>
           )}
 
           {session.killedMonsters && session.killedMonsters.length > 0 && (
-            <div className='border-t pt-2'>
+            <>
+            <Separator />
+            <div className='pt-2'>
               <p className='text-xs font-medium text-muted-foreground mb-1'>{te('killedMonsters')}</p>
               <div className='flex flex-wrap gap-1'>
                 {session.killedMonsters.slice(0, 15).map((m) => (
-                  <span key={`${m.name}-${m.count}`} className='text-[10px] bg-muted/30 rounded px-1.5 py-0.5'>
+                  <Badge key={`${m.name}-${m.count}`} className='text-[10px] bg-muted/30 px-1.5 py-0.5 font-normal rounded'>
                     {m.name}: {m.count}
-                  </span>
+                  </Badge>
                 ))}
                 {session.killedMonsters.length > 15 && (
                   <span className='text-[10px] text-muted-foreground'>
@@ -233,12 +246,16 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                 )}
               </div>
             </div>
+            </>
           )}
 
           {session.sessionDate && (
-            <p className='text-[10px] text-muted-foreground border-t pt-1'>
+            <>
+            <Separator />
+            <p className='text-[10px] text-muted-foreground pt-1'>
               {te('sessionDate')}: {session.sessionDate}
             </p>
+            </>
           )}
         </div>
       )}

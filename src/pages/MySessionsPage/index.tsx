@@ -198,15 +198,17 @@ const MySessionsPage = () => {
             </CardHeader>
             <CardContent>
               {xpChartData.length > 0 ? (
-                <ResponsiveContainer width='100%' height={256}>
-                  <LineChart data={xpChartData}>
-                    <CartesianGrid strokeDasharray='3 3' className='stroke-border' />
-                    <XAxis dataKey='name' tick={{ fontSize: 11 }} />
-                    <YAxis tickFormatter={formatRate} tick={{ fontSize: 11 }} />
-                    <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
-                    <Line type='monotone' dataKey='xpPerHour' stroke='hsl(var(--primary))' strokeWidth={2} dot={{ r: 3 }} />
-                  </LineChart>
-                </ResponsiveContainer>
+                <div role='img' aria-label={ts('xpPerHourChart')}>
+                  <ResponsiveContainer width='100%' height={256}>
+                    <LineChart data={xpChartData}>
+                      <CartesianGrid strokeDasharray='3 3' className='stroke-border' />
+                      <XAxis dataKey='name' tick={{ fontSize: 12 }} />
+                      <YAxis tickFormatter={formatRate} tick={{ fontSize: 12 }} />
+                      <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
+                      <Line type='monotone' dataKey='xpPerHour' stroke='hsl(var(--primary))' strokeWidth={2} dot={{ r: 3 }} />
+                    </LineChart>
+                  </ResponsiveContainer>
+                </div>
               ) : (
                 <p className='text-sm text-muted-foreground text-center py-8'>{ts('noData')}</p>
               )}
@@ -219,15 +221,17 @@ const MySessionsPage = () => {
             </CardHeader>
             <CardContent>
               {profitChartData.length > 0 ? (
-                <ResponsiveContainer width='100%' height={256}>
-                  <BarChart data={profitChartData}>
-                    <CartesianGrid strokeDasharray='3 3' className='stroke-border' />
-                    <XAxis dataKey='name' tick={{ fontSize: 11 }} />
-                    <YAxis tickFormatter={formatRate} tick={{ fontSize: 11 }} />
-                    <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
-                    <Bar dataKey='balance' fill='hsl(var(--primary))' radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <div role='img' aria-label={ts('profitChart')}>
+                  <ResponsiveContainer width='100%' height={256}>
+                    <BarChart data={profitChartData}>
+                      <CartesianGrid strokeDasharray='3 3' className='stroke-border' />
+                      <XAxis dataKey='name' tick={{ fontSize: 12 }} />
+                      <YAxis tickFormatter={formatRate} tick={{ fontSize: 12 }} />
+                      <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
+                      <Bar dataKey='balance' fill='hsl(var(--primary))' radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               ) : (
                 <p className='text-sm text-muted-foreground text-center py-8'>{ts('noData')}</p>
               )}
@@ -240,16 +244,18 @@ const MySessionsPage = () => {
             </CardHeader>
             <CardContent>
               {lootSuppliesChartData.length > 0 ? (
-                <ResponsiveContainer width='100%' height={256}>
-                  <BarChart data={lootSuppliesChartData}>
-                    <CartesianGrid strokeDasharray='3 3' className='stroke-border' />
-                    <XAxis dataKey='name' tick={{ fontSize: 11 }} />
-                    <YAxis tickFormatter={formatRate} tick={{ fontSize: 11 }} />
-                    <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
-                    <Bar dataKey='loot' fill='hsl(var(--chart-1))' radius={[4, 4, 0, 0]} />
-                    <Bar dataKey='supplies' fill='hsl(var(--chart-2))' radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
+                <div role='img' aria-label={ts('lootSuppliesChart')}>
+                  <ResponsiveContainer width='100%' height={256}>
+                    <BarChart data={lootSuppliesChartData}>
+                      <CartesianGrid strokeDasharray='3 3' className='stroke-border' />
+                      <XAxis dataKey='name' tick={{ fontSize: 12 }} />
+                      <YAxis tickFormatter={formatRate} tick={{ fontSize: 12 }} />
+                      <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
+                      <Bar dataKey='loot' fill='hsl(var(--chart-1))' radius={[4, 4, 0, 0]} />
+                      <Bar dataKey='supplies' fill='hsl(var(--chart-2))' radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
               ) : (
                 <p className='text-sm text-muted-foreground text-center py-8'>{ts('noData')}</p>
               )}

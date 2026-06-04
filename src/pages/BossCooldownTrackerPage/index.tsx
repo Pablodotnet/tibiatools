@@ -8,6 +8,7 @@ const BossCooldownTrackerPage = () => {
   return (
     <Card className='w-full max-w-3xl mx-auto mt-6'>
       <CardHeader>
+        <h1 className="sr-only">{tb('title')}</h1>
         <CardTitle>{tb('title')}</CardTitle>
         <CardDescription>{tb('description')}</CardDescription>
       </CardHeader>

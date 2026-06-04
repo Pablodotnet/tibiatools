@@ -30,7 +30,7 @@ export function QuickToolsWidget() {
               <Link
                 key={item.to}
                 to={item.to}
-                className='flex flex-col items-center gap-1 rounded-md border px-3 py-3 text-center hover:bg-accent transition-colors'
+                className='flex flex-col items-center gap-1 rounded-md border px-3 py-3 text-center hover:bg-accent transition-colors focus-visible:outline-2 focus-visible:outline-ring'
               >
                 <Icon className='size-5 text-muted-foreground' />
                 <span className='text-xs font-medium'>{tw(item.labelKey)}</span>

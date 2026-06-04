@@ -24,6 +24,7 @@ const AuthPage = () => {
   return (
     <Card className='w-full max-w-md mx-auto mt-6'>
       <CardHeader>
+        <h1 className="sr-only">{translate('login')}</h1>
         {!showRegisterForm ? (
           <>
             <CardTitle>{translate('login')}</CardTitle>

@@ -32,7 +32,7 @@ export function RecentSessionsWidget() {
             {sessions.map((s) => (
               <div
                 key={s.id}
-                className='flex items-center justify-between rounded-md px-2.5 py-2 text-xs hover:bg-accent transition-colors'
+                className='flex items-center justify-between rounded-md px-2.5 py-2 text-xs hover:bg-accent transition-colors focus-visible:outline-2 focus-visible:outline-ring'
               >
                 <div className='min-w-0 flex-1'>
                   <p className='font-medium truncate'>{s.spotName}</p>
@@ -41,8 +41,8 @@ export function RecentSessionsWidget() {
                   </p>
                 </div>
                 <div className='text-right shrink-0 ml-2'>
-                  <p className={`tabular-nums ${(s.balance ?? 0) >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
-                    {s.balance != null ? `${s.balance.toLocaleString()} gp` : '—'}
+                  <p className={`tabular-nums ${(s.balance ?? 0) >= 0 ? 'text-success' : 'text-destructive'}`}>
+                    {s.balance != null ? `${(s.balance >= 0 ? '+' : '')}${s.balance.toLocaleString()} gp` : '—'}
                   </p>
                   {s.xpPerHour != null && (
                     <p className='text-muted-foreground'>{s.xpPerHour.toLocaleString()} XP/h</p>

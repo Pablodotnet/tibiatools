@@ -76,6 +76,7 @@ export function BossCooldownTracker() {
   const { data: cooldownsData, loading, refresh } = useFirestoreFetch<BossCooldownDoc[]>(getUserBossCooldowns, { context: 'load boss cooldowns', errorKey: 'bossCooldownTracker.loadError' });
   const cooldowns = cooldownsData ?? [];
   const [marking, setMarking] = useState<string | null>(null);
+  const [clearingAll, setClearingAll] = useState(false);
   const now = useClock();
 
   const getKilledAt = (bossKey: string): number | null => {
@@ -85,6 +86,7 @@ export function BossCooldownTracker() {
 
 
   const handleClearAll = async () => {
+    setClearingAll(true);
     try {
       await clearAllBossCooldowns();
       await refresh();
@@ -92,6 +94,8 @@ export function BossCooldownTracker() {
     } catch (e) {
       captureError(e, { context: 'clear all boss cooldowns' });
       toast.error(tb('clearError'));
+    } finally {
+      setClearingAll(false);
     }
   };
 
@@ -141,8 +145,8 @@ export function BossCooldownTracker() {
     <div className='space-y-6'>
       {user && hasCooldowns && (
         <div className='flex justify-end'>
-          <Button variant='ghost' size='sm' onClick={handleClearAll} className='h-7 text-xs text-muted-foreground'>
-            <Trash2 className='size-3 mr-1' />
+          <Button variant='ghost' size='sm' onClick={handleClearAll} disabled={clearingAll} className='h-7 text-xs text-muted-foreground'>
+            {clearingAll ? <Loader2 className='size-3 animate-spin mr-1' /> : <Trash2 className='size-3 mr-1' />}
             {tb('clearAll')}
           </Button>
         </div>

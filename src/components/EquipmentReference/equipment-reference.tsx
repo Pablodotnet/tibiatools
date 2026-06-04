@@ -2,9 +2,9 @@ import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { imbuableItems } from '@/helpers/ImbuingLists';
 import { imbuingsAvailableByType, imbuements } from '@/components/ImbuingChecker/imbuements';
-import { getImbuementIcon } from '@/helpers/getImbuementIcon';
 import { VocationsIcons } from '@/helpers/vocations-icons';
 import { Separator } from '@/components/ui/separator';
+import { Badge } from '@/components/ui/badge';
 
 const VOCATIONS = [
   { id: 'knight', name: 'Knight', icon: VocationsIcons.knightGif },
@@ -195,12 +195,13 @@ export function EquipmentReference() {
                       {item.elements && item.elements.length > 0 ? (
                         <div className='flex flex-wrap gap-1 justify-center'>
                           {item.elements.map((el) => (
-                            <span
+                            <Badge
                               key={el}
-                              className='inline-block px-1.5 py-0.5 rounded text-xs font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                              variant="outline"
+                              className='px-1.5 py-0.5 font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
                             >
                               {ELEMENT_LABELS[el] ?? el}
-                            </span>
+                            </Badge>
                           ))}
                         </div>
                       ) : (
@@ -212,16 +213,14 @@ export function EquipmentReference() {
                         {showImbues.map((ik) => {
                           const imbue = imbuements[ik as keyof typeof imbuements];
                           if (!imbue) return null;
-                          const icon = getImbuementIcon(imbue.icon);
                           return (
-                            <span
+                            <Badge
                               key={ik}
-                              className='inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-xs bg-muted'
-                              title={imbue.effect}
+                              variant="outline"
+                              className='px-1.5 py-0.5 font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
                             >
-                              {icon && <img src={icon} alt='' className='size-3' />}
-                              {imbue.effect}
-                            </span>
+                              {imbue.name}
+                            </Badge>
                           );
                         })}
                         {imbueKeys.length > 3 && (

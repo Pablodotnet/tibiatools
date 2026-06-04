@@ -41,7 +41,7 @@ export const HuntingSpotsCard = ({ searchTerm = '' }: { searchTerm?: string }) =
             to={`/hunting-spots/${vocation.id}`}
             className="w-full flex items-center px-4 py-3 mb-4 rounded-lg border bg-card text-card-foreground shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all"
           >
-            <img src={vocation.icon} alt={vocation.name} className="w-10 h-10 mr-4" />
+            <img src={vocation.icon} alt={vocation.name} className="size-10 mr-4" />
             <div>
               <h4 className="scroll-m-20 text-xl font-semibold tracking-tight">
                 {highlightMatch(vocation.name, searchTerm)}

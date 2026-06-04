@@ -305,7 +305,7 @@ export function ExerciseWeaponsCalculator() {
 
   return (
     <div className='grid w-full items-center gap-4'>
-      <div className='flex flex-col space-y-2'>
+      <div className='flex flex-col gap-2'>
         <Label>{ti('calculationMode')}</Label>
         <div className='flex gap-4'>
           {(['skill', 'weapons'] as CalcMode[]).map((mode) => (
@@ -325,7 +325,7 @@ export function ExerciseWeaponsCalculator() {
       </div>
 
       <div className='grid grid-cols-2 gap-4'>
-        <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col gap-2'>
           <Label htmlFor='skill_type'>{ti('skillType')}</Label>
           <Select onValueChange={(v) => { setSkillType(v as SkillType); setCalculated(false); }} value={skillType}>
             <SelectTrigger id='skill_type'>
@@ -341,7 +341,7 @@ export function ExerciseWeaponsCalculator() {
           </Select>
         </div>
 
-        <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col gap-2'>
           <Label>{ti('weaponType')}</Label>
           <div className='flex flex-wrap gap-3'>
             {weaponTypeOptions.map((type) => (
@@ -361,7 +361,7 @@ export function ExerciseWeaponsCalculator() {
         </div>
       </div>
 
-      <div className='flex flex-col space-y-2'>
+      <div className='flex flex-col gap-2'>
         <Label>{ti('trainerType')}</Label>
         <div className='flex gap-4'>
           {(['public', 'private'] as TrainerType[]).map((type) => (
@@ -381,7 +381,7 @@ export function ExerciseWeaponsCalculator() {
       </div>
 
       <div className='grid grid-cols-2 gap-4'>
-        <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col gap-2'>
           <Label htmlFor='current_skill'>{ti('currentSkill')}</Label>
           <Input
             id='current_skill'
@@ -393,7 +393,7 @@ export function ExerciseWeaponsCalculator() {
             onChange={(e) => { setCurrentSkill(e.target.value); setCalculated(false); }}
           />
         </div>
-        <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col gap-2'>
           <Label htmlFor='pct_next'>{ti('percentToNext')}</Label>
           <Input
             id='pct_next'
@@ -410,7 +410,7 @@ export function ExerciseWeaponsCalculator() {
 
       <div className='grid grid-cols-2 gap-4'>
         {calculationMode === 'skill' ? (
-          <div className='flex flex-col space-y-2'>
+          <div className='flex flex-col gap-2'>
             <Label htmlFor='target_skill'>{ti('targetSkill')}</Label>
             <Input
               id='target_skill'
@@ -423,7 +423,7 @@ export function ExerciseWeaponsCalculator() {
             />
           </div>
         ) : (
-          <div className='flex flex-col space-y-2'>
+          <div className='flex flex-col gap-2'>
             <Label htmlFor='weapon_count'>{ti('weaponCount')}</Label>
             <Input
               id='weapon_count'
@@ -436,7 +436,7 @@ export function ExerciseWeaponsCalculator() {
             />
           </div>
         )}
-        <div className='flex flex-col space-y-2'>
+        <div className='flex flex-col gap-2'>
           <Label htmlFor='loyalty'>{ti('loyaltyBonus')}</Label>
           <Select value={loyaltyBonus} onValueChange={(v) => { setLoyaltyBonus(v); setCalculated(false); }}>
             <SelectTrigger id='loyalty'>
@@ -468,7 +468,7 @@ export function ExerciseWeaponsCalculator() {
           <div className='space-y-3'>
             <h3 className='text-sm font-medium'>{ti('pricing')}</h3>
             <div className='grid grid-cols-2 gap-4'>
-              <div className='flex flex-col space-y-1'>
+              <div className='flex flex-col gap-1'>
                 <Label htmlFor='wp_price' className='text-xs'>{ti('weaponPrice')}</Label>
                 <Input
                   id='wp_price'
@@ -479,7 +479,7 @@ export function ExerciseWeaponsCalculator() {
                   className='h-8 text-sm tabular-nums'
                 />
               </div>
-              <div className='flex flex-col space-y-1'>
+              <div className='flex flex-col gap-1'>
                 <Label htmlFor='tc_price' className='text-xs'>{ti('tcPerWeapon')}</Label>
                 <Input
                   id='tc_price'
@@ -490,7 +490,7 @@ export function ExerciseWeaponsCalculator() {
                   className='h-8 text-sm tabular-nums'
                 />
               </div>
-              <div className='flex flex-col space-y-1'>
+              <div className='flex flex-col gap-1'>
                 <Label htmlFor='tc_gp' className='text-xs'>{ti('tcToGp')}</Label>
                 <Input
                   id='tc_gp'
@@ -501,7 +501,7 @@ export function ExerciseWeaponsCalculator() {
                   className='h-8 text-sm tabular-nums'
                 />
               </div>
-              <div className='flex flex-col space-y-1'>
+              <div className='flex flex-col gap-1'>
                 <Label htmlFor='tc_mxn' className='text-xs'>{ti('tcToMxn')}</Label>
                 <Input
                   id='tc_mxn'
@@ -600,7 +600,7 @@ export function ExerciseWeaponsCalculator() {
 
           <div className='flex gap-2'>
             <Button variant='outline' size='sm' className='gap-1.5' onClick={handleCopyResults}>
-              <Copy className='size-3.5' />
+              <Copy className='size-3.5' data-icon />
               {ti('copyResults')}
             </Button>
           </div>

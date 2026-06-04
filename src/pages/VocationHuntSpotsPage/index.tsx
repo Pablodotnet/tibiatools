@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
+import { Badge } from "@/components/ui/badge";
 import { useTranslation } from 'react-i18next';
 import { useParams, Navigate } from "react-router-dom";
 import { vocations } from '@/helpers';
@@ -94,6 +95,7 @@ const VocationHuntSpotsPage = () => {
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
       <Card>
         <CardHeader>
+          <h1 className="sr-only">{translate('title')} {vocation.name}</h1>
           <CardTitle>
             {translate('title')} {vocation.name}
           </CardTitle>
@@ -277,10 +279,10 @@ function SpotCard({
           <div className="flex items-center gap-2">
             <h3 className="font-semibold text-sm">{spot.name}</h3>
             {spot.ownerDisplayName && (
-              <span className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm">
+              <Badge className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm font-normal">
                 <User className="size-2.5" />
                 {spot.ownerDisplayName}
-              </span>
+              </Badge>
             )}
           </div>
           <p className="text-xs text-muted-foreground">
@@ -291,7 +293,7 @@ function SpotCard({
           {isOwner && (
             <button
               onClick={(e) => { e.stopPropagation(); onDelete(spot.id); }}
-              className="p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer"
+              className="p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
               title={translate('deleteSpot')}
             >
               <Trash2 className="size-3.5" />
@@ -306,7 +308,9 @@ function SpotCard({
       </button>
 
       {expanded && (
-        <div className="border-t px-4 py-3 space-y-2 text-sm fade-in">
+        <>
+        <Separator />
+        <div className="px-4 py-3 space-y-2 text-sm fade-in">
           <div className="grid grid-cols-2 gap-2">
             <div>
               <span className="text-muted-foreground">{translate('expRaw')}:</span>{' '}
@@ -318,8 +322,8 @@ function SpotCard({
             </div>
             <div>
               <span className="text-muted-foreground">{translate('profit')}:</span>{' '}
-              <span className={`tabular-nums font-medium ${spot.profit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
-                {formatProfit(spot.profit)}
+              <span className={`tabular-nums font-medium ${spot.profit >= 0 ? 'text-success' : 'text-destructive'}`}>
+                {spot.profit >= 0 ? '+' : ''}{formatProfit(spot.profit)}
               </span>
             </div>
             <div>
@@ -393,8 +397,8 @@ function SpotCard({
               <div className="grid grid-cols-2 gap-2 text-xs">
                 <div>
                   <span className="text-muted-foreground">{translate('netProfit')}:</span>{' '}
-                  <span className={netProfit >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}>
-                    {formatProfit(netProfit)}
+                  <span className={netProfit >= 0 ? 'text-success' : 'text-destructive'}>
+                    {netProfit >= 0 ? '+' : ''}{formatProfit(netProfit)}
                   </span>
                 </div>
                 <div>
@@ -416,9 +420,12 @@ function SpotCard({
           )}
 
           {spot.notes && (
-            <p className="text-xs text-muted-foreground italic pt-1 border-t">
+            <>
+            <Separator />
+            <p className="text-xs text-muted-foreground italic pt-1">
               {spot.notes}
             </p>
+            </>
           )}
 
           <Separator />
@@ -429,9 +436,9 @@ function SpotCard({
                 <ListChecks className="size-3" />
                 {translate('huntSessions')}
                 {sessions.length > 0 && (
-                  <span className="text-[10px] bg-muted px-1.5 py-0.5 rounded-sm">
+                  <Badge className="text-[10px] bg-muted px-1.5 py-0.5 rounded-sm font-normal">
                     {showAllSessions || sessions.length <= 10 ? sessions.length : `10/${sessions.length}`}
-                  </span>
+                  </Badge>
                 )}
               </p>
               <HuntSessionUploadDialog
@@ -449,8 +456,8 @@ function SpotCard({
                 </div>
                 <div>
                   <span className="text-muted-foreground">{translate('avgProfit')}</span>
-                  <p className={`font-medium tabular-nums ${sessionStats.avgBalance >= 0 ? 'text-green-600 dark:text-green-400' : 'text-destructive'}`}>
-                    {formatProfit(sessionStats.avgBalance)}
+                  <p className={`font-medium tabular-nums ${sessionStats.avgBalance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                    {sessionStats.avgBalance >= 0 ? '+' : ''}{formatProfit(sessionStats.avgBalance)}
                   </p>
                 </div>
                 <div>
@@ -493,6 +500,7 @@ function SpotCard({
             )}
           </div>
         </div>
+        </>
       )}
     </div>
   );

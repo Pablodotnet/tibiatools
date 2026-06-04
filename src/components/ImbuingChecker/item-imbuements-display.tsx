@@ -97,7 +97,7 @@ const ImbuementCard = ({ imbuement, isBlocked }: ImbuementCardProps) => {
             <img
               src={getImbuementIcon(data.icon)}
               alt={data.name}
-              className="w-10 h-10 shrink-0"
+              className="size-10 shrink-0"
             />
             <div className="flex-1 min-w-0 text-left">
               <div className="flex items-center gap-2">
@@ -141,7 +141,7 @@ const ImbuementCard = ({ imbuement, isBlocked }: ImbuementCardProps) => {
                           <img
                             src={item.icon}
                             alt={item.itemName}
-                            className="w-7 h-7 shrink-0"
+                            className="size-7 shrink-0"
                           />
                         )}
                         <span className="flex-1 min-w-0 truncate">{item.itemName}</span>

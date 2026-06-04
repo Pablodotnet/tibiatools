@@ -8,6 +8,7 @@ const ImbuementTrackerPage = () => {
   return (
     <Card className='w-full max-w-xl mx-auto mt-6'>
       <CardHeader>
+        <h1 className="sr-only">{ti('title')}</h1>
         <CardTitle>{ti('title')}</CardTitle>
         <CardDescription>{ti('description')}</CardDescription>
       </CardHeader>

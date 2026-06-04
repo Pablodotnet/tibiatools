@@ -8,6 +8,7 @@ const NotFoundPage = () => {
   return (
     <Card className='w-full max-w-md mx-auto mt-6 text-center'>
       <CardHeader>
+        <h1 className="sr-only">{t('notFound.title')}</h1>
         <CardTitle className='text-6xl font-bold text-muted-foreground'>404</CardTitle>
       </CardHeader>
       <CardContent className='space-y-4'>

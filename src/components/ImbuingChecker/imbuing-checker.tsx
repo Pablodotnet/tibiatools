@@ -59,8 +59,8 @@ export const ImbuingChecker = () => {
     <>
       <CardContent>
         <div className="grid w-full items-center gap-4">
-          <div className="flex flex-col space-y-3">
-            <div className="flex flex-col space-y-2">
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-2">
               <Label htmlFor="item_type">{ti('itemType')}</Label>
               <Select
                 onValueChange={handleSelectItemType}
@@ -79,7 +79,7 @@ export const ImbuingChecker = () => {
               </Select>
             </div>
             {selectedItemType && (
-              <div className="flex flex-col space-y-2">
+              <div className="flex flex-col gap-2">
                 <Label htmlFor="item_search">{ti('searchItem')}</Label>
                 <Input
                   id="item_search"

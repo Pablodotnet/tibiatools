@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
@@ -702,9 +703,10 @@ const MyTierProjectsPage = () => {
             </div>
 
             {methodWarning && (
-              <div className='rounded-lg border border-yellow-300 bg-yellow-50 dark:bg-yellow-950/20 p-3 text-sm text-yellow-800 dark:text-yellow-200'>
-                {methodWarning}
-              </div>
+              <Alert className='border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950/20 [&>div]:col-span-2'>
+                <AlertTitle className='text-yellow-800 dark:text-yellow-200'>{translate('warning')}</AlertTitle>
+                <AlertDescription className='text-yellow-800 dark:text-yellow-200'>{methodWarning}</AlertDescription>
+              </Alert>
             )}
 
             {estimatedCost !== null && (
@@ -801,6 +803,7 @@ const MyTierProjectsPage = () => {
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
       <Card>
         <CardHeader>
+          <h1 className="sr-only">{translate('title')}</h1>
           <CardTitle>{translate('title')}</CardTitle>
           <CardDescription>{translate('description')}</CardDescription>
         </CardHeader>

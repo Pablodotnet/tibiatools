@@ -8,6 +8,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { useTranslation } from "react-i18next";
 
 const ExaltationForgeSimulator = lazy(() =>
@@ -63,6 +64,7 @@ const ExaltationPage = () => {
   return (
     <Card className="my-12 w-full max-w-5xl bg-white dark:bg-card">
       <CardHeader>
+        <h1 className="sr-only">{translate("title")}</h1>
         <CardTitle>{translate("title")}</CardTitle>
         <CardDescription>{translate("description")}</CardDescription>
       </CardHeader>
@@ -78,11 +80,11 @@ const ExaltationPage = () => {
                 className="flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-xs font-semibold data-[state=active]:bg-blue-900 data-[state=active]:text-white md:text-sm"
               >
                 {t(tab.labelKey)}
-                <span
+                <Badge
                   className={`rounded px-1 py-0.5 text-[10px] font-bold text-white ${tab.badgeClass}`}
                 >
                   {t(tab.badgeKey)}
-                </span>
+                </Badge>
               </TabsTrigger>
             ))}
           </TabsList>

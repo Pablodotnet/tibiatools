@@ -7,6 +7,7 @@ import {
   ChevronDown, ChevronRight, Share2, HandCoins, Search, History, Clock, BookOpen, User,
 } from 'lucide-react';
 import { ModeToggle } from '@/components/NavBar/mode-toggle';
+import { Separator } from '@/components/ui/separator';
 import { PandaIcon } from '@/components/NavBar/panda-icon';
 import { RepositoryButton } from '@/components/NavBar/repository-button';
 import { AuthButton } from '@/components/NavBar/auth-button';
@@ -110,7 +111,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
-          className='fixed inset-0 z-40 bg-black/50 lg:hidden'
+          className='fixed inset-0 z-35 bg-black/50 lg:hidden'
           onClick={() => setSidebarOpen(false)}
         />
       )}
@@ -118,7 +119,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Sidebar */}
       <aside
         className={`
-          fixed inset-y-0 left-0 z-50 w-64 bg-card border-r border-border
+          fixed inset-y-0 left-0 z-40 w-64 bg-card border-r border-border
           transform transition-transform duration-200 ease-in-out
           lg:translate-x-0
           ${sidebarOpen ? 'translate-x-0' : '-translate-x-full'}
@@ -133,7 +134,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className='lg:hidden p-1 text-muted-foreground hover:text-foreground cursor-pointer'
+            className='lg:hidden p-1 text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
             aria-label='Close sidebar'
           >
             <X className='size-5' />
@@ -205,7 +206,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             </kbd>
           </button>
 
-          <div className='border-t border-border my-1' />
+          <Separator className='my-1' />
 
           {NAV_GROUPS.map((group) => {
             const isExpanded = expandedGroups[group.labelKey];
@@ -268,10 +269,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Main content */}
       <div className='lg:pl-64 min-h-screen flex flex-col'>
         {/* Mobile header */}
-        <header className='lg:hidden flex items-center justify-between h-14 px-4 border-b border-border bg-card sticky top-0 z-30'>
+        <header className='lg:hidden flex items-center justify-between h-14 px-4 border-b border-border bg-card sticky top-0 z-20'>
           <button
             onClick={() => setSidebarOpen(true)}
-            className='p-1 text-muted-foreground hover:text-foreground cursor-pointer'
+            className='p-1 text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
             aria-label='Open sidebar'
           >
             <Menu className='size-5' />
