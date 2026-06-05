@@ -148,7 +148,7 @@ export function ImbuementTracker() {
 
       {activeList.length > 0 && (
         <div>
-          <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('active')}</h2> ({activeList.length})</h3>
+          <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('active')} ({activeList.length})</h2>
           <div className='space-y-2'>
             {activeList.map((imb) => {
               const status = getStatus(imb);
@@ -203,7 +203,7 @@ export function ImbuementTracker() {
 
       {expiredList.length > 0 && (
         <div>
-          <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('expired')}</h2> ({expiredList.length})</h3>
+          <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('expired')} ({expiredList.length})</h2>
           <div className='space-y-2'>
             {expiredList.map((imb) => (
               <div key={imb.id} className='flex items-center justify-between rounded-md border border-muted p-3 opacity-60 cursor-not-allowed pointer-events-none' aria-disabled={true}>

@@ -87,7 +87,7 @@ export function BestiaryTracker() {
           <div key={d}>
             <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>
               {tb(`diff_${d}`)} ({completionByDifficulty[d].done}/{completionByDifficulty[d].total})
-            </h3>
+            </h2>
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5'>
               {monsters.map((monster) => {
                 const isCompleted = completedKeys.includes(monster.key);
@@ -125,7 +125,7 @@ export function BestiaryTracker() {
         <h2 className='text-sm font-semibold mb-3 flex items-center gap-1.5'>
           <Sparkles className='size-4 text-amber-500' />
           {tb('charmShop')}
-        </h3>
+        </h2>
         <div className='grid grid-cols-1 sm:grid-cols-2 gap-2'>
           {affordableCharms.map((charm) => {
             const canAfford = charm.affordable;

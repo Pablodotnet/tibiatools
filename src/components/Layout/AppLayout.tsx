@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import FocusTrap from 'focus-trap-react';
 import {
   Wallet, Coins, Zap, Calculator, Sword, Shirt, Timer, TrendingUp,
   Crosshair, Hammer, FolderKanban, Users, Church, Menu, X, Home,
@@ -15,6 +16,7 @@ import { LanguageSwitcher } from '@/components/LanguageSwitcher';
 import { Avatar, AvatarImage, AvatarFallback } from '@/components/ui/avatar';
 import { useAuth } from '@/hooks/useAuth';
 import { CommandPalette } from '@/components/CommandPalette';
+import { OfflineBanner } from '@/components/OfflineBanner';
 import { usePwaBadge } from '@/hooks/usePwaBadge';
 
 export interface NavItem {
@@ -108,6 +110,14 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className='min-h-screen bg-background'>
+      {/* Skip-to-content link */}
+      <a
+        href='#main-content'
+        className='sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-50 focus:px-4 focus:py-2 focus:bg-background focus:text-foreground focus:rounded-md focus:ring-2 focus:ring-ring'
+      >
+        {t('common.skipToContent')}
+      </a>
+
       {/* Mobile overlay */}
       {sidebarOpen && (
         <div
@@ -117,6 +127,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       )}
 
       {/* Sidebar */}
+      <FocusTrap active={sidebarOpen && window.innerWidth < 1024}>
       <aside
         className={`
           fixed inset-y-0 left-0 z-40 w-64 bg-card border-r border-border
@@ -134,7 +145,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           </Link>
           <button
             onClick={() => setSidebarOpen(false)}
-            className='lg:hidden p-1 text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
+            className='lg:hidden p-2.5 text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-ring min-h-[44px] min-w-[44px]'
             aria-label='Close sidebar'
           >
             <X className='size-5' />
@@ -256,16 +267,17 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         {/* Bottom controls */}
         <Separator />
         <div className='p-3 flex items-center justify-between shrink-0'>
-          <div className='flex items-center gap-1'>
+          <div className='flex items-center gap-2'>
             <LanguageSwitcher />
             <ModeToggle />
           </div>
-          <div className='flex items-center gap-1'>
+          <div className='flex items-center gap-2'>
             <RepositoryButton />
             <AuthButton />
           </div>
         </div>
       </aside>
+      </FocusTrap>
 
       {/* Main content */}
       <div className='lg:pl-64 min-h-screen flex flex-col'>
@@ -273,7 +285,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         <header className='lg:hidden flex items-center justify-between h-14 px-4 pt-[env(safe-area-inset-top)] border-b border-border bg-card sticky top-0 z-20'>
           <button
             onClick={() => setSidebarOpen(true)}
-            className='p-1 text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
+            className='p-2.5 text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-ring min-h-[44px] min-w-[44px]'
             aria-label='Open sidebar'
           >
             <Menu className='size-5' />
@@ -289,11 +301,12 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </header>
 
         {/* Page content */}
-        <main className='flex-1 w-full max-w-6xl mx-auto px-4 py-6'>
+        <main id='main-content' className='flex-1 w-full max-w-6xl mx-auto px-4 py-6'>
           {children}
         </main>
       </div>
       <CommandPalette open={commandPaletteOpen} onOpenChange={setCommandPaletteOpen} />
+      <OfflineBanner />
     </div>
   );
 }

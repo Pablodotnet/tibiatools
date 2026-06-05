@@ -13,7 +13,7 @@ const CoinsToMoneyPage = () => {
   const translate = (entry: string) => t(`coinsToMoney.${entry}`);
 
   return (
-    <Card className='w-full max-w-md mx-auto mt-6'>
+    <Card className='w-full max-w-lg mx-auto mt-6'>
       <CardHeader>
         <CardTitle asChild><h1>{translate('title')}</h1></CardTitle>
         <CardDescription>{translate('description')}</CardDescription>

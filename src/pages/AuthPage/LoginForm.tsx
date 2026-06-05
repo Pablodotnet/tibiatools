@@ -44,7 +44,7 @@ export const LoginForm = () => {
 
   const onSubmit = (data: FormData) => {
     if (!isAuthenticating) {
-      dispatch(startLoginWithEmailPassword({ email: data.email, password: data.password }))
+      dispatch(startLoginWithEmailPassword({ email: data.email, password: data.password }));
     }
   };
 

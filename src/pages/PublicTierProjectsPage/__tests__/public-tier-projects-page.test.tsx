@@ -1,5 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import { configureStore } from '@reduxjs/toolkit';
 import { tierProjectsSlice } from '@/store/tierProjects';
@@ -44,14 +45,14 @@ describe('PublicTierProjectsPage', () => {
   it('shows loading state when projectsLoading is true', () => {
     mockGetPublicProjects.mockReturnValue(new Promise(() => {}));
     const store = createStore();
-    render(<Provider store={store}><PublicTierProjectsPage /></Provider>);
+    render(<Provider store={store}><MemoryRouter><PublicTierProjectsPage /></MemoryRouter></Provider>);
     expect(screen.getByText('Loading projects...')).toBeInTheDocument();
   });
 
   it('shows empty state when no projects', async () => {
     mockGetPublicProjects.mockResolvedValue([]);
     const store = createStore();
-    render(<Provider store={store}><PublicTierProjectsPage /></Provider>);
+    render(<Provider store={store}><MemoryRouter><PublicTierProjectsPage /></MemoryRouter></Provider>);
     expect(await screen.findByText('No public projects yet.')).toBeInTheDocument();
   });
 
@@ -70,7 +71,7 @@ describe('PublicTierProjectsPage', () => {
       },
     ]);
     const store = createStore();
-    render(<Provider store={store}><PublicTierProjectsPage /></Provider>);
+    render(<Provider store={store}><MemoryRouter><PublicTierProjectsPage /></MemoryRouter></Provider>);
     expect(await screen.findByText('Test Project')).toBeInTheDocument();
     expect(screen.getByText(/Target/)).toBeInTheDocument();
     expect(screen.getByText(/By TestUser/)).toBeInTheDocument();

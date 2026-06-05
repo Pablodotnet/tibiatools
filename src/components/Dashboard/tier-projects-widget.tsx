@@ -42,7 +42,7 @@ export function TierProjectsWidget() {
             {displayed.map((p: TierProject) => (
               <Link
                 key={p.id}
-                to={`/public-projects`}
+                to={`/public-projects/${p.id}`}
                 className='flex items-center justify-between rounded-md px-2.5 py-2 text-xs hover:bg-accent transition-colors focus-visible:outline-2 focus-visible:outline-ring'
               >
                 <div className='min-w-0 flex-1'>

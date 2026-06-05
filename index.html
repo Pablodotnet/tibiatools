@@ -15,6 +15,16 @@
     <title>Tibia Tools</title>
   </head>
   <body>
+    <script>
+      (function() {
+        try {
+          var lang = localStorage.getItem('language');
+          if (lang) {
+            document.documentElement.lang = lang;
+          }
+        } catch(e) {}
+      })();
+    </script>
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

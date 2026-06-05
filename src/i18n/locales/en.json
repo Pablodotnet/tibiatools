@@ -388,7 +388,9 @@
     "loading": "Loading...",
     "copy": "Copy",
     "copied": "Copied!",
-    "player": "Player"
+    "player": "Player",
+    "skipToContent": "Skip to content",
+    "offline": "You are offline — data may be stale"
   },
   "theme": {
     "toggle": "Toggle theme"

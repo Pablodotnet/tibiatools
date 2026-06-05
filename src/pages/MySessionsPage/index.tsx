@@ -90,7 +90,7 @@ const MySessionsPage = () => {
       .filter((s) => s.xpPerHour != null)
       .map((s) => ({
         name: s.spotName,
-        xpPerHour: s.xpPerHour!,
+        xpPerHour: s.xpPerHour ?? 0,
         date: s.createdAt?.toDate ? s.createdAt.toDate().toLocaleDateString() : '',
       }));
   }, [filteredSessions]);
@@ -100,7 +100,7 @@ const MySessionsPage = () => {
       .filter((s) => s.balance != null)
       .map((s) => ({
         name: s.spotName,
-        balance: s.balance!,
+        balance: s.balance ?? 0,
         date: s.createdAt?.toDate ? s.createdAt.toDate().toLocaleDateString() : '',
       }));
   }, [filteredSessions]);

@@ -170,6 +170,7 @@ const AppRouting = () => {
           }
         />
         <Route path='/public-projects' element={<RouteErrorBoundaryWrapper><PublicTierProjectsPage /></RouteErrorBoundaryWrapper>} />
+        <Route path='/public-projects/:projectId' element={<RouteErrorBoundaryWrapper><PublicTierProjectsPage /></RouteErrorBoundaryWrapper>} />
         <Route path='*' element={<RouteErrorBoundaryWrapper><NotFoundPage /></RouteErrorBoundaryWrapper>} />
       </Routes>
     </Suspense>

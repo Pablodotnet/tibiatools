@@ -53,7 +53,7 @@ export function RecentSessionsWidget() {
           </div>
         )}
         <Link
-          to='/hunting-spots'
+          to='/my-sessions'
           className='mt-2 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-ring'
         >
           {tw('viewAllSpots')}

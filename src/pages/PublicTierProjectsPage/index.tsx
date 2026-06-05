@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 import { useTranslation } from 'react-i18next';
+import { useParams, useNavigate } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '@/hooks';
 import { startFetchPublicProjects } from '@/store/tierProjects';
 import { ArrowLeft, Globe, Search } from 'lucide-react';
@@ -11,16 +12,22 @@ import { getProjectEntries } from '@/firebase/tierProjects';
 import type { TierProject, TierProjectEntry } from '@/types/tierProject';
 
 const PublicTierProjectsPage = () => {
+  const { projectId } = useParams();
+  const navigate = useNavigate();
   const { t } = useTranslation();
   const translate = (entry: string) => t(`publicTierProjects.${entry}`);
   const mt = (entry: string) => t(`myTierProjects.${entry}`);
   const dispatch = useAppDispatch();
   const { projects, projectsLoading } = useAppSelector((s) => s.tierProjects);
 
-  const [selectedProject, setSelectedProject] = useState<TierProject | null>(null);
   const [entries, setEntries] = useState<TierProjectEntry[]>([]);
   const [entriesLoading, setEntriesLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const selectedProject = useMemo(() => {
+    if (!projectId) return null;
+    return projects.find((p) => p.id === projectId) ?? null;
+  }, [projectId, projects]);
 
   const filteredProjects = useMemo(() => {
     if (!searchQuery.trim()) return projects;
@@ -34,22 +41,24 @@ const PublicTierProjectsPage = () => {
     dispatch(startFetchPublicProjects());
   }, [dispatch]);
 
-  const handleSelectProject = async (project: TierProject) => {
-    setSelectedProject(project);
-    setEntriesLoading(true);
-    try {
-      const data = await getProjectEntries(project.id);
-      setEntries(data);
-    } catch {
-      setEntries([]);
-    } finally {
-      setEntriesLoading(false);
+  useEffect(() => {
+    if (selectedProject && entries.length === 0) {
+      setEntriesLoading(true);
+      getProjectEntries(selectedProject.id)
+        .then(setEntries)
+        .catch(() => setEntries([]))
+        .finally(() => setEntriesLoading(false));
     }
+  }, [selectedProject]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  const handleSelectProject = (project: TierProject) => {
+    setEntries([]);
+    navigate(`/public-projects/${project.id}`);
   };
 
   const handleBack = () => {
-    setSelectedProject(null);
     setEntries([]);
+    navigate('/public-projects');
   };
 
   if (selectedProject) {

@@ -277,7 +277,9 @@
     "loading": "Cargando...",
     "copy": "Copiar",
     "copied": "¡Copiado!",
-    "player": "Jugador"
+    "player": "Jugador",
+    "skipToContent": "Saltar al contenido",
+    "offline": "Estás sin conexión — los datos pueden estar desactualizados"
   },
   "theme": {
     "toggle": "Cambiar tema"

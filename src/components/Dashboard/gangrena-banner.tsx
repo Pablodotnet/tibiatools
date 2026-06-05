@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent } from '@/components/ui/card';
-import { ExternalLink } from 'lucide-react';
+import { ExternalLink, Swords } from 'lucide-react';
 
 export function GangrenaBanner() {
   const { t } = useTranslation();
@@ -19,7 +19,7 @@ export function GangrenaBanner() {
             {/* Background decoration */}
             <div className='absolute inset-0 opacity-10'>
               <div className='absolute top-2 right-4 text-6xl font-black text-amber-500 select-none'>OT</div>
-              <div className='absolute bottom-2 left-4 text-4xl font-black text-amber-500 select-none'>⚔</div>
+              <div className='absolute bottom-2 left-4 text-4xl font-black text-amber-500 select-none'><Swords className='size-8 text-amber-500' /></div>
             </div>
 
             <div className='relative flex items-start justify-between'>
