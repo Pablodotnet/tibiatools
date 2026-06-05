@@ -21,6 +21,7 @@ vi.mock('@/firebase/tierProjects', () => ({
   updateTierEntry: vi.fn(),
   deleteTierEntry: vi.fn(),
   getUserTierProjectsWithEntries: vi.fn().mockResolvedValue([]),
+  getUserProjects: vi.fn().mockResolvedValue([]),
 }));
 
 vi.mock('@/lib/monitoring', () => ({

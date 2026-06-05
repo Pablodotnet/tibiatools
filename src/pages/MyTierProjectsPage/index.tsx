@@ -516,33 +516,30 @@ const MyTierProjectsPage = () => {
                   className='h-8 pl-7 text-xs'
                 />
               </div>
-              <select
-                className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
-                value={filterMethod}
-                onChange={(e) => setFilterMethod(e.target.value)}
-                aria-label={translate('method')}
-              >
-                <option value=''>{translate('allMethods')}</option>
-                {METHODS.map((m) => <option key={m} value={m}>{translate(m)}</option>)}
-              </select>
-              <select
-                className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
-                value={filterTierMin}
-                onChange={(e) => setFilterTierMin(Number(e.target.value))}
-                aria-label={translate('minTier')}
-              >
-                <option value={-1}>{translate('minTier')}</option>
-                {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
-              </select>
-              <select
-                className='h-8 rounded-md border border-input bg-transparent px-2 text-xs focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
-                value={filterTierMax}
-                onChange={(e) => setFilterTierMax(Number(e.target.value))}
-                aria-label={translate('maxTier')}
-              >
-                <option value={-1}>{translate('maxTier')}</option>
-                {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
-              </select>
+              <Select value={filterMethod} onValueChange={setFilterMethod}>
+                <SelectTrigger className='w-28 h-8 text-xs' aria-label={translate('method')}>
+                  <SelectValue placeholder={translate('allMethods')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {METHODS.map((m) => <SelectItem key={m} value={m}>{translate(m)}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Select value={String(filterTierMin)} onValueChange={(v) => setFilterTierMin(Number(v))}>
+                <SelectTrigger className='w-20 h-8 text-xs' aria-label={translate('minTier')}>
+                  <SelectValue placeholder={translate('minTier')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {TIERS.map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
+                </SelectContent>
+              </Select>
+              <Select value={String(filterTierMax)} onValueChange={(v) => setFilterTierMax(Number(v))}>
+                <SelectTrigger className='w-20 h-8 text-xs' aria-label={translate('maxTier')}>
+                  <SelectValue placeholder={translate('maxTier')} />
+                </SelectTrigger>
+                <SelectContent>
+                  {TIERS.map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
+                </SelectContent>
+              </Select>
               {(searchTerm || filterMethod || filterTierMin >= 0 || filterTierMax >= 0) && (
                 <Button variant="ghost" size="sm" className="p-1 h-auto" onClick={() => {
                   setSearchTerm('');
@@ -631,27 +628,25 @@ const MyTierProjectsPage = () => {
             <div className='grid grid-cols-2 gap-4'>
               <div className='space-y-2'>
                 <Label>{translate('fromTier')}</Label>
-                <select
-                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
-                  value={entryFrom}
-                  onChange={(e) => setEntryFrom(Number(e.target.value))}
-                  aria-label={translate('fromTier')}
-                >
-                  <option value={-1}>-</option>
-                  {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
-                </select>
+                <Select value={String(entryFrom)} onValueChange={(v) => setEntryFrom(Number(v))}>
+                  <SelectTrigger aria-label={translate('fromTier')}>
+                    <SelectValue placeholder="-" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIERS.map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
               <div className='space-y-2'>
                 <Label>{translate('toTier')}</Label>
-                <select
-                  className='flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-xs transition-colors focus-visible:outline-hidden focus-visible:ring-1 focus-visible:ring-ring'
-                  value={entryTo}
-                  onChange={(e) => setEntryTo(Number(e.target.value))}
-                  aria-label={translate('toTier')}
-                >
-                  <option value={-1}>-</option>
-                  {TIERS.slice(1).map((t) => <option key={t} value={t}>{t}</option>)}
-                </select>
+                <Select value={String(entryTo)} onValueChange={(v) => setEntryTo(Number(v))}>
+                  <SelectTrigger aria-label={translate('toTier')}>
+                    <SelectValue placeholder="-" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {TIERS.slice(1).map((t) => <SelectItem key={t} value={String(t)}>{t}</SelectItem>)}
+                  </SelectContent>
+                </Select>
               </div>
             </div>
 

@@ -42,7 +42,7 @@ const VocationHuntSpotsPage = () => {
       captureError(e, { context: 'loadSpots', vocationId });
       toast.error(translate('loadSpotsError'), {
         action: {
-          label: t('common.retry'),
+          label: translate('common.retry'),
           onClick: () => loadSpots(),
         },
       });
@@ -226,7 +226,7 @@ function SpotCard({
       captureError(e, { context: 'loadSessions', spotId: spot.id });
       toast.error(translate('loadSessionsError'), {
         action: {
-          label: t('common.retry'),
+          label: translate('common.retry'),
           onClick: () => loadSessions(),
         },
       });
