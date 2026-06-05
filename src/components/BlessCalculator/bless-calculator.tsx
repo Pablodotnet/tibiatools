@@ -53,8 +53,9 @@ export function BlessCalculator() {
   return (
     <div className='space-y-4'>
       <div className='space-y-1'>
-        <label className='text-xs text-muted-foreground'>{te('level')}</label>
+        <label htmlFor='bless-level' className='text-xs text-muted-foreground'>{te('level')}</label>
         <Input
+          id='bless-level'
           type='number'
           value={level}
           onChange={(e) => setLevel(e.target.value)}

@@ -142,8 +142,9 @@ const MySessionsPage = () => {
         <CardContent>
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-4'>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{ts('spotFilter')}</Label>
+              <Label htmlFor='ms-spot' className='text-xs text-muted-foreground'>{ts('spotFilter')}</Label>
               <Input
+                id='ms-spot'
                 list='spots-list'
                 value={filters.spotName}
                 onChange={(e) => setFilters((p) => ({ ...p, spotName: e.target.value }))}
@@ -157,8 +158,9 @@ const MySessionsPage = () => {
               </datalist>
             </div>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{ts('dateFrom')}</Label>
+              <Label htmlFor='ms-date-from' className='text-xs text-muted-foreground'>{ts('dateFrom')}</Label>
               <Input
+                id='ms-date-from'
                 type='date'
                 value={filters.dateFrom}
                 onChange={(e) => setFilters((p) => ({ ...p, dateFrom: e.target.value }))}
@@ -166,8 +168,9 @@ const MySessionsPage = () => {
               />
             </div>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{ts('dateTo')}</Label>
+              <Label htmlFor='ms-date-to' className='text-xs text-muted-foreground'>{ts('dateTo')}</Label>
               <Input
+                id='ms-date-to'
                 type='date'
                 value={filters.dateTo}
                 onChange={(e) => setFilters((p) => ({ ...p, dateTo: e.target.value }))}

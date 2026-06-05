@@ -99,8 +99,9 @@ export function HuntSessionUploadDialog({
 
         <div className='space-y-3'>
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{te('pasteLabel')}</Label>
+            <Label htmlFor='hs-paste' className='text-xs text-muted-foreground'>{te('pasteLabel')}</Label>
             <textarea
+              id='hs-paste'
               value={rawText}
               onChange={(e) => setRawText(e.target.value)}
               className='flex min-h-[120px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50 font-mono'

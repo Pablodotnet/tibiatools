@@ -102,9 +102,9 @@ export function ImbuementTracker() {
           <h2 className='text-sm font-semibold'>{ti('addNew')}</h2>
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{ti('slot')}</Label>
+              <Label htmlFor='imb-slot' className='text-xs text-muted-foreground'>{ti('slot')}</Label>
               <Select value={newSlot} onValueChange={setNewSlot}>
-                <SelectTrigger className='h-8'>
+                <SelectTrigger id='imb-slot' className='h-8'>
                   <SelectValue placeholder={ti('slotPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -115,9 +115,9 @@ export function ImbuementTracker() {
               </Select>
             </div>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{ti('tier')}</Label>
+              <Label htmlFor='imb-tier' className='text-xs text-muted-foreground'>{ti('tier')}</Label>
               <Select value={newTier} onValueChange={setNewTier}>
-                <SelectTrigger className='h-8'>
+                <SelectTrigger id='imb-tier' className='h-8'>
                   <SelectValue placeholder={ti('tierPlaceholder')} />
                 </SelectTrigger>
                 <SelectContent>
@@ -128,8 +128,9 @@ export function ImbuementTracker() {
               </Select>
             </div>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{ti('note')}</Label>
+              <Label htmlFor='imb-note' className='text-xs text-muted-foreground'>{ti('note')}</Label>
               <Input
+                id='imb-note'
                 value={newNote}
                 onChange={(e) => setNewNote(e.target.value)}
                 placeholder={ti('notePlaceholder')}

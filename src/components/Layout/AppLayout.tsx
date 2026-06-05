@@ -160,13 +160,10 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             className='flex items-center gap-2.5 px-4 py-2.5 border-b border-border hover:bg-accent transition-colors shrink-0 focus-visible:outline-2 focus-visible:outline-ring'
           >
             <Avatar className='size-7'>
-              {user.photoURL ? (
-                <AvatarImage src={user.photoURL} alt={user.displayName ?? ''} />
-              ) : (
-                <AvatarFallback className='text-xs'>
-                  {(user.displayName ?? '?').charAt(0).toUpperCase()}
-                </AvatarFallback>
-              )}
+              <AvatarImage src={user.photoURL ?? undefined} alt={user.displayName ?? ''} />
+              <AvatarFallback className='text-xs'>
+                {(user.displayName ?? '?').charAt(0).toUpperCase()}
+              </AvatarFallback>
             </Avatar>
             <div className='min-w-0'>
               <p className='text-sm font-medium truncate'>{user.displayName ?? t('common.player')}</p>

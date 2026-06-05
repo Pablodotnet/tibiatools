@@ -544,15 +544,14 @@ const MyTierProjectsPage = () => {
                 {TIERS.map((t) => <option key={t} value={t}>{t}</option>)}
               </select>
               {(searchTerm || filterMethod || filterTierMin >= 0 || filterTierMax >= 0) && (
-                <X
-                  className='size-4 cursor-pointer text-muted-foreground hover:text-foreground'
-                  onClick={() => {
-                    setSearchTerm('');
-                    setFilterMethod('');
-                    setFilterTierMin(-1);
-                    setFilterTierMax(-1);
-                  }}
-                />
+                <Button variant="ghost" size="sm" className="p-1 h-auto" onClick={() => {
+                  setSearchTerm('');
+                  setFilterMethod('');
+                  setFilterTierMin(-1);
+                  setFilterTierMax(-1);
+                }}>
+                  <X className="size-4 text-muted-foreground hover:text-foreground" />
+                </Button>
               )}
             </div>
             {currentEntries.length === 0 && !entriesLoading && (

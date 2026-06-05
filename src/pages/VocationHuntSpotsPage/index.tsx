@@ -117,6 +117,7 @@ const VocationHuntSpotsPage = () => {
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
                   <Input
                     placeholder={translate('searchSpots')}
+                    aria-label={translate('searchSpots')}
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     className="pl-8 h-8 text-xs"
@@ -138,6 +139,7 @@ const VocationHuntSpotsPage = () => {
                 <Input
                   type="number"
                   placeholder={translate('minProfit')}
+                  aria-label={translate('minProfit')}
                   value={minProfit}
                   onChange={(e) => setMinProfit(e.target.value)}
                   min={0}
@@ -146,6 +148,7 @@ const VocationHuntSpotsPage = () => {
                 <Input
                   type="number"
                   placeholder={translate('minExp')}
+                  aria-label={translate('minExp')}
                   value={minExp}
                   onChange={(e) => setMinExp(e.target.value)}
                   min={0}
@@ -294,6 +297,7 @@ function SpotCard({
               onClick={(e) => { e.stopPropagation(); onDelete(spot.id); }}
               className="p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
               title={translate('deleteSpot')}
+              aria-label={translate('deleteSpot')}
             >
               <Trash2 className="size-3.5" />
             </button>
@@ -358,8 +362,9 @@ function SpotCard({
 
               <div className="grid grid-cols-3 gap-2">
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground">{translate('yourLevel')}</label>
+                  <label htmlFor="calc-level" className="text-xs text-muted-foreground">{translate('yourLevel')}</label>
                   <Input
+                    id="calc-level"
                     type="number"
                     value={calcLevel}
                     onChange={(e) => setCalcLevel(e.target.value)}
@@ -369,8 +374,9 @@ function SpotCard({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground">{translate('percent')}</label>
+                  <label htmlFor="calc-percent" className="text-xs text-muted-foreground">{translate('percent')}</label>
                   <Input
+                    id="calc-percent"
                     type="number"
                     value={calcPercent}
                     onChange={(e) => setCalcPercent(e.target.value)}
@@ -380,8 +386,9 @@ function SpotCard({
                   />
                 </div>
                 <div className="space-y-1">
-                  <label className="text-xs text-muted-foreground">{translate('supplyCost')}</label>
+                  <label htmlFor="calc-supply" className="text-xs text-muted-foreground">{translate('supplyCost')}</label>
                   <Input
+                    id="calc-supply"
                     type="number"
                     value={customSupplyCost}
                     onChange={(e) => setCustomSupplyCost(e.target.value)}

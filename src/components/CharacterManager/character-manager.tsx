@@ -78,13 +78,13 @@ export function CharacterManager() {
         <h2 className='text-sm font-semibold'>{tc('addNew')}</h2>
         <div className='grid grid-cols-1 sm:grid-cols-4 gap-3'>
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{tc('name')}</Label>
-            <Input value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={tc('namePlaceholder')} className='h-8' />
+            <Label htmlFor='char-name' className='text-xs text-muted-foreground'>{tc('name')}</Label>
+            <Input id='char-name' value={newName} onChange={(e) => setNewName(e.target.value)} placeholder={tc('namePlaceholder')} className='h-8' />
           </div>
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{tc('vocation')}</Label>
+            <Label htmlFor='char-vocation' className='text-xs text-muted-foreground'>{tc('vocation')}</Label>
             <Select value={newVocation} onValueChange={setNewVocation}>
-              <SelectTrigger className='h-8'>
+              <SelectTrigger id='char-vocation' className='h-8'>
                 <SelectValue placeholder={tc('vocationPlaceholder')} />
               </SelectTrigger>
               <SelectContent>
@@ -96,8 +96,8 @@ export function CharacterManager() {
             </Select>
           </div>
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{tc('level')}</Label>
-            <Input type='number' min={1} value={newLevel} onChange={(e) => setNewLevel(e.target.value)} className='h-8' />
+            <Label htmlFor='char-level' className='text-xs text-muted-foreground'>{tc('level')}</Label>
+            <Input id='char-level' type='number' min={1} value={newLevel} onChange={(e) => setNewLevel(e.target.value)} className='h-8' />
           </div>
           <div className='flex items-end'>
             <Button size='sm' onClick={handleAdd} disabled={adding || !newName || !newVocation || !newLevel}>

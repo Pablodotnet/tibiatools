@@ -114,14 +114,14 @@ export function HuntingSpotsAddDialog() {
 
         <div className='space-y-3'>
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{te('spotName')} *</Label>
-            <Input value={name} onChange={(e) => setName(e.target.value)} className='h-8' placeholder={te('spotNamePlaceholder')} />
+            <Label htmlFor='hs-spot-name' className='text-xs text-muted-foreground'>{te('spotName')} *</Label>
+            <Input id='hs-spot-name' value={name} onChange={(e) => setName(e.target.value)} className='h-8' placeholder={te('spotNamePlaceholder')} />
           </div>
 
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{te('vocation')} *</Label>
+            <Label htmlFor='hs-vocation' className='text-xs text-muted-foreground'>{te('vocation')} *</Label>
             <Select value={vocationId} onValueChange={setVocationId}>
-              <SelectTrigger className='h-8'>
+              <SelectTrigger id='hs-vocation' className='h-8'>
                 <SelectValue placeholder={te('selectVocation')} />
               </SelectTrigger>
               <SelectContent>
@@ -134,56 +134,56 @@ export function HuntingSpotsAddDialog() {
 
           <div className='grid grid-cols-2 gap-2'>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{te('levelMin')} *</Label>
-              <Input type='number' value={levelMin} onChange={(e) => setLevelMin(e.target.value)} min={1} className='h-8' />
+              <Label htmlFor='hs-level-min' className='text-xs text-muted-foreground'>{te('levelMin')} *</Label>
+              <Input id='hs-level-min' type='number' value={levelMin} onChange={(e) => setLevelMin(e.target.value)} min={1} className='h-8' />
             </div>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{te('levelMax')} *</Label>
-              <Input type='number' value={levelMax} onChange={(e) => setLevelMax(e.target.value)} min={1} className='h-8' />
+              <Label htmlFor='hs-level-max' className='text-xs text-muted-foreground'>{te('levelMax')} *</Label>
+              <Input id='hs-level-max' type='number' value={levelMax} onChange={(e) => setLevelMax(e.target.value)} min={1} className='h-8' />
             </div>
           </div>
 
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{te('location')} *</Label>
-            <Input value={location} onChange={(e) => setLocation(e.target.value)} className='h-8' placeholder={te('locationPlaceholder')} />
+            <Label htmlFor='hs-location' className='text-xs text-muted-foreground'>{te('location')} *</Label>
+            <Input id='hs-location' value={location} onChange={(e) => setLocation(e.target.value)} className='h-8' placeholder={te('locationPlaceholder')} />
           </div>
 
           <div className='grid grid-cols-2 gap-2'>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{te('expRaw')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={expRaw} onChange={(e) => setExpRaw(e.target.value)} min={0} className='h-8' placeholder={te('expRawPlaceholder')} />
+              <Label htmlFor='hs-exp-raw' className='text-xs text-muted-foreground'>{te('expRaw')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
+              <Input id='hs-exp-raw' type='number' value={expRaw} onChange={(e) => setExpRaw(e.target.value)} min={0} className='h-8' placeholder={te('expRawPlaceholder')} />
             </div>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{te('expBonus')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={expBonus} onChange={(e) => setExpBonus(e.target.value)} min={0} className='h-8' placeholder={te('expBonusPlaceholder')} />
+              <Label htmlFor='hs-exp-bonus' className='text-xs text-muted-foreground'>{te('expBonus')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
+              <Input id='hs-exp-bonus' type='number' value={expBonus} onChange={(e) => setExpBonus(e.target.value)} min={0} className='h-8' placeholder={te('expBonusPlaceholder')} />
             </div>
           </div>
 
           <div className='grid grid-cols-2 gap-2'>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{te('profit')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={profit} onChange={(e) => setProfit(e.target.value)} className='h-8' placeholder={te('profitPlaceholder')} />
+              <Label htmlFor='hs-profit' className='text-xs text-muted-foreground'>{te('profit')} *<span className='text-[10px] ml-1'>(k/h)</span></Label>
+              <Input id='hs-profit' type='number' value={profit} onChange={(e) => setProfit(e.target.value)} className='h-8' placeholder={te('profitPlaceholder')} />
             </div>
             <div className='space-y-1'>
-              <Label className='text-xs text-muted-foreground'>{te('supplyCost')}<span className='text-[10px] ml-1'>(k/h)</span></Label>
-              <Input type='number' value={supplyCost} onChange={(e) => setSupplyCost(e.target.value)} min={0} className='h-8' placeholder={te('supplyCostPlaceholder')} />
+              <Label htmlFor='hs-supply-cost' className='text-xs text-muted-foreground'>{te('supplyCost')}<span className='text-[10px] ml-1'>(k/h)</span></Label>
+              <Input id='hs-supply-cost' type='number' value={supplyCost} onChange={(e) => setSupplyCost(e.target.value)} min={0} className='h-8' placeholder={te('supplyCostPlaceholder')} />
             </div>
           </div>
 
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{te('set')} *</Label>
-            <Input value={setStr} onChange={(e) => setSetStr(e.target.value)} className='h-8' placeholder={te('setPlaceholder')} />
+            <Label htmlFor='hs-set' className='text-xs text-muted-foreground'>{te('set')} *</Label>
+            <Input id='hs-set' value={setStr} onChange={(e) => setSetStr(e.target.value)} className='h-8' placeholder={te('setPlaceholder')} />
           </div>
 
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{te('imbuements')}</Label>
-            <Input value={imbuements} onChange={(e) => setImbuements(e.target.value)} className='h-8' placeholder={te('imbuementsPlaceholder')} />
+            <Label htmlFor='hs-imbuements' className='text-xs text-muted-foreground'>{te('imbuements')}</Label>
+            <Input id='hs-imbuements' value={imbuements} onChange={(e) => setImbuements(e.target.value)} className='h-8' placeholder={te('imbuementsPlaceholder')} />
             <p className='text-[10px] text-muted-foreground'>{te('imbuementsHint')}</p>
           </div>
 
           <div className='space-y-1'>
-            <Label className='text-xs text-muted-foreground'>{te('notes')}</Label>
-            <textarea value={notes} onChange={(e) => setNotes(e.target.value)} className='flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50' placeholder={te('notesPlaceholder')} />
+            <Label htmlFor='hs-notes' className='text-xs text-muted-foreground'>{te('notes')}</Label>
+            <textarea id='hs-notes' value={notes} onChange={(e) => setNotes(e.target.value)} className='flex min-h-[60px] w-full rounded-md border border-input bg-transparent px-3 py-2 text-sm shadow-xs placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-[3px] focus-visible:ring-ring/50' placeholder={te('notesPlaceholder')} />
           </div>
         </div>
 
