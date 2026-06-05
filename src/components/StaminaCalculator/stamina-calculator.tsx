@@ -20,7 +20,7 @@ export function StaminaCalculator() {
   }, [hours, minutes]);
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4'>
       <div className='grid grid-cols-2 gap-4 max-w-xs'>
         <div className='space-y-1'>
           <Label htmlFor='stamina-hours' className='text-xs text-muted-foreground'>{ts('hours')}</Label>
@@ -86,7 +86,7 @@ export function StaminaCalculator() {
               )}
               <tr className='border-b bg-muted/20'>
                 <td className='px-3 py-2 font-medium'>{ts('timeToFull')}</td>
-                <td className='px-3 py-2 text-right tabular-nums font-semibold text-green-600 dark:text-green-400'>
+                <td className='px-3 py-2 text-right tabular-nums font-semibold text-success'>
                   {result.currentMinutes >= 42 * 60 ? '—' : formatDuration(result.minutesToFull)}
                 </td>
               </tr>

@@ -55,7 +55,7 @@ export function BestiaryTracker() {
   }
 
   return (
-    <div className='space-y-6'>
+    <div className='flex flex-col gap-6'>
       {!user && <p className='text-sm text-muted-foreground text-center py-4'>{tb('loginRequired')}</p>}
 
       {/* Charm Points Summary */}

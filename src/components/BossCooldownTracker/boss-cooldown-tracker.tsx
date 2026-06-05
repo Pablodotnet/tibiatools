@@ -30,12 +30,12 @@ const BossRow = memo(function BossRow({ boss, killedAt, marking, clearingBoss, n
       <td className='px-3 py-2 text-sm text-muted-foreground'>{boss.cooldownHours}h</td>
       <td className='px-3 py-2'>
         {status.available ? (
-          <span className='inline-flex items-center gap-1 text-sm font-medium text-green-600 dark:text-green-400'>
+          <span className='inline-flex items-center gap-1 text-sm font-medium text-success'>
             <CheckCircle2 className='size-3.5' />
             {t('available')}
           </span>
         ) : (
-          <span className='inline-flex items-center gap-1 text-sm font-medium text-amber-600 dark:text-amber-400'>
+          <span className='inline-flex items-center gap-1 text-sm font-medium text-warning'>
             <Clock className='size-3.5' />
             {formatCooldown(status.remainingMs)}
           </span>
@@ -48,7 +48,7 @@ const BossRow = memo(function BossRow({ boss, killedAt, marking, clearingBoss, n
             size='sm'
             onClick={() => onMark(boss.key)}
             disabled={marking === boss.key}
-            className='h-7 text-xs'
+            className='text-xs'
           >
             {marking === boss.key ? <Loader2 className='size-3 animate-spin' /> : <RotateCcw className='size-3' />}
             {t('markKilled')}
@@ -59,7 +59,7 @@ const BossRow = memo(function BossRow({ boss, killedAt, marking, clearingBoss, n
               size='sm'
               onClick={() => onClear(boss.key)}
               disabled={clearingBoss === boss.key || marking === boss.key}
-              className='h-7 text-xs text-muted-foreground'
+              className='text-xs text-muted-foreground'
               aria-label='Clear cooldown'
             >
               {clearingBoss === boss.key ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
@@ -148,10 +148,10 @@ export function BossCooldownTracker() {
   const hasCooldowns = cooldowns.length > 0;
 
   return (
-    <div className='space-y-6'>
+    <div className='flex flex-col gap-6'>
       {user && hasCooldowns && (
         <div className='flex justify-end'>
-          <Button variant='ghost' size='sm' onClick={handleClearAll} disabled={clearingAll} className='h-7 text-xs text-muted-foreground'>
+          <Button variant='ghost' size='sm' onClick={handleClearAll} disabled={clearingAll} className='text-xs text-muted-foreground'>
             {clearingAll ? <Loader2 className='size-3 animate-spin mr-1' /> : <Trash2 className='size-3 mr-1' />}
             {tb('clearAll')}
           </Button>

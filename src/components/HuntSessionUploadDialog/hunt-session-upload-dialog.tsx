@@ -97,7 +97,7 @@ export function HuntSessionUploadDialog({
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className='space-y-3'>
+        <div className='flex flex-col gap-3'>
           <div className='space-y-1'>
             <Label htmlFor='hs-paste' className='text-xs text-muted-foreground'>{te('pasteLabel')}</Label>
             <textarea

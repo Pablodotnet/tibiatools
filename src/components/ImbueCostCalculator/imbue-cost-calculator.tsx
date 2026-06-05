@@ -196,7 +196,7 @@ export function ImbueCostCalculator() {
         )}
 
         {selectedTier && (
-          <div className='space-y-3'>
+          <div className='flex flex-col gap-3'>
             <div className='flex items-end gap-4'>
               <h2 className='text-sm font-medium'>{ti('materials')}</h2>
               {tokensPerItem > 0 && (

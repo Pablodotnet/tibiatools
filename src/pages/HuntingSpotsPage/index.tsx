@@ -18,7 +18,7 @@ const HuntingSpotsPage = () => {
   const { isAuthenticated } = useAuth();
   const [search, setSearch] = useState('');
   return (
-    <Card className='w-full max-w-md mx-auto bg-white dark:bg-card my-12'>
+    <Card className='w-full max-w-md mx-auto bg-card my-12'>
       <CardHeader>
         <div className='flex items-center justify-between'>
           <div>

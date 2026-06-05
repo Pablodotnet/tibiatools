@@ -465,7 +465,7 @@ export function ExerciseWeaponsCalculator() {
 
       {calculated && result && (
         <>
-          <div className='space-y-3'>
+          <div className='flex flex-col gap-3'>
             <h2 className='text-sm font-medium'>{ti('pricing')}</h2>
             <div className='grid grid-cols-2 gap-4'>
               <div className='flex flex-col gap-1'>

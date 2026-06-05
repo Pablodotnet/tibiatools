@@ -73,8 +73,8 @@ export function CharacterManager() {
   }
 
   return (
-    <div className='space-y-6'>
-      <div className='rounded-md border p-4 space-y-3'>
+    <div className='flex flex-col gap-6'>
+      <div className='rounded-md border p-4 flex flex-col gap-3'>
         <h2 className='text-sm font-semibold'>{tc('addNew')}</h2>
         <div className='grid grid-cols-1 sm:grid-cols-4 gap-3'>
           <div className='space-y-1'>
@@ -125,7 +125,7 @@ export function CharacterManager() {
                     </p>
                   </div>
                 </div>
-                <Button variant='ghost' size='sm' onClick={() => handleDelete(c.id)} disabled={deletingId === c.id} className='h-7 text-xs text-muted-foreground' aria-label={tc('delete')}>
+                <Button variant='ghost' size='sm' onClick={() => handleDelete(c.id)} disabled={deletingId === c.id} className='text-xs text-muted-foreground' aria-label={tc('delete')}>
                   {deletingId === c.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
                 </Button>
               </div>

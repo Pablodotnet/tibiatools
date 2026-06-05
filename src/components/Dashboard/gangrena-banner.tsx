@@ -7,7 +7,7 @@ export function GangrenaBanner() {
   const tw = (key: string) => t(`dashboard.${key}`);
 
   return (
-    <Card className='overflow-hidden border-amber-500/30 dark:border-amber-500/20'>
+    <Card className='overflow-hidden border-warning/30'>
       <a
         href='https://gangrenaot.com'
         target='_blank'

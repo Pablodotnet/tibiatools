@@ -96,9 +96,9 @@ export function ImbuementTracker() {
   const expiredList = imbuements.filter((imb) => getStatus(imb).expired);
 
   return (
-    <div className='space-y-6'>
+    <div className='flex flex-col gap-6'>
       {user && (
-        <div className='rounded-md border p-4 space-y-3'>
+        <div className='rounded-md border p-4 flex flex-col gap-3'>
           <h2 className='text-sm font-semibold'>{ti('addNew')}</h2>
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
             <div className='space-y-1'>
@@ -167,7 +167,7 @@ export function ImbuementTracker() {
                       {imb.note && <p className='text-xs text-muted-foreground mt-0.5'>{imb.note}</p>}
                     </AlertDescription>
                     {user && (
-                      <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='h-7 text-xs text-muted-foreground col-start-2 justify-self-end' aria-label='Remove imbuement'>
+                      <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='text-xs text-muted-foreground col-start-2 justify-self-end' aria-label='Remove imbuement'>
                         {removingId === imb.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
                       </Button>
                     )}
@@ -187,7 +187,7 @@ export function ImbuementTracker() {
                     </div>
                   </div>
                   {user && (
-                    <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='h-7 text-xs text-muted-foreground' aria-label='Remove imbuement'>
+                    <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='text-xs text-muted-foreground' aria-label='Remove imbuement'>
                       {removingId === imb.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
                     </Button>
                   )}
@@ -213,7 +213,7 @@ export function ImbuementTracker() {
                   {imb.note && <p className='text-xs text-muted-foreground mt-0.5'>{imb.note}</p>}
                 </div>
                 {user && (
-                  <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='h-7 text-xs' aria-label='Remove expired imbuement'>
+                  <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='text-xs' aria-label='Remove expired imbuement'>
                     {removingId === imb.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
                   </Button>
                 )}

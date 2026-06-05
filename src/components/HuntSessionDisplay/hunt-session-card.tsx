@@ -85,7 +85,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
       {expanded && (
         <>
         <Separator />
-        <div className='px-4 py-3 space-y-2 text-sm fade-in'>
+        <div className='px-4 py-3 flex flex-col gap-2 text-sm fade-in'>
           <div className='grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs'>
             {session.loot !== undefined && (
               <>
@@ -167,7 +167,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
               <p className='text-xs font-medium text-muted-foreground flex items-center gap-1 mb-1'>
                 <Users className='size-3' /> {te('partyMembers')} ({session.players.length})
               </p>
-              <div className='space-y-1'>
+              <div className='flex flex-col gap-1'>
                 {session.players.map((p) => (
                   <div key={p.name} className='text-[11px] bg-muted/30 rounded px-2 py-1 flex items-center justify-between'>
                     <span className='font-medium'>{p.name}</span>

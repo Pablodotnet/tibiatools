@@ -102,7 +102,7 @@ export function EquipmentReference() {
   };
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4'>
       <div className='flex flex-wrap gap-2'>
         {VOCATIONS.map((v) => {
           const active = v.id === vocation;

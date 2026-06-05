@@ -51,7 +51,7 @@ export function BlessCalculator() {
   }, [includeEnhanced]);
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4'>
       <div className='space-y-1'>
         <label htmlFor='bless-level' className='text-xs text-muted-foreground'>{te('level')}</label>
         <Input

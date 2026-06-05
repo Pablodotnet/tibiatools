@@ -56,7 +56,7 @@ export const LoginForm = () => {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-6'>
         <FormField
           control={form.control}
           name='email'
@@ -88,7 +88,7 @@ export const LoginForm = () => {
             </FormItem>
           )}
         />
-        <div className='flex justify-end space-x-4'>
+        <div className='flex justify-end gap-4'>
           <Button type='submit' disabled={isAuthenticating}>{translate('login')}</Button>
           <Button type='button' variant='outline' onClick={onGoogleSignIn} disabled={isAuthenticating}>
             {translate('googleButton')}

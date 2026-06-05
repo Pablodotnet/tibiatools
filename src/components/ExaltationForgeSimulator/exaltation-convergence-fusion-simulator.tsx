@@ -41,12 +41,12 @@ export function ConvergenceFusionCalculator() {
   };
 
   return (
-    <div className='max-w-lg space-y-5 font-sans text-sm text-foreground'>
-      <Alert className='bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800'>
-        <AlertTitle className='font-semibold text-orange-600 dark:text-orange-400'>
+    <div className='max-w-lg flex flex-col gap-5 font-sans text-sm text-foreground'>
+      <Alert className='bg-blue-50 border-blue-200 border-border'>
+        <AlertTitle className='font-semibold text-orange-600 text-warning'>
           &gt;&gt; {t("exaltationForge.convergenceFusionHelp")}
         </AlertTitle>
-        <AlertDescription className='text-blue-950 dark:text-sky-100'>
+        <AlertDescription className='text-blue-950 text-muted-foreground'>
           <ul className='list-disc space-y-1 pl-5'>
             <li>{t("exaltationForge.convergenceFusionHelp1")}</li>
             <li>{t("exaltationForge.convergenceFusionHelp2")}</li>
@@ -119,7 +119,7 @@ export function ConvergenceFusionCalculator() {
       <div className='flex justify-end'>
         <Button
           type='button'
-          className='rounded-md bg-blue-900 px-8 font-bold text-white hover:bg-blue-950 dark:bg-blue-800 dark:hover:bg-blue-900'
+          className='rounded-md bg-blue-900 px-8 font-bold text-white hover:bg-blue-950 dark:bg-muted dark:hover:bg-muted'
           onClick={handleCalculate}
         >
           {t("exaltationForge.calculate")}
@@ -128,7 +128,7 @@ export function ConvergenceFusionCalculator() {
 
       {result && (
         <div className='overflow-hidden rounded-md border border-blue-900/40'>
-          <div className='bg-blue-900 px-3 py-2 text-center text-sm font-semibold text-white dark:bg-blue-950'>
+          <div className='bg-blue-900 px-3 py-2 text-center text-sm font-semibold text-white dark:bg-muted'>
             {t("exaltationForge.convergenceFusionResult")}
           </div>
           {!result.isValid ? (

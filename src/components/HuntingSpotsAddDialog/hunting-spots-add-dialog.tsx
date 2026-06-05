@@ -112,7 +112,7 @@ export function HuntingSpotsAddDialog() {
           <AlertDialogDescription>{te('description')}</AlertDialogDescription>
         </AlertDialogHeader>
 
-        <div className='space-y-3'>
+        <div className='flex flex-col gap-3'>
           <div className='space-y-1'>
             <Label htmlFor='hs-spot-name' className='text-xs text-muted-foreground'>{te('spotName')} *</Label>
             <Input id='hs-spot-name' value={name} onChange={(e) => setName(e.target.value)} className='h-8' placeholder={te('spotNamePlaceholder')} />

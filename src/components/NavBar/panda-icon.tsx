@@ -12,7 +12,7 @@ export function PandaIcon(props: PandaIconProps) {
     <div
       className={`flex justify-center items-center rounded-lg p-2 border-2 ${
         theme === "dark" ? "border-white" : "border-black"
-      } bg-white dark:bg-gray-900`}
+      } bg-background`}
     >
       <svg
         {...props}

@@ -138,10 +138,10 @@ export function TibiaLootSplit() {
   }, [submitted, players, tcValue, parsed]);
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4'>
       {!submitted ? (
         <>
-          <div className='space-y-2'>
+          <div className='flex flex-col gap-2'>
             <Label htmlFor='loot-paste' className='text-xs text-muted-foreground'>{te('pasteLabel')}</Label>
             <textarea
               id='loot-paste'
@@ -153,7 +153,7 @@ export function TibiaLootSplit() {
             />
           </div>
 
-          <div className='space-y-2'>
+          <div className='flex flex-col gap-2'>
             <Label htmlFor='loot-tc-value' className='text-xs text-muted-foreground'>{te('tcValue')}</Label>
             <Input
               id='loot-tc-value'
@@ -276,7 +276,7 @@ export function TibiaLootSplit() {
                   </tr>
                   <tr className='border-b bg-muted/20'>
                     <td className='px-3 py-2 font-medium'>{te('fairShare')}</td>
-                    <td className='px-3 py-2 text-right tabular-nums font-semibold text-green-600 dark:text-green-400'>{formatGp(Math.round(results.fairShare))}</td>
+                    <td className='px-3 py-2 text-right tabular-nums font-semibold text-success'>{formatGp(Math.round(results.fairShare))}</td>
                   </tr>
                 </tbody>
               </table>
@@ -353,5 +353,5 @@ function renderTransfer(transfer: number, formatGp: (n: number) => string, te: (
   if (transfer > 0) {
     return <span className='text-destructive'>{te('pay')} {formatGp(Math.round(transfer))}</span>;
   }
-  return <span className='text-green-600 dark:text-green-400'>{te('receive')} {formatGp(Math.round(abs))}</span>;
+  return <span className='text-success'>{te('receive')} {formatGp(Math.round(abs))}</span>;
 }

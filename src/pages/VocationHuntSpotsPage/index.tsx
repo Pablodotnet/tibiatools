@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslation } from 'react-i18next';
 import { useParams, Navigate } from "react-router-dom";
 import { vocations } from '@/helpers';
@@ -101,7 +102,7 @@ const VocationHuntSpotsPage = () => {
         </CardHeader>
         <CardContent>
           {loadingSpots ? (
-            <div className="space-y-3 py-4">
+            <div className="flex flex-col gap-3 py-4">
               <Skeleton className="h-16 w-full" />
               <Skeleton className="h-16 w-full" />
               <Skeleton className="h-16 w-3/4" />
@@ -111,7 +112,7 @@ const VocationHuntSpotsPage = () => {
               {translate('comingSoon')} {vocation.name}.
             </p>
           ) : (
-            <div className="space-y-3">
+            <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
                 <div className="relative flex-1">
                   <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground" />
@@ -123,17 +124,17 @@ const VocationHuntSpotsPage = () => {
                     className="pl-8 h-8 text-xs"
                   />
                 </div>
-                <select
-                  value={sortBy}
-                  onChange={(e) => setSortBy(e.target.value as typeof sortBy)}
-                  className="h-8 rounded-md border border-input bg-transparent px-2 text-xs text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
-                  aria-label={translate('sortDefault')}
-                >
-                  <option value="default">{translate('sortDefault')}</option>
-                  <option value="profit">{translate('sortProfit')}</option>
-                  <option value="exp">{translate('sortExp')}</option>
-                  <option value="level">{translate('sortLevel')}</option>
-                </select>
+                <Select value={sortBy} onValueChange={(v) => setSortBy(v as typeof sortBy)}>
+                  <SelectTrigger className='w-28 h-8 text-xs' aria-label={translate('sortDefault')}>
+                    <SelectValue placeholder={translate('sortDefault')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="default">{translate('sortDefault')}</SelectItem>
+                    <SelectItem value="profit">{translate('sortProfit')}</SelectItem>
+                    <SelectItem value="exp">{translate('sortExp')}</SelectItem>
+                    <SelectItem value="level">{translate('sortLevel')}</SelectItem>
+                  </SelectContent>
+                </Select>
               </div>
               <div className="flex items-center gap-2">
                 <Input

@@ -30,28 +30,28 @@ const TABS = [
     value: "fusion",
     labelKey: "exaltationForge.tabs.fusion.label",
     badgeKey: "exaltationForge.tabs.fusion.badge",
-    badgeClass: "bg-orange-500",
+    badgeClass: "bg-warning",
     descKey: "exaltationForge.tabs.fusion.description",
   },
   {
     value: "convergence-fusion",
     labelKey: "exaltationForge.tabs.convergenceFusion.label",
     badgeKey: "exaltationForge.tabs.convergenceFusion.badge",
-    badgeClass: "bg-emerald-600",
+    badgeClass: "bg-success",
     descKey: "exaltationForge.tabs.convergenceFusion.description",
   },
   {
     value: "transfer",
     labelKey: "exaltationForge.tabs.transfer.label",
     badgeKey: "exaltationForge.tabs.transfer.badge",
-    badgeClass: "bg-emerald-600",
+    badgeClass: "bg-success",
     descKey: "exaltationForge.tabs.transfer.description",
   },
   {
     value: "convergence-transfer",
     labelKey: "exaltationForge.tabs.convergenceTransfer.label",
     badgeKey: "exaltationForge.tabs.convergenceTransfer.badge",
-    badgeClass: "bg-emerald-600",
+    badgeClass: "bg-success",
     descKey: "exaltationForge.tabs.convergenceTransfer.description",
   },
 ] as const;
@@ -62,7 +62,7 @@ const ExaltationPage = () => {
   const translate = (entry: string) => t(`exaltationForge.${entry}`);
 
   return (
-    <Card className="my-12 w-full max-w-5xl bg-white dark:bg-card">
+    <Card className="my-12 w-full max-w-5xl bg-card">
       <CardHeader>
         <CardTitle asChild><h1>{translate("title")}</h1></CardTitle>
         <CardDescription>{translate("description")}</CardDescription>
@@ -76,11 +76,11 @@ const ExaltationPage = () => {
               <TabsTrigger
                 key={tab.value}
                 value={tab.value}
-                className="flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-xs font-semibold data-[state=active]:bg-blue-900 data-[state=active]:text-white md:text-sm"
+                className="flex items-center gap-1.5 rounded-sm px-3 py-1.5 text-xs font-semibold data-[state=active]:bg-primary data-[state=active]:text-primary-foreground md:text-sm"
               >
                 {t(tab.labelKey)}
                 <Badge
-                  className={`rounded px-1 py-0.5 text-[10px] font-bold text-white ${tab.badgeClass}`}
+                  className={`rounded px-1 py-0.5 text-[10px] font-bold text-primary-foreground ${tab.badgeClass}`}
                 >
                   {t(tab.badgeKey)}
                 </Badge>
@@ -90,7 +90,7 @@ const ExaltationPage = () => {
 
           {/* ── Tab descriptions ─────────────────────────────── */}
           {TABS.map((tab) => (
-            <TabsContent key={tab.value} value={tab.value} className="space-y-5">
+            <TabsContent key={tab.value} value={tab.value} className="flex flex-col gap-5">
               <p className="text-sm text-muted-foreground">
                 {t(tab.descKey)}
               </p>

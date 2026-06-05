@@ -50,7 +50,7 @@ export function LevelCalculator() {
   }, [currentLevel]);
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4'>
       <div className='grid grid-cols-3 gap-3'>
         <Field label={te('currentLevel')} value={currentLevel} onChange={setCurrentLevel} min={1} max={99999} />
         <Field label={te('percentToNext')} value={currentPercent} onChange={setCurrentPercent} min={0} max={99} />

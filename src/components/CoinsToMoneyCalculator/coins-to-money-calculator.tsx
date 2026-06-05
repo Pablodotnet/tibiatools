@@ -100,7 +100,7 @@ export function CoinsToMoneyCalculator() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className='space-y-6'>
+      <form onSubmit={form.handleSubmit(onSubmit)} className='flex flex-col gap-6'>
         <FormField
           control={form.control}
           name='priceForOneTc'
@@ -131,7 +131,7 @@ export function CoinsToMoneyCalculator() {
             </FormItem>
           )}
         />
-        <div className='space-x-4'>
+        <div className='flex gap-4'>
           <Button type='submit'>{translate('calculate')}</Button>
           <Button type='button' onClick={handleClear} variant='outline'>
             {translate('clear')}

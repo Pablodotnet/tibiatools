@@ -20,7 +20,7 @@ export function ExpShareCalculator() {
   }, [level]);
 
   return (
-    <div className='space-y-4'>
+    <div className='flex flex-col gap-4'>
       <div className='max-w-[160px]'>
         <label className='text-xs text-muted-foreground'>{te('yourLevel')}</label>
         <Input

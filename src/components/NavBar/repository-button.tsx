@@ -13,7 +13,7 @@ export function RepositoryButton() {
     >
       <svg
         viewBox="0 0 438.549 438.549"
-        className="size-6 text-black dark:text-white" data-icon
+        className="size-6 text-foreground" data-icon
       >
         <path
           fill="currentColor"
