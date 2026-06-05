@@ -8,7 +8,7 @@ const CharacterPage = () => {
   return (
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-6'>
       <div>
-        <h1 className='text-2xl font-bold'>{tc('title')}</h1>
+        <h1 className='text-2xl font-bold font-heading'>{tc('title')}</h1>
         <p className='text-sm text-muted-foreground'>{tc('description')}</p>
       </div>
       <CharacterManager />
