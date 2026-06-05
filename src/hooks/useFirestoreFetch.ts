@@ -20,7 +20,8 @@ export function useFirestoreFetch<T>(
       setData(result);
     } catch (e) {
       captureError(e, { context });
-      toast.error(t(errorKey));
+      const msg = e instanceof Error ? `${t(errorKey)}: ${e.message}` : t(errorKey);
+      toast.error(msg);
     } finally {
       setLoading(false);
     }
