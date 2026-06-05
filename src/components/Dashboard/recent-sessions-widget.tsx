@@ -26,7 +26,10 @@ export function RecentSessionsWidget() {
             <Skeleton className='h-10 w-3/4' />
           </div>
         ) : !sessions || sessions.length === 0 ? (
-          <p className='text-xs text-muted-foreground text-center py-4'>{tw('noRecentSessions')}</p>
+          <div className='flex flex-col items-center gap-1 py-4'>
+            <p className='text-xs text-muted-foreground text-center'>{tw('noRecentSessions')}</p>
+            <p className='text-xs text-muted-foreground'>Visit a hunting spot page to upload a session.</p>
+          </div>
         ) : (
           <div className='space-y-1.5'>
             {sessions.map((s) => (

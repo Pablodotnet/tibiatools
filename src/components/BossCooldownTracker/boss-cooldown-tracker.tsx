@@ -96,7 +96,12 @@ export function BossCooldownTracker() {
       toast.success(tb('clearedAll'));
     } catch (e) {
       captureError(e, { context: 'clear all boss cooldowns' });
-      toast.error(tb('clearError'));
+      toast.error(tb('clearError'), {
+        action: {
+          label: t('common.retry'),
+          onClick: () => refresh(),
+        },
+      });
     } finally {
       setClearingAll(false);
     }
@@ -113,11 +118,19 @@ export function BossCooldownTracker() {
         captureEvent('boss_marked', { key });
       } catch (e) {
         captureError(e, { context: 'mark boss killed' });
-        toast.error(tb('markError'));
+        toast.error(tb('markError'), {
+          action: {
+            label: t('common.retry'),
+            onClick: () => {
+              setMarking(null);
+              refresh();
+            },
+          },
+        });
         setMarking(null);
       }
     })();
-  }, [refresh]);
+  }, [refresh, t]);
 
   const handleClear = useCallback(async (key: string) => {
     const entry = cooldowns.find((c) => c.bossKey === key);
@@ -129,7 +142,12 @@ export function BossCooldownTracker() {
       toast.success(tb('cleared'));
     } catch (e) {
       captureError(e, { context: 'clear boss cooldown' });
-      toast.error(tb('clearError'));
+      toast.error(tb('clearError'), {
+        action: {
+          label: t('common.retry'),
+          onClick: () => refresh(),
+        },
+      });
     } finally {
       setClearingBoss(null);
     }

@@ -13,7 +13,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { captureError } from '@/lib/monitoring';
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
-import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks, Search, ArrowUp, ArrowDown } from 'lucide-react';
+import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks, Search, ArrowUp, ArrowDown, Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { HuntSessionUploadDialog } from '@/components/HuntSessionUploadDialog';
 import { HuntSessionCard } from '@/components/HuntSessionDisplay';
@@ -40,7 +40,12 @@ const VocationHuntSpotsPage = () => {
       setUserSpots(spots);
     } catch (e) {
       captureError(e, { context: 'loadSpots', vocationId });
-      toast.error(translate('loadSpotsError'));
+      toast.error(translate('loadSpotsError'), {
+        action: {
+          label: t('common.retry'),
+          onClick: () => loadSpots(),
+        },
+      });
     } finally {
       setLoadingSpots(false);
     }
@@ -108,9 +113,10 @@ const VocationHuntSpotsPage = () => {
               <Skeleton className="h-16 w-3/4" />
             </div>
           ) : mergedSpots.length === 0 ? (
-            <p className="text-muted-foreground text-center py-8">
-              {translate('comingSoon')} {vocation.name}.
-            </p>
+            <div className="flex flex-col items-center gap-2 py-8">
+              <p className="text-muted-foreground text-center">{translate('comingSoon')} {vocation.name}.</p>
+              <p className="text-xs text-muted-foreground">Be the first to add a hunting spot!</p>
+            </div>
           ) : (
             <div className="flex flex-col gap-3">
               <div className="flex items-center gap-2">
@@ -157,9 +163,10 @@ const VocationHuntSpotsPage = () => {
                 />
               </div>
               {mergedSpots.length === 0 ? (
-                <p className="text-xs text-muted-foreground text-center py-4">
-                  {translate('noSpotsMatch')}
-                </p>
+                <div className="flex flex-col items-center gap-2 py-4">
+                  <p className="text-xs text-muted-foreground text-center">{translate('noSpotsMatch')}</p>
+                  <p className="text-xs text-muted-foreground">Try adjusting your filters</p>
+                </div>
               ) : (
                 mergedSpots.map((spot) => (
                   <SpotCard
@@ -204,6 +211,8 @@ function SpotCard({
   const [sessionsLoading, setSessionsLoading] = useState(false);
   const [showAllSessions, setShowAllSessions] = useState(false);
   const loadingRef = useRef(false);
+  const [deletingSpotId, setDeletingSpotId] = useState<string | null>(null);
+  const [deletingSessionId, setDeletingSessionId] = useState<string | null>(null);
 
   const loadSessions = useCallback(async () => {
     if (loadingRef.current) return;
@@ -215,7 +224,12 @@ function SpotCard({
       setSessionsLoaded(true);
     } catch (e) {
       captureError(e, { context: 'loadSessions', spotId: spot.id });
-      toast.error(translate('loadSessionsError'));
+      toast.error(translate('loadSessionsError'), {
+        action: {
+          label: t('common.retry'),
+          onClick: () => loadSessions(),
+        },
+      });
     } finally {
       setSessionsLoading(false);
       loadingRef.current = false;
@@ -229,6 +243,7 @@ function SpotCard({
   }, [expanded, sessionsLoaded, loadSessions]);
 
   const handleSessionDelete = useCallback(async (sessionId: string) => {
+    setDeletingSessionId(sessionId);
     try {
       await deleteHuntSession(sessionId);
       setSessions((prev) => prev.filter((s) => s.id !== sessionId));
@@ -236,6 +251,8 @@ function SpotCard({
     } catch (e) {
       captureError(e, { context: 'deleteHuntSession', sessionId });
       toast.error(translate('deleteSessionError'));
+    } finally {
+      setDeletingSessionId(null);
     }
   }, [translate]);
 
@@ -295,12 +312,13 @@ function SpotCard({
         <div className="flex items-center gap-1">
           {isOwner && (
             <button
-              onClick={(e) => { e.stopPropagation(); onDelete(spot.id); }}
+              onClick={async (e) => { e.stopPropagation(); setDeletingSpotId(spot.id); try { await onDelete(spot.id); } finally { setDeletingSpotId(null); } }}
               className="p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
+              disabled={deletingSpotId === spot.id}
               title={translate('deleteSpot')}
               aria-label={translate('deleteSpot')}
             >
-              <Trash2 className="size-3.5" />
+              {deletingSpotId === spot.id ? <Loader2 className="size-3.5 animate-spin" /> : <Trash2 className="size-3.5" />}
             </button>
           )}
           {expanded ? (
@@ -485,7 +503,10 @@ function SpotCard({
             )}
 
             {!sessionsLoading && sessions.length === 0 && (
-              <p className="text-xs text-muted-foreground text-center py-2">{translate('noSessions')}</p>
+              <div className="flex flex-col items-center gap-1 py-2">
+                <p className="text-xs text-muted-foreground">{translate('noSessions')}</p>
+                <p className="text-xs text-muted-foreground">Upload a hunt session to track your hunts here.</p>
+              </div>
             )}
 
             <div className="space-y-1.5">
@@ -495,6 +516,7 @@ function SpotCard({
                   session={session}
                   isOwner={!!userId && session.ownerUid === userId}
                   onDelete={handleSessionDelete}
+                  isDeleting={deletingSessionId === session.id}
                 />
               ))}
             </div>

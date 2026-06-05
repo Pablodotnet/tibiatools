@@ -46,7 +46,12 @@ const MySessionsPage = () => {
       setSessions(data);
     } catch (e) {
       captureError(e, { context: 'loadMySessions' });
-      toast.error(ts('loadError'));
+      toast.error(ts('loadError'), {
+        action: {
+          label: t('common.retry'),
+          onClick: () => loadSessions(),
+        },
+      });
     } finally {
       setLoading(false);
     }
@@ -190,7 +195,8 @@ const MySessionsPage = () => {
       ) : sessions.length === 0 ? (
         <Card>
           <CardContent className='py-12 text-center text-muted-foreground'>
-            {ts('empty')}
+            <p>{ts('empty')}</p>
+            <p className='text-xs mt-2'>Go to the Hunting Spots page to upload sessions.</p>
           </CardContent>
         </Card>
       ) : (

@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { formatRate, formatProfit } from '@/helpers/huntingSpots';
 import type { HuntSession } from '@/types/huntSession';
-import { User, Coins, PackageOpen, Zap, Swords, HeartPulse, Shield, Users, PartyPopper, Trash2, ChevronDown, ChevronUp, ArrowUp, ArrowDown } from 'lucide-react';
+import { User, Coins, PackageOpen, Zap, Swords, HeartPulse, Shield, Users, PartyPopper, Trash2, ChevronDown, ChevronUp, ArrowUp, ArrowDown, Loader2 } from 'lucide-react';
 import { memo, useState } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -10,10 +10,12 @@ export const HuntSessionCard = memo(function HuntSessionCard({
   session,
   isOwner,
   onDelete,
+  isDeleting = false,
 }: {
   session: HuntSession;
   isOwner: boolean;
   onDelete: (id: string) => void;
+  isDeleting?: boolean;
 }) {
   const { t } = useTranslation();
   const te = (key: string) => t(`huntSessionDisplay.${key}`);
@@ -68,10 +70,11 @@ export const HuntSessionCard = memo(function HuntSessionCard({
             <button
               onClick={(e) => { e.stopPropagation(); onDelete(session.id); }}
               className='p-1 text-muted-foreground hover:text-destructive transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
+              disabled={isDeleting}
               title={te('delete')}
               aria-label={te('delete')}
             >
-              <Trash2 className='size-3.5' />
+              {isDeleting ? <Loader2 className='size-3.5 animate-spin' /> : <Trash2 className='size-3.5' />}
             </button>
           )}
           {expanded ? (

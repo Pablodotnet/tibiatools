@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from '@/hooks';
 import { RootState } from '@/store';
 import { startGoogleSignIn, startLoginWithEmailPassword } from '@/store/auth/thunks';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { Loader2, LogIn } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -89,8 +90,12 @@ export const LoginForm = () => {
           )}
         />
         <div className='flex justify-end gap-4'>
-          <Button type='submit' disabled={isAuthenticating}>{translate('login')}</Button>
+          <Button type='submit' disabled={isAuthenticating}>
+            {isAuthenticating ? <Loader2 className='size-4 animate-spin' /> : null}
+            {translate('login')}
+          </Button>
           <Button type='button' variant='outline' onClick={onGoogleSignIn} disabled={isAuthenticating}>
+            {isAuthenticating ? <Loader2 className='size-4 animate-spin' /> : <LogIn className='size-4' />}
             {translate('googleButton')}
           </Button>
         </div>

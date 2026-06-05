@@ -21,7 +21,12 @@ export function useFirestoreFetch<T>(
     } catch (e) {
       captureError(e, { context });
       const msg = e instanceof Error ? `${t(errorKey)}: ${e.message}` : t(errorKey);
-      toast.error(msg);
+      toast.error(msg, {
+        action: {
+          label: t('common.retry'),
+          onClick: () => refresh(),
+        },
+      });
     } finally {
       setLoading(false);
     }
