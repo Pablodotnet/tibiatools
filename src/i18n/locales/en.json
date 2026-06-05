@@ -25,7 +25,11 @@
     "tierProjects": "My Tier Projects",
     "community": "Public Projects",
     "mySessions": "My Sessions",
-    "characters": "Characters"
+    "characters": "Characters",
+    "staminaCalculator": "Stamina Calculator",
+    "bestiary": "Bestiary",
+    "bossCooldownTracker": "Boss Cooldown Tracker",
+    "imbuementTracker": "Imbuement Tracker"
   },
   "dashboard": {
     "welcome": "Welcome to Tibia Tools",

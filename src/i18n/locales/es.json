@@ -25,7 +25,11 @@
     "tierProjects": "Mis Proyectos de Tier",
     "community": "Proyectos Públicos",
     "mySessions": "Mis sesiones",
-    "characters": "Personajes"
+    "characters": "Personajes",
+    "staminaCalculator": "Calculadora de Aguante",
+    "bestiary": "Bestiario",
+    "bossCooldownTracker": "Control de Enfriamiento de Jefes",
+    "imbuementTracker": "Control de Imbuciones"
   },
   "dashboard": {
     "welcome": "Bienvenido a Tibia Tools",
