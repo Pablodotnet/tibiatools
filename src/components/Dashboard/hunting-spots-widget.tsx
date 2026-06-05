@@ -13,10 +13,10 @@ export function HuntingSpotsWidget() {
   return (
     <Card>
       <CardHeader className='pb-3'>
-        <CardTitle className='text-sm font-medium flex items-center gap-2'>
+        <CardTitle asChild><h2 className='text-sm font-medium flex items-center gap-2'>
           <Crosshair className='size-4 text-muted-foreground' />
           {tw('huntingSpotsTitle')}
-        </CardTitle>
+        </h2></CardTitle>
       </CardHeader>
       <CardContent>
         <div className='grid grid-cols-2 gap-2'>
@@ -31,7 +31,7 @@ export function HuntingSpotsWidget() {
                 <img src={v.icon} alt={v.name} className='size-5 shrink-0' />
                 <span className='flex-1 truncate'>{v.name}</span>
                 {count > 0 && (
-                  <Badge className='text-[10px] bg-muted px-1.5 py-0.5 tabular-nums rounded-sm'>
+                  <Badge variant='secondary' className='tabular-nums'>
                     {count}
                   </Badge>
                 )}
@@ -41,7 +41,7 @@ export function HuntingSpotsWidget() {
         </div>
         <Link
           to='/hunting-spots'
-          className='mt-3 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+          className='mt-3 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-ring'
         >
           {tw('viewAllSpots')}
           <ChevronRight className='size-3' />

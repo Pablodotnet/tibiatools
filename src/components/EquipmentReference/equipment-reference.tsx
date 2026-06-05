@@ -198,7 +198,6 @@ export function EquipmentReference() {
                             <Badge
                               key={el}
                               variant="outline"
-                              className='px-1.5 py-0.5 font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
                             >
                               {ELEMENT_LABELS[el] ?? el}
                             </Badge>
@@ -217,7 +216,6 @@ export function EquipmentReference() {
                             <Badge
                               key={ik}
                               variant="outline"
-                              className='px-1.5 py-0.5 font-medium bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
                             >
                               {imbue.name}
                             </Badge>

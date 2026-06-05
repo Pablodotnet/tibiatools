@@ -11,7 +11,7 @@ import { toast } from 'sonner';
 import { formatGp } from '@/helpers/exaltationForge';
 import type { HuntSession } from '@/types/huntSession';
 import {
-  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
+  LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend,
 } from 'recharts';
 
 function formatRate(n: number): string {
@@ -205,6 +205,7 @@ const MySessionsPage = () => {
                       <XAxis dataKey='name' tick={{ fontSize: 12 }} />
                       <YAxis tickFormatter={formatRate} tick={{ fontSize: 12 }} />
                       <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
+                      <Legend />
                       <Line type='monotone' dataKey='xpPerHour' stroke='hsl(var(--primary))' strokeWidth={2} dot={{ r: 3 }} />
                     </LineChart>
                   </ResponsiveContainer>
@@ -228,6 +229,7 @@ const MySessionsPage = () => {
                       <XAxis dataKey='name' tick={{ fontSize: 12 }} />
                       <YAxis tickFormatter={formatRate} tick={{ fontSize: 12 }} />
                       <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
+                      <Legend />
                       <Bar dataKey='balance' fill='hsl(var(--primary))' radius={[4, 4, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
@@ -251,6 +253,7 @@ const MySessionsPage = () => {
                       <XAxis dataKey='name' tick={{ fontSize: 12 }} />
                       <YAxis tickFormatter={formatRate} tick={{ fontSize: 12 }} />
                       <Tooltip formatter={(value) => formatGp(Number(value) || 0)} />
+                      <Legend />
                       <Bar dataKey='loot' fill='hsl(var(--chart-1))' radius={[4, 4, 0, 0]} />
                       <Bar dataKey='supplies' fill='hsl(var(--chart-2))' radius={[4, 4, 0, 0]} />
                     </BarChart>

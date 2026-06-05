@@ -24,7 +24,7 @@ export function GangrenaBanner() {
 
             <div className='relative flex items-start justify-between'>
               <div className='space-y-1'>
-                <h3 className='text-base font-bold text-amber-50'>{tw('gangrenaTitle')}</h3>
+                <h2 className='text-base font-bold text-amber-50'>{tw('gangrenaTitle')}</h2>
                 <p className='text-xs text-amber-200/80 max-w-xs leading-relaxed'>
                   {tw('gangrenaDesc')}
                 </p>

@@ -146,7 +146,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <Link
             to='/account'
             onClick={() => setSidebarOpen(false)}
-            className='flex items-center gap-2.5 px-4 py-2.5 border-b border-border hover:bg-accent transition-colors shrink-0'
+            className='flex items-center gap-2.5 px-4 py-2.5 border-b border-border hover:bg-accent transition-colors shrink-0 focus-visible:outline-2 focus-visible:outline-ring'
           >
             <Avatar className='size-7'>
               {user.photoURL ? (
@@ -166,7 +166,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
           <Link
             to='/auth'
             onClick={() => setSidebarOpen(false)}
-            className='flex items-center gap-2 px-4 py-2.5 border-b border-border text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0'
+            className='flex items-center gap-2 px-4 py-2.5 border-b border-border text-sm text-muted-foreground hover:text-foreground hover:bg-accent transition-colors shrink-0 focus-visible:outline-2 focus-visible:outline-ring'
           >
             <Avatar className='size-7'>
               <AvatarFallback className='text-xs text-muted-foreground bg-muted'>
@@ -184,7 +184,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
             to='/'
             onClick={() => setSidebarOpen(false)}
             className={({ isActive }) =>
-              `flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors ${
+              `flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors focus-visible:outline-2 focus-visible:outline-ring ${
                 isActive
                   ? 'bg-accent text-accent-foreground font-medium'
                   : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
@@ -197,7 +197,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
 
           <button
             onClick={() => setCommandPaletteOpen(true)}
-            className='w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer'
+            className='w-full flex items-center gap-2.5 px-3 py-2 rounded-md text-sm text-muted-foreground hover:bg-accent hover:text-accent-foreground transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
           >
             <Search className='size-4 shrink-0' />
             <span className='flex-1 text-left'>{t('commandPalette.search')}</span>
@@ -214,7 +214,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
               <div key={group.labelKey}>
                 <button
                   onClick={() => toggleGroup(group.labelKey)}
-                  className='w-full flex items-center justify-between px-2 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer'
+                  className='w-full flex items-center justify-between px-2 py-1.5 text-xs font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'
                 >
                   {tl(group.labelKey)}
                   {isExpanded ? (
@@ -234,7 +234,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                           to={item.to}
                           onClick={() => setSidebarOpen(false)}
                           className={`
-                            flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors
+                            flex items-center gap-2.5 px-3 py-2 rounded-md text-sm transition-colors focus-visible:outline-2 focus-visible:outline-ring
                             ${active
                               ? 'bg-accent text-accent-foreground font-medium'
                               : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
@@ -254,7 +254,8 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
         </nav>
 
         {/* Bottom controls */}
-        <div className='border-t border-border p-3 flex items-center justify-between shrink-0'>
+        <Separator />
+        <div className='p-3 flex items-center justify-between shrink-0'>
           <div className='flex items-center gap-1'>
             <LanguageSwitcher />
             <ModeToggle />
@@ -269,7 +270,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
       {/* Main content */}
       <div className='lg:pl-64 min-h-screen flex flex-col'>
         {/* Mobile header */}
-        <header className='lg:hidden flex items-center justify-between h-14 px-4 border-b border-border bg-card sticky top-0 z-20'>
+        <header className='lg:hidden flex items-center justify-between h-14 px-4 pt-[env(safe-area-inset-top)] border-b border-border bg-card sticky top-0 z-20'>
           <button
             onClick={() => setSidebarOpen(true)}
             className='p-1 text-muted-foreground hover:text-foreground cursor-pointer focus-visible:outline-2 focus-visible:outline-ring'

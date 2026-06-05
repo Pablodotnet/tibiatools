@@ -24,15 +24,14 @@ const AuthPage = () => {
   return (
     <Card className='w-full max-w-md mx-auto mt-6'>
       <CardHeader>
-        <h1 className="sr-only">{translate('login')}</h1>
         {!showRegisterForm ? (
           <>
-            <CardTitle>{translate('login')}</CardTitle>
+            <CardTitle asChild><h1>{translate('login')}</h1></CardTitle>
             <CardDescription>{translate('useEmailOrGoogle')}</CardDescription>
           </>
         ) : (
           <>
-            <CardTitle>{translate('register')}</CardTitle>
+            <CardTitle asChild><h1>{translate('register')}</h1></CardTitle>
             <CardDescription>{translate('enterEmailPass')}</CardDescription>
           </>
         )}
@@ -45,7 +44,7 @@ const AuthPage = () => {
           <p>
             {translate('youDontHave')}{' '}
             <a
-              className='cursor-pointer text-blue-500 underline hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 focus-visible:ring-2 focus-visible:ring-ring rounded'
+              className='cursor-pointer text-primary underline hover:text-primary/80 focus-visible:ring-2 focus-visible:ring-ring rounded'
               onClick={toggleForms}
             >
               {translate('signUp')}
@@ -55,7 +54,7 @@ const AuthPage = () => {
           <p>
             {translate('hasAccount')}{' '}
             <a
-              className='cursor-pointer text-blue-500 underline hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 focus-visible:ring-2 focus-visible:ring-ring rounded'
+              className='cursor-pointer text-primary underline hover:text-primary/80 focus-visible:ring-2 focus-visible:ring-ring rounded'
               onClick={toggleForms}
             >
               {translate('login')}

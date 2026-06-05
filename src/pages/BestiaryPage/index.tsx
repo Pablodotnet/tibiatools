@@ -8,8 +8,7 @@ const BestiaryPage = () => {
   return (
     <Card className='w-full max-w-3xl mx-auto mt-6'>
       <CardHeader>
-        <h1 className="sr-only">{tb('title')}</h1>
-        <CardTitle>{tb('title')}</CardTitle>
+        <CardTitle asChild><h1>{tb('title')}</h1></CardTitle>
         <CardDescription>{tb('description')}</CardDescription>
       </CardHeader>
       <CardContent>

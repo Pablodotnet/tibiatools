@@ -64,7 +64,7 @@ export function BestiaryTracker() {
           <p className='text-sm font-medium'>{tb('charmPoints')}</p>
           <p className='text-xs text-muted-foreground'>{tb('charmPointsDesc')}</p>
         </div>
-        <span className='text-2xl font-bold tabular-nums text-blue-600 dark:text-blue-400'>{charmPoints}</span>
+        <span className='text-2xl font-bold tabular-nums text-foreground'>{charmPoints}</span>
       </div>
 
       {/* Difficulty cards */}
@@ -85,7 +85,7 @@ export function BestiaryTracker() {
         if (monsters.length === 0) return null;
         return (
           <div key={d}>
-            <h3 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>
+            <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>
               {tb(`diff_${d}`)} ({completionByDifficulty[d].done}/{completionByDifficulty[d].total})
             </h3>
             <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-1.5'>
@@ -98,13 +98,13 @@ export function BestiaryTracker() {
                     onClick={user ? () => handleToggle(monster.key, isCompleted) : undefined}
                     disabled={!user || isToggling}
                     className={`flex items-center gap-2 rounded-md px-3 py-2 text-left text-sm transition-colors cursor-pointer w-full
-                      ${isCompleted ? 'bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800' : 'bg-muted/30 border border-transparent hover:bg-muted/50'}
+                      ${isCompleted ? 'bg-success/10 border border-success/30' : 'bg-muted/30 border border-transparent hover:bg-muted/50'}
                       ${!user ? 'cursor-default' : ''}`}
                   >
                     {isToggling ? (
                       <Loader2 className='size-4 animate-spin shrink-0' />
                     ) : isCompleted ? (
-                      <CheckCircle2 className='size-4 text-green-600 dark:text-green-400 shrink-0' />
+                      <CheckCircle2 className='size-4 text-success shrink-0' />
                     ) : (
                       <Circle className='size-4 text-muted-foreground shrink-0' />
                     )}
@@ -122,7 +122,7 @@ export function BestiaryTracker() {
 
       {/* Charm Expansion Calculator */}
       <div>
-        <h3 className='text-sm font-semibold mb-3 flex items-center gap-1.5'>
+        <h2 className='text-sm font-semibold mb-3 flex items-center gap-1.5'>
           <Sparkles className='size-4 text-amber-500' />
           {tb('charmShop')}
         </h3>
@@ -132,11 +132,11 @@ export function BestiaryTracker() {
             return (
               <div
                 key={charm.key}
-                className={`rounded-md border p-3 ${canAfford ? 'border-green-200 dark:border-green-800 bg-green-50/50 dark:bg-green-950/10' : 'opacity-60'}`}
+                className={`rounded-md border p-3 ${canAfford ? 'border-success/30 bg-success/5' : 'opacity-60'}`}
               >
                 <div className='flex items-center justify-between'>
                   <span className='text-sm font-medium'>{charm.name}</span>
-                  <span className={`text-xs font-semibold tabular-nums ${canAfford ? 'text-green-600 dark:text-green-400' : 'text-muted-foreground'}`}>
+                  <span className={`text-xs font-semibold tabular-nums ${canAfford ? 'text-success' : 'text-muted-foreground'}`}>
                     {charm.cost} pts
                   </span>
                 </div>

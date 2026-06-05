@@ -4,6 +4,7 @@ import type { ActiveImbuementDoc } from '@/firebase/activeImbuements';
 import { getUserImbuements, addImbuement, removeImbuement } from '@/firebase/activeImbuements';
 import { useAuth } from '@/hooks/useAuth';
 import { useFirestoreFetch, useClock } from '@/hooks/useFirestoreFetch';
+import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -98,7 +99,7 @@ export function ImbuementTracker() {
     <div className='space-y-6'>
       {user && (
         <div className='rounded-md border p-4 space-y-3'>
-          <h3 className='text-sm font-semibold'>{ti('addNew')}</h3>
+          <h2 className='text-sm font-semibold'>{ti('addNew')}</h2>
           <div className='grid grid-cols-1 sm:grid-cols-3 gap-3'>
             <div className='space-y-1'>
               <Label className='text-xs text-muted-foreground'>{ti('slot')}</Label>
@@ -147,25 +148,39 @@ export function ImbuementTracker() {
 
       {activeList.length > 0 && (
         <div>
-          <h3 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('active')} ({activeList.length})</h3>
+          <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('active')}</h2> ({activeList.length})</h3>
           <div className='space-y-2'>
             {activeList.map((imb) => {
               const status = getStatus(imb);
+              if (status.expiringSoon) {
+                return (
+                  <Alert key={imb.id} className="border-warning bg-warning/10">
+                    <AlertTriangle className="size-4 text-amber-500" />
+                    <AlertTitle className="text-sm font-medium">
+                      {ti(`slot_${imb.slot}`)} — {ti(`tier_${imb.tier}`)}
+                    </AlertTitle>
+                    <AlertDescription>
+                      <span className="text-warning font-medium">
+                        {ti('expiringSoon')}: {status.remainingHours.toFixed(1)}h
+                      </span>
+                      {imb.note && <p className='text-xs text-muted-foreground mt-0.5'>{imb.note}</p>}
+                    </AlertDescription>
+                    {user && (
+                      <Button variant='ghost' size='sm' onClick={() => handleRemove(imb.id)} disabled={removingId === imb.id} className='h-7 text-xs text-muted-foreground col-start-2 justify-self-end' aria-label='Remove imbuement'>
+                        {removingId === imb.id ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
+                      </Button>
+                    )}
+                  </Alert>
+                );
+              }
               return (
-                <div key={imb.id} className={`flex items-center justify-between rounded-md border p-3 ${status.expiringSoon ? 'border-amber-400 bg-amber-50 dark:bg-amber-950/20' : ''}`}>
+                <div key={imb.id} className="flex items-center justify-between rounded-md border p-3">
                   <div className='flex items-center gap-3'>
-                    {status.expiringSoon && <AlertTriangle className='size-4 text-amber-500 shrink-0' />}
-                    {!status.expiringSoon && <Clock className='size-4 text-muted-foreground shrink-0' />}
+                    <Clock className='size-4 text-muted-foreground shrink-0' />
                     <div>
                       <p className='text-sm font-medium'>{ti(`slot_${imb.slot}`)} — {ti(`tier_${imb.tier}`)}</p>
                       <p className='text-xs text-muted-foreground'>
-                        {status.expiringSoon ? (
-                          <span className='text-amber-600 dark:text-amber-400 font-medium'>
-                            {ti('expiringSoon')}: {status.remainingHours.toFixed(1)}h
-                          </span>
-                        ) : (
-                          <span>{status.remainingHours.toFixed(1)}h / {imb.durationHours}h {ti('remaining')}</span>
-                        )}
+                        <span>{status.remainingHours.toFixed(1)}h / {imb.durationHours}h {ti('remaining')}</span>
                       </p>
                       {imb.note && <p className='text-xs text-muted-foreground mt-0.5'>{imb.note}</p>}
                     </div>
@@ -188,10 +203,10 @@ export function ImbuementTracker() {
 
       {expiredList.length > 0 && (
         <div>
-          <h3 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('expired')} ({expiredList.length})</h3>
+          <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{ti('expired')}</h2> ({expiredList.length})</h3>
           <div className='space-y-2'>
             {expiredList.map((imb) => (
-              <div key={imb.id} className='flex items-center justify-between rounded-md border border-muted p-3 opacity-60'>
+              <div key={imb.id} className='flex items-center justify-between rounded-md border border-muted p-3 opacity-60 cursor-not-allowed pointer-events-none' aria-disabled={true}>
                 <div>
                   <p className='text-sm font-medium'>{ti(`slot_${imb.slot}`)} — {ti(`tier_${imb.tier}`)}</p>
                   {imb.note && <p className='text-xs text-muted-foreground mt-0.5'>{imb.note}</p>}

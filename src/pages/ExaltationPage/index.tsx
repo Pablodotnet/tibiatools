@@ -64,15 +64,14 @@ const ExaltationPage = () => {
   return (
     <Card className="my-12 w-full max-w-5xl bg-white dark:bg-card">
       <CardHeader>
-        <h1 className="sr-only">{translate("title")}</h1>
-        <CardTitle>{translate("title")}</CardTitle>
+        <CardTitle asChild><h1>{translate("title")}</h1></CardTitle>
         <CardDescription>{translate("description")}</CardDescription>
       </CardHeader>
 
       <CardContent>
         <Tabs defaultValue="fusion" className="w-full">
           {/* ── Tab bar ──────────────────────────────────────── */}
-          <TabsList className="mb-6 flex h-auto w-full flex-wrap gap-1 bg-sky-100/60 p-1 dark:bg-sky-950/30">
+          <TabsList className="mb-6 flex h-auto w-full flex-wrap gap-1 bg-muted/50 p-1">
             {TABS.map((tab) => (
               <TabsTrigger
                 key={tab.value}
@@ -92,7 +91,7 @@ const ExaltationPage = () => {
           {/* ── Tab descriptions ─────────────────────────────── */}
           {TABS.map((tab) => (
             <TabsContent key={tab.value} value={tab.value} className="space-y-5">
-              <p className="text-sm text-slate-600 dark:text-slate-400">
+              <p className="text-sm text-muted-foreground">
                 {t(tab.descKey)}
               </p>
               <Suspense fallback={null}>

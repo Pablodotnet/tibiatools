@@ -1,7 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { formatRate, formatProfit } from '@/helpers/huntingSpots';
 import type { HuntSession } from '@/types/huntSession';
-import { User, Coins, PackageOpen, Zap, Swords, HeartPulse, Shield, Users, PartyPopper, Trash2, ChevronDown, ChevronUp } from 'lucide-react';
+import { User, Coins, PackageOpen, Zap, Swords, HeartPulse, Shield, Users, PartyPopper, Trash2, ChevronDown, ChevronUp, ArrowUp, ArrowDown } from 'lucide-react';
 import { memo, useState } from 'react';
 import { Separator } from '@/components/ui/separator';
 import { Badge } from '@/components/ui/badge';
@@ -23,7 +23,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
     <div className='rounded-lg border bg-card text-card-foreground shadow-sm'>
       <button
         onClick={() => setExpanded(!expanded)}
-        className='w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer hover:bg-muted/50 transition-colors rounded-lg'
+        className='w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer hover:bg-muted/50 transition-colors rounded-lg focus-visible:outline-2 focus-visible:outline-ring'
         aria-expanded={expanded}
       >
         <div className='min-w-0 flex-1 flex items-center gap-2'>
@@ -38,7 +38,8 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                 {session.isParty ? te('partySession') : te('soloSession')}
               </span>
               {session.balance !== undefined && (
-                <span className={`text-xs tabular-nums font-medium ${session.balance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                <span className={`text-xs tabular-nums font-medium inline-flex items-center gap-0.5 ${session.balance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                  {session.balance >= 0 ? <ArrowUp className='size-3' /> : <ArrowDown className='size-3' />}
                   {session.balance >= 0 ? '+' : ''}{formatProfit(session.balance)}
                 </span>
               )}
@@ -82,7 +83,9 @@ export const HuntSessionCard = memo(function HuntSessionCard({
       </button>
 
       {expanded && (
-        <div className='border-t px-4 py-3 space-y-2 text-sm fade-in'>
+        <>
+        <Separator />
+        <div className='px-4 py-3 space-y-2 text-sm fade-in'>
           <div className='grid grid-cols-2 gap-x-4 gap-y-1.5 text-xs'>
             {session.loot !== undefined && (
               <>
@@ -90,7 +93,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                   <Coins className='size-3' /> {te('loot')}
                 </span>
                 <span className='tabular-nums text-right font-medium text-success'>
-                  +{formatProfit(session.loot)}
+                  <ArrowUp className='size-3 inline' /> +{formatProfit(session.loot)}
                 </span>
               </>
             )}
@@ -100,7 +103,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                   <PackageOpen className='size-3' /> {te('supplies')}
                 </span>
                 <span className='tabular-nums text-right font-medium text-destructive'>
-                  {formatProfit(session.supplies)}
+                  <ArrowDown className='size-3 inline' /> -{formatProfit(session.supplies)}
                 </span>
               </>
             )}
@@ -110,6 +113,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                   <Coins className='size-3' /> {te('balance')}
                 </span>
                 <span className={`tabular-nums text-right font-medium ${session.balance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                  {session.balance >= 0 ? <ArrowUp className='size-3 inline' /> : <ArrowDown className='size-3 inline' />}
                   {session.balance >= 0 ? '+' : ''}{formatProfit(session.balance)}
                 </span>
               </>
@@ -171,6 +175,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
                       {p.vocation} &middot; {te('lvl')} {p.level}
                       {p.balance !== undefined && (
                         <span className={p.balance >= 0 ? 'text-success ml-2' : 'text-destructive ml-2'}>
+                          {p.balance >= 0 ? <ArrowUp className='size-2.5 inline' /> : <ArrowDown className='size-2.5 inline' />}
                           {p.balance >= 0 ? '+' : ''}{formatProfit(p.balance)}
                         </span>
                       )}
@@ -191,7 +196,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
               </p>
               <div className='flex flex-wrap gap-1'>
                 {session.lootItems.slice(0, 10).map((item) => (
-                  <Badge key={item.name} className='text-[10px] bg-success/10 px-1.5 py-0.5 font-normal rounded'>
+                  <Badge key={item.name} variant="outline" className='text-[10px]'>
                     {item.name}: {item.count}× ({formatProfit(item.value)})
                   </Badge>
                 ))}
@@ -214,7 +219,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
               </p>
               <div className='flex flex-wrap gap-1'>
                 {session.supplyItems.slice(0, 10).map((item) => (
-                  <Badge key={item.name} className='text-[10px] bg-destructive/10 px-1.5 py-0.5 font-normal rounded'>
+                  <Badge key={item.name} variant="outline" className='text-[10px]'>
                     {item.name}: {item.count}× ({formatProfit(item.value)})
                   </Badge>
                 ))}
@@ -235,7 +240,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
               <p className='text-xs font-medium text-muted-foreground mb-1'>{te('killedMonsters')}</p>
               <div className='flex flex-wrap gap-1'>
                 {session.killedMonsters.slice(0, 15).map((m) => (
-                  <Badge key={`${m.name}-${m.count}`} className='text-[10px] bg-muted/30 px-1.5 py-0.5 font-normal rounded'>
+                  <Badge key={`${m.name}-${m.count}`} variant="secondary" className='text-[10px]'>
                     {m.name}: {m.count}
                   </Badge>
                 ))}
@@ -258,6 +263,7 @@ export const HuntSessionCard = memo(function HuntSessionCard({
             </>
           )}
         </div>
+        </>
       )}
     </div>
   );

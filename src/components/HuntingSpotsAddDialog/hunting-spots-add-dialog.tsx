@@ -24,6 +24,7 @@ import {
 import { vocations } from '@/helpers';
 import { addHuntingSpot } from '@/firebase/huntingSpots';
 import { toast } from 'sonner';
+import { Loader2 } from 'lucide-react';
 import { captureError, captureEvent } from '@/lib/monitoring';
 
 export function HuntingSpotsAddDialog() {
@@ -193,6 +194,7 @@ export function HuntingSpotsAddDialog() {
             {te('cancel')}
           </Button>
           <Button onClick={handleSubmit} disabled={submitting}>
+            {submitting && <Loader2 className='size-4 animate-spin mr-1' />}
             {submitting ? te('submitting') : te('submit')}
           </Button>
         </AlertDialogFooter>

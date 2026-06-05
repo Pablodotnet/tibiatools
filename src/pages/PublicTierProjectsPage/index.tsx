@@ -62,7 +62,7 @@ const PublicTierProjectsPage = () => {
 
         <Card>
           <CardHeader>
-            <CardTitle>{selectedProject.name}</CardTitle>
+            <CardTitle asChild><h1>{selectedProject.name}</h1></CardTitle>
             <CardDescription>
               {translate('target')}: Tier {selectedProject.targetTier} &middot; {translate('current')}: Tier {selectedProject.currentTier} &middot; {translate('by')} {selectedProject.ownerDisplayName}
             </CardDescription>
@@ -117,8 +117,7 @@ const PublicTierProjectsPage = () => {
     <div className='w-full max-w-2xl mx-auto mt-6'>
       <Card>
         <CardHeader>
-          <h1 className="sr-only">{translate('title')}</h1>
-          <CardTitle>{translate('title')}</CardTitle>
+          <CardTitle asChild><h1>{translate('title')}</h1></CardTitle>
           <CardDescription>{translate('description')}</CardDescription>
         </CardHeader>
         <CardContent>

@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Clock, ArrowRight } from 'lucide-react';
+import { Clock, ArrowRight, ArrowUp, ArrowDown } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRecentSessions } from '@/hooks/queries/useHuntSessions';
 
@@ -13,10 +13,10 @@ export function RecentSessionsWidget() {
   return (
     <Card>
       <CardHeader className='pb-3'>
-        <CardTitle className='text-sm font-medium flex items-center gap-2'>
+        <CardTitle asChild><h2 className='text-sm font-medium flex items-center gap-2'>
           <Clock className='size-4 text-muted-foreground' />
           {tw('recentSessionsTitle')}
-        </CardTitle>
+        </h2></CardTitle>
       </CardHeader>
       <CardContent>
         {isLoading ? (
@@ -42,7 +42,7 @@ export function RecentSessionsWidget() {
                 </div>
                 <div className='text-right shrink-0 ml-2'>
                   <p className={`tabular-nums ${(s.balance ?? 0) >= 0 ? 'text-success' : 'text-destructive'}`}>
-                    {s.balance != null ? `${(s.balance >= 0 ? '+' : '')}${s.balance.toLocaleString()} gp` : '—'}
+                    {s.balance != null ? <>{s.balance >= 0 ? <ArrowUp className='size-3 inline' /> : <ArrowDown className='size-3 inline' />}{(s.balance >= 0 ? '+' : '')}{s.balance.toLocaleString()} gp</> : '—'}
                   </p>
                   {s.xpPerHour != null && (
                     <p className='text-muted-foreground'>{s.xpPerHour.toLocaleString()} XP/h</p>
@@ -54,7 +54,7 @@ export function RecentSessionsWidget() {
         )}
         <Link
           to='/hunting-spots'
-          className='mt-2 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+          className='mt-2 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-ring'
         >
           {tw('viewAllSpots')}
           <ArrowRight className='size-3' />

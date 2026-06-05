@@ -17,7 +17,7 @@ import { addHuntSession } from '@/firebase/huntSessions';
 import { formatProfit, formatRate } from '@/helpers/huntingSpots';
 import { toast } from 'sonner';
 import { captureError, captureEvent } from '@/lib/monitoring';
-import { Users, User, Clock, Swords, HeartPulse, Shield, Coins, PackageOpen, Zap, PartyPopper, Upload } from 'lucide-react';
+import { Users, User, Clock, Swords, HeartPulse, Shield, Coins, PackageOpen, Zap, PartyPopper, Upload, Loader2 } from 'lucide-react';
 
 export function HuntSessionUploadDialog({
   spotId,
@@ -259,6 +259,7 @@ export function HuntSessionUploadDialog({
               {te('cancel')}
             </Button>
             <Button onClick={handleSubmit} disabled={submitting || !parsed || (!parsed.loot && !parsed.xpGain)}>
+              {submitting && <Loader2 className='size-4 animate-spin mr-1' />}
               {submitting ? te('saving') : te('save')}
             </Button>
           </AlertDialogFooter>

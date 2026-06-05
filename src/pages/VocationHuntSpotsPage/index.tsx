@@ -12,7 +12,7 @@ import { useAuth } from '@/hooks/useAuth';
 import { toast } from 'sonner';
 import { captureError } from '@/lib/monitoring';
 import { useEffect, useMemo, useState, useCallback, useRef } from "react";
-import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks, Search } from 'lucide-react';
+import { ChevronDown, ChevronUp, Calculator, Trash2, User, ListChecks, Search, ArrowUp, ArrowDown } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { HuntSessionUploadDialog } from '@/components/HuntSessionUploadDialog';
 import { HuntSessionCard } from '@/components/HuntSessionDisplay';
@@ -95,10 +95,9 @@ const VocationHuntSpotsPage = () => {
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
       <Card>
         <CardHeader>
-          <h1 className="sr-only">{translate('title')} {vocation.name}</h1>
-          <CardTitle>
+          <CardTitle asChild><h1>
             {translate('title')} {vocation.name}
-          </CardTitle>
+          </h1></CardTitle>
         </CardHeader>
         <CardContent>
           {loadingSpots ? (
@@ -272,14 +271,14 @@ function SpotCard({
     <div className="rounded-lg border bg-card text-card-foreground shadow-sm">
       <button
         onClick={() => setExpanded(!expanded)}
-        className="w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer hover:bg-muted/50 transition-colors rounded-lg"
+        className="w-full flex items-center justify-between px-4 py-3 text-left cursor-pointer hover:bg-muted/50 transition-colors rounded-lg focus-visible:outline-2 focus-visible:outline-ring"
         aria-expanded={expanded}
       >
         <div className="min-w-0 flex-1">
           <div className="flex items-center gap-2">
-            <h3 className="font-semibold text-sm">{spot.name}</h3>
+            <h2 className="font-semibold text-sm">{spot.name}</h2>
             {spot.ownerDisplayName && (
-              <Badge className="inline-flex items-center gap-0.5 text-[10px] text-muted-foreground bg-muted px-1.5 py-0.5 rounded-sm font-normal">
+              <Badge variant="secondary" className="gap-0.5">
                 <User className="size-2.5" />
                 {spot.ownerDisplayName}
               </Badge>
@@ -323,6 +322,7 @@ function SpotCard({
             <div>
               <span className="text-muted-foreground">{translate('profit')}:</span>{' '}
               <span className={`tabular-nums font-medium ${spot.profit >= 0 ? 'text-success' : 'text-destructive'}`}>
+                {spot.profit >= 0 ? <ArrowUp className='size-3 inline' /> : <ArrowDown className='size-3 inline' />}
                 {spot.profit >= 0 ? '+' : ''}{formatProfit(spot.profit)}
               </span>
             </div>
@@ -344,7 +344,7 @@ function SpotCard({
 
           <button
             onClick={(e) => { e.stopPropagation(); setShowCalc(!showCalc); }}
-            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer"
+            className="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
             aria-expanded={showCalc}
             aria-label={showCalc ? translate('hideCalc') : translate('showCalc')}
           >
@@ -398,6 +398,7 @@ function SpotCard({
                 <div>
                   <span className="text-muted-foreground">{translate('netProfit')}:</span>{' '}
                   <span className={netProfit >= 0 ? 'text-success' : 'text-destructive'}>
+                    {netProfit >= 0 ? <ArrowUp className='size-3 inline' /> : <ArrowDown className='size-3 inline' />}
                     {netProfit >= 0 ? '+' : ''}{formatProfit(netProfit)}
                   </span>
                 </div>
@@ -436,7 +437,7 @@ function SpotCard({
                 <ListChecks className="size-3" />
                 {translate('huntSessions')}
                 {sessions.length > 0 && (
-                  <Badge className="text-[10px] bg-muted px-1.5 py-0.5 rounded-sm font-normal">
+                  <Badge variant="secondary">
                     {showAllSessions || sessions.length <= 10 ? sessions.length : `10/${sessions.length}`}
                   </Badge>
                 )}
@@ -457,6 +458,7 @@ function SpotCard({
                 <div>
                   <span className="text-muted-foreground">{translate('avgProfit')}</span>
                   <p className={`font-medium tabular-nums ${sessionStats.avgBalance >= 0 ? 'text-success' : 'text-destructive'}`}>
+                    {sessionStats.avgBalance >= 0 ? <ArrowUp className='size-2.5 inline' /> : <ArrowDown className='size-2.5 inline' />}
                     {sessionStats.avgBalance >= 0 ? '+' : ''}{formatProfit(sessionStats.avgBalance)}
                   </p>
                 </div>
@@ -492,7 +494,7 @@ function SpotCard({
             {!showAllSessions && sessions.length > 10 && (
               <button
                 onClick={(e) => { e.stopPropagation(); setShowAllSessions(true); }}
-                className="w-full text-xs text-muted-foreground hover:text-foreground py-1.5 transition-colors cursor-pointer"
+                className="w-full text-xs text-muted-foreground hover:text-foreground py-1.5 transition-colors cursor-pointer focus-visible:outline-2 focus-visible:outline-ring"
                 aria-label={translate('loadMoreSessions')}
               >
                 {translate('loadMoreSessions')} ({sessions.length - 10} more)

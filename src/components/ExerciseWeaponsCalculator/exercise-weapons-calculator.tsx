@@ -466,7 +466,7 @@ export function ExerciseWeaponsCalculator() {
       {calculated && result && (
         <>
           <div className='space-y-3'>
-            <h3 className='text-sm font-medium'>{ti('pricing')}</h3>
+            <h2 className='text-sm font-medium'>{ti('pricing')}</h2>
             <div className='grid grid-cols-2 gap-4'>
               <div className='flex flex-col gap-1'>
                 <Label htmlFor='wp_price' className='text-xs'>{ti('weaponPrice')}</Label>
@@ -600,7 +600,7 @@ export function ExerciseWeaponsCalculator() {
 
           <div className='flex gap-2'>
             <Button variant='outline' size='sm' className='gap-1.5' onClick={handleCopyResults}>
-              <Copy className='size-3.5' data-icon />
+              <Copy className='size-3.5' data-icon="inline-start" />
               {ti('copyResults')}
             </Button>
           </div>

@@ -14,13 +14,14 @@ interface BossRowProps {
   boss: BossEntry;
   killedAt: number | null;
   marking: string | null;
+  clearingBoss: string | null;
   now: number;
   onMark: (key: string) => void;
   onClear: (key: string) => void;
   t: (key: string) => string;
 }
 
-const BossRow = memo(function BossRow({ boss, killedAt, marking, now, onMark, onClear, t }: BossRowProps) {
+const BossRow = memo(function BossRow({ boss, killedAt, marking, clearingBoss, now, onMark, onClear, t }: BossRowProps) {
   const status = computeBossStatus(boss, killedAt, now);
   return (
     <tr className='border-b'>
@@ -57,10 +58,11 @@ const BossRow = memo(function BossRow({ boss, killedAt, marking, now, onMark, on
               variant='ghost'
               size='sm'
               onClick={() => onClear(boss.key)}
+              disabled={clearingBoss === boss.key || marking === boss.key}
               className='h-7 text-xs text-muted-foreground'
               aria-label='Clear cooldown'
             >
-              <Trash2 className='size-3' />
+              {clearingBoss === boss.key ? <Loader2 className='size-3 animate-spin' /> : <Trash2 className='size-3' />}
             </Button>
           )}
         </div>
@@ -76,6 +78,7 @@ export function BossCooldownTracker() {
   const { data: cooldownsData, loading, refresh } = useFirestoreFetch<BossCooldownDoc[]>(getUserBossCooldowns, { context: 'load boss cooldowns', errorKey: 'bossCooldownTracker.loadError' });
   const cooldowns = cooldownsData ?? [];
   const [marking, setMarking] = useState<string | null>(null);
+  const [clearingBoss, setClearingBoss] = useState<string | null>(null);
   const [clearingAll, setClearingAll] = useState(false);
   const now = useClock();
 
@@ -119,6 +122,7 @@ export function BossCooldownTracker() {
   const handleClear = useCallback(async (key: string) => {
     const entry = cooldowns.find((c) => c.bossKey === key);
     if (!entry) return;
+    setClearingBoss(key);
     try {
       await clearBossCooldown(entry.id);
       await refresh();
@@ -126,6 +130,8 @@ export function BossCooldownTracker() {
     } catch (e) {
       captureError(e, { context: 'clear boss cooldown' });
       toast.error(tb('clearError'));
+    } finally {
+      setClearingBoss(null);
     }
   }, [cooldowns, refresh]);
 
@@ -153,7 +159,7 @@ export function BossCooldownTracker() {
       )}
 
       <div>
-        <h3 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{tb('bosses')}</h3>
+        <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{tb('bosses')}</h2>
         <div className='rounded-md border'>
           <table className='w-full text-sm'>
             <thead>
@@ -174,6 +180,7 @@ export function BossCooldownTracker() {
                   boss={boss}
                   killedAt={getKilledAt(boss.key)}
                   marking={marking}
+                  clearingBoss={clearingBoss}
                   now={now}
                   onMark={handleMark}
                   onClear={handleClear}
@@ -186,7 +193,7 @@ export function BossCooldownTracker() {
       </div>
 
       <div>
-        <h3 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{tb('raids')}</h3>
+        <h2 className='text-sm font-semibold mb-2 text-muted-foreground uppercase tracking-wide'>{tb('raids')}</h2>
         <div className='rounded-md border'>
           <table className='w-full text-sm'>
             <thead>
@@ -207,6 +214,7 @@ export function BossCooldownTracker() {
                   boss={raid}
                   killedAt={getKilledAt(raid.key)}
                   marking={marking}
+                  clearingBoss={clearingBoss}
                   now={now}
                   onMark={handleMark}
                   onClear={handleClear}

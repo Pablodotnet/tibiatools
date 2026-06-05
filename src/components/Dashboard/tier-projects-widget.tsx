@@ -23,10 +23,10 @@ export function TierProjectsWidget() {
   return (
     <Card>
       <CardHeader className='pb-3'>
-        <CardTitle className='text-sm font-medium flex items-center gap-2'>
+        <CardTitle asChild><h2 className='text-sm font-medium flex items-center gap-2'>
           <FolderKanban className='size-4 text-muted-foreground' />
           {tw('tierProjectsTitle')}
-        </CardTitle>
+        </h2></CardTitle>
       </CardHeader>
       <CardContent>
         {projectsLoading ? (
@@ -58,7 +58,7 @@ export function TierProjectsWidget() {
         )}
         <Link
           to='/public-projects'
-          className='mt-2 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors'
+          className='mt-2 flex items-center justify-center gap-1 text-xs text-muted-foreground hover:text-foreground transition-colors focus-visible:outline-2 focus-visible:outline-ring'
         >
           {tw('viewAllProjects')}
           <ArrowRight className='size-3' />

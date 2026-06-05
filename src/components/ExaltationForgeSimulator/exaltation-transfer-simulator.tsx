@@ -3,6 +3,7 @@
 // Requires 100 Dust + Exalted Cores + Gold
 
 import { useState } from "react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -49,18 +50,20 @@ export function TransferCalculator() {
   };
 
   return (
-    <div className="max-w-lg space-y-5 font-sans text-sm text-slate-900 dark:text-slate-100">
-      <div className="rounded-md border-2 border-blue-800 bg-sky-100 p-4 dark:border-sky-600 dark:bg-sky-950/40">
-        <h2 className="mb-2 font-semibold text-orange-600 dark:text-orange-400">
+    <div className="max-w-lg space-y-5 font-sans text-sm text-foreground">
+      <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+        <AlertTitle className="font-semibold text-orange-600 dark:text-orange-400">
           &gt;&gt; {t("exaltationForge.transferHelp")}
-        </h2>
-        <ul className="list-disc space-y-1 pl-5 text-blue-950 dark:text-sky-100">
-          <li>{t("exaltationForge.transferHelp1")}</li>
-          <li>{t("exaltationForge.transferHelp2")}</li>
-          <li>{t("exaltationForge.transferHelp3")}</li>
-          <li>{t("exaltationForge.transferHelp4")}</li>
-        </ul>
-      </div>
+        </AlertTitle>
+        <AlertDescription className="text-blue-950 dark:text-sky-100">
+          <ul className="list-disc space-y-1 pl-5">
+            <li>{t("exaltationForge.transferHelp1")}</li>
+            <li>{t("exaltationForge.transferHelp2")}</li>
+            <li>{t("exaltationForge.transferHelp3")}</li>
+            <li>{t("exaltationForge.transferHelp4")}</li>
+          </ul>
+        </AlertDescription>
+      </Alert>
 
       <div className="grid max-w-md grid-cols-[1fr_auto] items-center gap-x-3 gap-y-3">
         <Label htmlFor="tr-src-tier" className="justify-self-end text-right">
@@ -164,7 +167,7 @@ export function TransferCalculator() {
             {t("exaltationForge.transferResult")}
           </div>
           {!result.isValid ? (
-            <p className="p-3 text-sm text-red-600 dark:text-red-400">
+            <p className="p-3 text-sm text-destructive">
               {result.errorMessage}
             </p>
           ) : (

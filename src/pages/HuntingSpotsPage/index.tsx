@@ -20,26 +20,23 @@ const HuntingSpotsPage = () => {
   return (
     <Card className='w-full max-w-md mx-auto bg-white dark:bg-card my-12'>
       <CardHeader>
-        <h1 className="sr-only">{translate('title')}</h1>
         <div className='flex items-center justify-between'>
           <div>
-            <CardTitle>{translate('title')}</CardTitle>
+            <CardTitle asChild><h1>{translate('title')}</h1></CardTitle>
             <CardDescription>{translate('description')}</CardDescription>
           </div>
           {isAuthenticated && <HuntingSpotsAddDialog />}
         </div>
-      </CardHeader>
-        <div className='px-6 pb-4'>
-          <div className='relative'>
-            <Search className='absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground' />
-            <Input
-              placeholder={translate('searchVocation')}
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              className='pl-8 h-9 text-sm'
-            />
-          </div>
+        <div className='relative mt-1'>
+          <Search className='absolute left-2.5 top-1/2 -translate-y-1/2 size-4 text-muted-foreground' />
+          <Input
+            placeholder={translate('searchVocation')}
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className='pl-8 h-9 text-sm'
+          />
         </div>
+      </CardHeader>
       <HuntingSpotsCard searchTerm={search} />
     </Card>
   );

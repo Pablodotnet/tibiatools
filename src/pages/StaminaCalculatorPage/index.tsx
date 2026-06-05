@@ -8,8 +8,7 @@ const StaminaCalculatorPage = () => {
   return (
     <Card className='w-full max-w-lg mx-auto mt-6'>
       <CardHeader>
-        <h1 className="sr-only">{ts('title')}</h1>
-        <CardTitle>{ts('title')}</CardTitle>
+        <CardTitle asChild><h1>{ts('title')}</h1></CardTitle>
         <CardDescription>{ts('description')}</CardDescription>
       </CardHeader>
       <CardContent>

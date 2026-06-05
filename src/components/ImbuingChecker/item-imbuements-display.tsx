@@ -92,7 +92,7 @@ const ImbuementCard = ({ imbuement, isBlocked }: ImbuementCardProps) => {
   return (
     <Collapsible.Root open={open} onOpenChange={setOpen}>
       <Collapsible.Trigger asChild>
-        <Card className={`px-4 py-3 ${isBlocked ? 'opacity-40 cursor-not-allowed' : 'cursor-pointer hover:border-primary/50 transition-colors'}`}>
+        <Card className={`px-4 py-3 ${isBlocked ? 'opacity-40 cursor-not-allowed pointer-events-none' : 'cursor-pointer hover:border-primary/50 transition-colors'} focus-visible:outline-2 focus-visible:outline-ring`} aria-disabled={isBlocked ? true : undefined}>
           <div className="w-full flex items-center gap-4">
             <img
               src={getImbuementIcon(data.icon)}

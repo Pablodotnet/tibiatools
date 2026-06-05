@@ -28,7 +28,7 @@ export function LanguageSwitcher() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button variant='ghost' size='sm' className='gap-1.5 cursor-pointer'>
-          <Languages className='h-4 w-4' data-icon />
+          <Languages className='h-4 w-4' data-icon="inline-start" />
           <span className='text-xs font-medium'>{current?.short ?? 'EN'}</span>
         </Button>
       </DropdownMenuTrigger>

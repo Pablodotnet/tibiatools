@@ -310,7 +310,7 @@ export function TibiaLootSplit() {
                 copy(lines.join('\n'));
                 toast.success(t('common.copied'));
               }} className='cursor-pointer'>
-                <Copy className='size-3.5' data-icon />
+                <Copy className='size-3.5' data-icon="inline-start" />
                 {copied ? t('common.copied') : t('common.copy')}
               </Button>
             </div>

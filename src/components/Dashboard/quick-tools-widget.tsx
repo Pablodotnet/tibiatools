@@ -17,10 +17,10 @@ export function QuickToolsWidget() {
   return (
     <Card>
       <CardHeader className='pb-3'>
-        <CardTitle className='text-sm font-medium flex items-center gap-2'>
+        <CardTitle asChild><h2 className='text-sm font-medium flex items-center gap-2'>
           <Gauge className='size-4 text-muted-foreground' />
           {tw('quickToolsTitle')}
-        </CardTitle>
+        </h2></CardTitle>
       </CardHeader>
       <CardContent>
         <div className='grid grid-cols-2 gap-2'>

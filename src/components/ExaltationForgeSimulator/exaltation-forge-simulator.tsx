@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -54,11 +55,11 @@ function ScenarioBlock({
   t: (key: string) => string;
 }) {
   return (
-    <div className="flex min-w-0 flex-1 flex-col border border-blue-300/80 dark:border-slate-600">
+    <div className="flex min-w-0 flex-1 flex-col border border-blue-300/80 dark:border-border">
       <div className="bg-blue-700 px-2 py-2 text-center text-xs font-bold text-white md:text-sm dark:bg-blue-800">
         {label}
       </div>
-      <div className="space-y-2 bg-sky-50/90 px-2 py-3 text-center text-xs tabular-nums text-slate-900 md:text-sm dark:bg-slate-900/50 dark:text-slate-100">
+      <div className="space-y-2 bg-muted/30 px-2 py-3 text-center text-xs tabular-nums text-foreground md:text-sm">
         <div className="font-semibold">{formatGp(scenario.totalGp)} gp</div>
         <div>{formatTc(scenario.tibiaCoins)} TC</div>
         <div>
@@ -72,7 +73,7 @@ function ScenarioBlock({
           })}
         </div>
       </div>
-      <div className="overflow-x-auto border-t border-blue-300/80 dark:border-slate-600">
+      <div className="overflow-x-auto border-t border-blue-300/80 dark:border-border">
         <table className="w-full border-collapse text-center text-xs">
           <thead>
             <tr className="bg-blue-900 text-white dark:bg-blue-950">
@@ -95,7 +96,7 @@ function ScenarioBlock({
               <tr>
                 <td
                   colSpan={4}
-                  className="border border-blue-200/80 py-2 text-muted-foreground dark:border-slate-700"
+                  className="border border-blue-200/80 py-2 text-muted-foreground dark:border-border"
                 >
                   {t("exaltationForge.noFusionSteps")}
                 </td>
@@ -109,20 +110,20 @@ function ScenarioBlock({
                     key={label}
                     className={cn(
                       alt
-                        ? "bg-sky-100/90 dark:bg-slate-800/50"
-                        : "bg-white dark:bg-slate-900/30",
+                        ? "bg-muted/50"
+                        : "bg-card",
                     )}
                   >
-                    <td className="border border-blue-200/80 px-0.5 py-0.5 font-medium dark:border-slate-700">
+                    <td className="border border-blue-200/80 px-0.5 py-0.5 font-medium dark:border-border">
                       {label}
                     </td>
-                    <td className="border border-blue-200/80 px-0.5 py-0.5 tabular-nums dark:border-slate-700">
+                    <td className="border border-blue-200/80 px-0.5 py-0.5 tabular-nums dark:border-border">
                       {row.successes}
                     </td>
-                    <td className="border border-blue-200/80 px-0.5 py-0.5 tabular-nums dark:border-slate-700">
+                    <td className="border border-blue-200/80 px-0.5 py-0.5 tabular-nums dark:border-border">
                       {row.failures}
                     </td>
-                    <td className="border border-blue-200/80 px-0.5 py-0.5 tabular-nums dark:border-slate-700">
+                    <td className="border border-blue-200/80 px-0.5 py-0.5 tabular-nums dark:border-border">
                       {row.saved}
                     </td>
                   </tr>
@@ -175,7 +176,7 @@ function SimulationResultsDashboard({
           t={t}
         />
       </div>
-      <p className="border-t border-blue-200 bg-sky-50/80 px-3 py-2 text-[11px] text-slate-600 dark:border-slate-700 dark:bg-slate-900/40 dark:text-slate-400">
+      <p className="border-t border-blue-200 bg-sky-50/80 px-3 py-2 text-[11px] text-slate-600 dark:border-border bg-muted/30 text-muted-foreground">
         {t("exaltationForge.simulationNote")}
       </p>
     </div>
@@ -325,30 +326,30 @@ export function ExaltationForgeSimulator() {
   };
 
   return (
-    <div className="max-w-4xl space-y-6 font-sans text-sm text-slate-900 dark:text-slate-100">
-      <div className="rounded-md border-2 border-blue-800 bg-sky-100 p-4 dark:border-sky-600 dark:bg-sky-950/40">
-        <h2 className="mb-2 font-semibold text-orange-600 dark:text-orange-400">
+    <div className="max-w-4xl space-y-6 font-sans text-sm text-foreground">
+      <Alert className="bg-blue-50 dark:bg-blue-950/20 border-blue-200 dark:border-blue-800">
+        <AlertTitle className="font-semibold text-orange-600 dark:text-orange-400">
           &gt;&gt; {t("exaltationForge.howToUse")}
-        </h2>
-        <p className="mb-3 text-blue-950 dark:text-sky-100">
-          {t("exaltationForge.howToUseDesc")}
-        </p>
-        <ol className="list-decimal space-y-2 pl-5 text-blue-950 dark:text-sky-100">
-          <li>
-            <span className="font-medium">{t("exaltationForge.fusionHelp1")}</span>
-            <ul className="mt-1 list-disc pl-5">
-              <li>{t("exaltationForge.fusionHelp1a")}</li>
-              <li>{t("exaltationForge.fusionHelp1b")}</li>
-              <li>{t("exaltationForge.fusionHelp1c")}</li>
-              <li>{t("exaltationForge.fusionHelp1d")}</li>
-              <li>{t("exaltationForge.fusionHelp1e")}</li>
-              <li>{t("exaltationForge.fusionHelp1f")}</li>
-            </ul>
-          </li>
-          <li>{t("exaltationForge.fusionHelp2")}</li>
-          <li>{t("exaltationForge.fusionHelp3")}</li>
-        </ol>
-      </div>
+        </AlertTitle>
+        <AlertDescription className="text-blue-950 dark:text-sky-100">
+          <p className="mb-3">{t("exaltationForge.howToUseDesc")}</p>
+          <ol className="list-decimal space-y-2 pl-5">
+            <li>
+              <span className="font-medium">{t("exaltationForge.fusionHelp1")}</span>
+              <ul className="mt-1 list-disc pl-5">
+                <li>{t("exaltationForge.fusionHelp1a")}</li>
+                <li>{t("exaltationForge.fusionHelp1b")}</li>
+                <li>{t("exaltationForge.fusionHelp1c")}</li>
+                <li>{t("exaltationForge.fusionHelp1d")}</li>
+                <li>{t("exaltationForge.fusionHelp1e")}</li>
+                <li>{t("exaltationForge.fusionHelp1f")}</li>
+              </ul>
+            </li>
+            <li>{t("exaltationForge.fusionHelp2")}</li>
+            <li>{t("exaltationForge.fusionHelp3")}</li>
+          </ol>
+        </AlertDescription>
+      </Alert>
 
       <div className="grid max-w-md grid-cols-[1fr_auto] items-center gap-x-3 gap-y-3">
         <Label htmlFor="desired-tier" className="justify-self-end text-right">
@@ -462,15 +463,15 @@ export function ExaltationForgeSimulator() {
                 <tr
                   key={label}
                   className={cn(
-                    alt
-                      ? "bg-sky-100/80 dark:bg-sky-950/30"
-                      : "bg-white dark:bg-slate-900/40",
+                      alt
+                        ? "bg-muted/50"
+                        : "bg-card",
                   )}
                 >
-                  <td className="border border-blue-200 px-1 py-1.5 font-medium dark:border-slate-700">
+                  <td className="border border-blue-200 px-1 py-1.5 font-medium dark:border-border">
                     {label}
                   </td>
-                  <td className="border border-blue-200 px-1 py-1 dark:border-slate-700">
+                  <td className="border border-blue-200 px-1 py-1 dark:border-border">
                     <input
                       type="checkbox"
                       aria-label={t('exaltationForge.useCore1')}
@@ -486,7 +487,7 @@ export function ExaltationForgeSimulator() {
                       }}
                     />
                   </td>
-                  <td className="border border-blue-200 px-1 py-1 dark:border-slate-700">
+                  <td className="border border-blue-200 px-1 py-1 dark:border-border">
                     <input
                       type="checkbox"
                       aria-label={t('exaltationForge.useCore2')}
@@ -502,16 +503,16 @@ export function ExaltationForgeSimulator() {
                       }}
                     />
                   </td>
-                  <td className="border border-blue-200 px-1 py-1 text-slate-800 tabular-nums dark:border-slate-700 dark:text-slate-200">
+                  <td className="border border-blue-200 px-1 py-1 tabular-nums text-foreground dark:border-border">
                     {c1 === null ? "—" : formatGp(c1)}
                   </td>
-                  <td className="border border-blue-200 px-1 py-1 text-slate-800 tabular-nums dark:border-slate-700 dark:text-slate-200">
+                  <td className="border border-blue-200 px-1 py-1 tabular-nums text-foreground dark:border-border">
                     {c2 === null ? "—" : formatGp(c2)}
                   </td>
-                  <td className="border border-blue-200 px-1 py-1 text-slate-800 tabular-nums dark:border-slate-700 dark:text-slate-200">
+                  <td className="border border-blue-200 px-1 py-1 tabular-nums text-foreground dark:border-border">
                     {c3 === null ? "—" : formatGp(c3)}
                   </td>
-                  <td className="border border-blue-200 px-1 py-1 dark:border-slate-700">
+                  <td className="border border-blue-200 px-1 py-1 dark:border-border">
                     <Input
                       className="h-8 min-w-[100px] text-center text-xs tabular-nums md:text-sm"
                       inputMode="numeric"

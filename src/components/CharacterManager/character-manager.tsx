@@ -75,7 +75,7 @@ export function CharacterManager() {
   return (
     <div className='space-y-6'>
       <div className='rounded-md border p-4 space-y-3'>
-        <h3 className='text-sm font-semibold'>{tc('addNew')}</h3>
+        <h2 className='text-sm font-semibold'>{tc('addNew')}</h2>
         <div className='grid grid-cols-1 sm:grid-cols-4 gap-3'>
           <div className='space-y-1'>
             <Label className='text-xs text-muted-foreground'>{tc('name')}</Label>

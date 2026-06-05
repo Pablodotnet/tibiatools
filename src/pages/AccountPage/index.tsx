@@ -44,7 +44,7 @@ const AccountPage = () => {
     <div className='w-full max-w-xl px-4 mx-auto mt-6'>
       <Card>
         <CardHeader className='flex flex-row items-center gap-4'>
-          <h1 className="sr-only">{translate('title')}</h1>
+          <CardTitle asChild><h1 className="sr-only">{translate('title')}</h1></CardTitle>
           <Avatar className='size-16'>
             <AvatarImage
               src={photoURL ?? undefined}

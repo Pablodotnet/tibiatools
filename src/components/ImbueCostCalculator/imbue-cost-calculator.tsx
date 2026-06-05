@@ -198,7 +198,7 @@ export function ImbueCostCalculator() {
         {selectedTier && (
           <div className='space-y-3'>
             <div className='flex items-end gap-4'>
-              <h3 className='text-sm font-medium'>{ti('materials')}</h3>
+              <h2 className='text-sm font-medium'>{ti('materials')}</h2>
               {tokensPerItem > 0 && (
                 <div className='flex items-center gap-2'>
                   <Label htmlFor='gold_token_val' className='text-xs whitespace-nowrap'>{ti('goldTokenValue')}</Label>
@@ -317,7 +317,7 @@ export function ImbueCostCalculator() {
             copy(lines.join('\n'));
             toast.success(t('common.copied'));
           }} className='cursor-pointer'>
-            <Copy className='size-3.5' data-icon />
+            <Copy className='size-3.5' data-icon="inline-start" />
             {copied ? t('common.copied') : t('common.copy')}
           </Button>
         )}

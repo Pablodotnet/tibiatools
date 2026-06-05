@@ -426,7 +426,7 @@ const MyTierProjectsPage = () => {
         <Card>
           <CardHeader>
             <div className='flex items-center justify-between'>
-              <CardTitle>{selectedProject.name}</CardTitle>
+              <CardTitle asChild><h1>{selectedProject.name}</h1></CardTitle>
               <div className='flex items-center gap-2'>
                 <Button variant='outline' size='sm' onClick={handleOpenDuplicate} className='gap-1.5'>
                   <Copy className='size-3.5' />
@@ -703,9 +703,9 @@ const MyTierProjectsPage = () => {
             </div>
 
             {methodWarning && (
-              <Alert className='border-yellow-300 dark:border-yellow-700 bg-yellow-50 dark:bg-yellow-950/20 [&>div]:col-span-2'>
-                <AlertTitle className='text-yellow-800 dark:text-yellow-200'>{translate('warning')}</AlertTitle>
-                <AlertDescription className='text-yellow-800 dark:text-yellow-200'>{methodWarning}</AlertDescription>
+              <Alert className='border-warning/50 bg-warning/10 [&>div]:col-span-2'>
+                <AlertTitle className='text-warning'>{translate('warning')}</AlertTitle>
+                <AlertDescription className='text-warning'>{methodWarning}</AlertDescription>
               </Alert>
             )}
 
@@ -803,13 +803,12 @@ const MyTierProjectsPage = () => {
     <div className='w-full max-w-2xl mx-auto mt-6 space-y-4'>
       <Card>
         <CardHeader>
-          <h1 className="sr-only">{translate('title')}</h1>
-          <CardTitle>{translate('title')}</CardTitle>
+          <CardTitle asChild><h1>{translate('title')}</h1></CardTitle>
           <CardDescription>{translate('description')}</CardDescription>
         </CardHeader>
         <CardContent className='space-y-6'>
           <div className='space-y-4 rounded-lg border p-4'>
-            <h3 className='font-semibold text-sm'>{translate('createNew')}</h3>
+            <h2 className='font-semibold text-sm'>{translate('createNew')}</h2>
             <div className='space-y-2'>
               <Label>{translate('projectName')}</Label>
               <Input placeholder={translate('projectNamePlaceholder')} value={newName} onChange={(e) => setNewName(e.target.value)} />
